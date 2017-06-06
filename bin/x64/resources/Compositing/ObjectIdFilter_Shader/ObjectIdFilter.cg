@@ -1,0 +1,52 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                                       objectidfilter_ps                           **
+**                                                                                   **
+***************************************************************************************/
+bool isIdEqual(float id1, float id2)
+{
+	if (id1 > (id2 - .5f) && id1 < (id2 + .5f))
+		return true;
+	else 
+		return false;
+}
+
+void objectidfilter_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 color    : COLOR,
+			  uniform float objectId1,
+			  uniform float objectId2,
+			  uniform float objectId3,
+			  uniform float objectId4,
+			  uniform sampler2D inputMap0 : TEXUNIT0,
+			  uniform sampler2D inputMap1 : TEXUNIT1)
+{
+	float objectIdFrag = tex2D(inputMap1, float2(texCoord.x, texCoord.y)).r * 100.0f;
+
+	if ((isIdEqual(objectIdFrag, objectId1) || isIdEqual(objectIdFrag, objectId2) || isIdEqual(objectIdFrag, objectId3) || isIdEqual(objectIdFrag, objectId4)))
+		color = tex2D(inputMap0, float2(texCoord.x, texCoord.y));
+	else
+		color = float4(0.0f, 0.0f, 0.0f, 1.0f);
+}

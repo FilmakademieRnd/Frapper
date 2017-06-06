@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ToFLibNode.xml
+  Description:  Contains the XML description of ToFLibNodes.
+  Author:       Michael Bussler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="ToFLib" category="S3D" color="171, 192, 255" plugin="ToFLib.dll">
+  <parameters>
+    <parameter	name="Input Map Left"	type="Image"	pin="in"/>
+    <parameter	name="Input Map Right"	type="Image"	pin="in"/>
+    <parameter	name="Input Map ToF"	type="Image"	pin="in"/>
+    <parameters name="ToF Sensor Fusion">
+      <parameter  name="Render!"          type="Command" />
+      <parameter  name="Algorithm"        type="Enumeration" defaultValue="0" description="The Fusion Algorithm to use." >
+        <literal  name="Just Reproject" />
+        <literal  name="Block Matching" />
+        <literal  name="Full Model" />
+        <literal  name="TV Fusion" />
+      </parameter>
+    </parameters>
+    <parameters name="Input Image Options">
+      <parameter  name="FOV"                 type="Float" minValue="0.0" maxValue="180.0" defaultValue="50.0" description="FoV of images."/>
+      <parameter  name="Baseline Left-ToF"   type="Float" defaultValue="-0.14" description="Baseline between left image and tof camera."/>
+      <parameter  name="Baseline Left-Right" type="Float" defaultValue="0.14"  description="Baseline between left and right image."/>
+    </parameters>
+  </parameters>
+</nodetype>

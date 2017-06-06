@@ -1,0 +1,254 @@
+fragment_program TridelityCompositor/SceneFP cg
+{
+    source ../CompositorTemplateNode_Shader/CompositorTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program TridelityCompositor/TridelityCompositorMVFP asm
+{
+    source TridelityCompositorMV.asm
+	syntax arbfp1
+}
+
+fragment_program TridelityCompositor/TridelityCompositorMLFP asm
+{
+    source TridelityCompositorML.asm
+	syntax gp4fp
+}
+
+// scene pass
+material TridelityCompositor/ScenePass0
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// scene pass
+material TridelityCompositor/ScenePass1
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// scene pass
+material TridelityCompositor/ScenePass2
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+// scene pass
+material TridelityCompositor/ScenePass3
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+// scene pass
+material TridelityCompositor/ScenePass4
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+///////////////////////////////////
+// Material for 5 view MV Series //
+///////////////////////////////////
+
+material TridelityCompositor/TridelityCompositorMVMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/TridelityCompositorMVFP
+			{
+			}
+			
+			texture_unit  // view0
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit  //  view1
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit  //  view2
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+
+			texture_unit  //  view3
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+
+			texture_unit  //  view4
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+///////////////////////////////////
+// Material for 5 view ML Series //
+///////////////////////////////////
+
+material TridelityCompositor/TridelityCompositorMLMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref TridelityCompositor/TridelityCompositorMLFP
+			{
+			}
+			
+			texture_unit  // view0
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit  //  view1
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit  //  view2
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+
+			texture_unit  //  view3
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+
+			texture_unit  //  view4
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

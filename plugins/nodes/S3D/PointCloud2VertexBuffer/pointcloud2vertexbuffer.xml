@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         pointcloud2vertexbuffer.xml
+  Description:  Contains the XML description of s3d ndoe.
+  Author:       Simon Spielmann <sspielm@filmakademie.de>
+  Copyright:    (c) 2012 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="PointCloud2VertexBuffer" category="S3D" color="255, 255, 255" plugin="pointcloud2vertexbuffer.dll">
+  <parameters>
+  </parameters>
+</nodetype>
+

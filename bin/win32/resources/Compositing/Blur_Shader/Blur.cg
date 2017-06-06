@@ -1,0 +1,112 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                                    VS     										 **
+**                                                                                   **
+***************************************************************************************/
+
+void quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+/**************************************************************************************
+**                                                                                   **
+**                                       FS                                          **
+**                                                                                   **
+***************************************************************************************/
+
+
+//////////////////////////////////////////////
+// Horizontal/Vertical Gaussian-Blur passes //
+//////////////////////////////////////////////
+
+
+//We use the Normal-gauss distribution formula
+//f(x) being the formula, we used f(0.5)-f(-0.5); f(1.5)-f(0.5)...
+static const float2 samples[11] =
+{//stddev=2.0
+	-0.05, 0.01222447, 
+	-0.04, 0.02783468,	
+	-0.03, 0.06559061,	
+	-0.02, 0.12097757,	
+	-0.01, 0.17466632,	
+	 0.00, 0.19741265,	
+	 0.01, 0.17466632,	
+	 0.02, 0.12097757,	
+	 0.03, 0.06559061,	
+	 0.04, 0.02783468,	
+	 0.05, 0.01222447
+};
+
+void blurV_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidthV)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(0.0, samples[i].x*BlurWidthV)) * samples[i].y;
+	oColor = result;
+}
+
+void blurH_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidthH)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(samples[i].x*BlurWidthH, 0.0)) * samples[i].y;
+	oColor = result;
+}
+
+//////////////
+// Box Blur //
+//////////////
+
+void boxBlur_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 color    : COLOR,
+			  uniform float blurDistance,
+			  uniform sampler2D inputMap0 : TEXUNIT0)
+{
+	float4 blurColor  = tex2D(inputMap0, float2(texCoord.x + blurDistance, texCoord.y + blurDistance));
+	blurColor  += tex2Dlod(inputMap0, float4(texCoord.x - blurDistance, texCoord.y - blurDistance, 0, 0));
+	blurColor  += tex2Dlod(inputMap0, float4(texCoord.x + blurDistance, texCoord.y - blurDistance, 0, 0));
+	blurColor  += tex2Dlod(inputMap0, float4(texCoord.x - blurDistance, texCoord.y + blurDistance, 0, 0));
+
+	color = blurColor / 4.0;
+}

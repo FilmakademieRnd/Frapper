@@ -1,0 +1,73 @@
+compositor CLDCompositor
+{
+    technique
+    {
+        // Temporary textures		
+		texture rtScene target_width target_height PF_FLOAT32_RGBA
+		texture rtETF target_width target_height PF_FLOAT32_RGBA
+		texture rtSmoothH target_width target_height PF_FLOAT32_RGBA
+		texture rtSmoothV target_width target_height PF_FLOAT32_RGBA
+		texture rtDDoG target_width target_height PF_FLOAT32_RGBA
+	
+        target rtScene
+        {
+            input none
+            pass render_quad
+            {				
+				material CLD/CLDScene
+            }
+        }
+		
+		target rtETF
+        {
+            input none
+			pass render_quad
+            {
+                material CLD/CLDETF
+				input 0 rtScene
+            }
+        }
+		
+		target rtSmoothH
+        {
+            input none
+            pass render_quad
+            {
+                material CLD/SmoothH
+                input 0 rtETF
+            }
+        }
+		
+		target rtSmoothV
+        {
+            input none
+            pass render_quad
+            {
+                material CLD/SmoothV
+                input 0 rtSmoothH
+            }
+        }
+		
+		target rtDDoG
+        {
+            input none
+            pass render_quad
+            {
+                material CLD/DDoG
+                input 0 rtScene
+				input 1 rtSmoothV
+            }
+        }
+		
+		target_output
+        {
+            input none
+            pass render_quad
+            {
+                material CLD/FDoG
+                input 0 rtSmoothV
+				input 1 rtDDoG
+            }
+        }	
+    }
+}

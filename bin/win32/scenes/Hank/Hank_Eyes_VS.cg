@@ -1,0 +1,40 @@
+void vs_main(  			
+			//in
+			float4 iPosition : POSITION0,
+			float3 iNormal   : NORMAL0,
+			float3 iTangent  : TANGENT,
+			float2 iTexCoord : TEXCOORD0,
+			//out
+			out float4 oPosition	: POSITION0,
+			out float2 oTexCoord	: TEXCOORD3,			
+			out float3 oViewDir		: TEXCOORD4,
+			out float3 oLightDir	: TEXCOORD5,			
+			//parameter
+			uniform float3	fvEyePosition,
+			uniform	float4	fvLightPosition,
+			uniform float4x4 worldViewProj,
+			uniform float4x4 view_matrix)
+			
+{
+
+	oPosition = mul(worldViewProj, iPosition);
+	oTexCoord = iTexCoord;
+       
+	float3 fvView  = fvEyePosition - oPosition;
+	float4 fvLight = mul(view_matrix, fvLightPosition - oPosition);
+	   	
+	float4 fvNormal         = mul( view_matrix, float4(iNormal, 0) );
+	float4 fvBinormal       = mul( view_matrix, float4(cross (iNormal, iTangent), 0) );
+	float4 fvTangent        = mul( view_matrix, float4(iTangent, 0) );
+	      
+	oViewDir.x  = dot( fvTangent, fvView );
+	oViewDir.y  = dot( fvBinormal, fvView );
+	oViewDir.z  = dot( fvNormal, fvView );
+	   
+	oLightDir.x  = dot( fvTangent, fvLightPosition );
+	oLightDir.y  = dot( fvBinormal, fvLightPosition );
+	oLightDir.z  = dot( fvNormal, fvLightPosition );  
+
+}
+
+

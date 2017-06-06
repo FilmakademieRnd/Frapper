@@ -1,0 +1,174 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+static const float PIG = 180.0f*3.141593f;
+
+////////////////////
+// vertex shaders //
+////////////////////
+
+void baseHair_vs(
+			 in float4 iPos : POSITION,
+			 in float3 iTan  : TANGENT,
+			 in float2 iUV : TEXCOORD0,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[1],
+			 uniform float hairRootWidth,
+			 uniform float hairTipWidth,
+			 uniform float3 viewDir)
+{
+	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];   
+	float3 blendTan = -mul(worldMatrix3x4Array[blendIdx[0]], float4(iTan, 0.0)) * blendWgt[0];
+
+	oPos = mul(vpMat, blendPos);
+    float3 wvpTan = mul(vpMat, float4(blendTan, 0)).xyz;
+   
+    float3 perp = normalize(cross(wvpTan, viewDir));
+    float width = lerp(hairRootWidth, hairTipWidth, iUV.x);    
+    oPos.xyz = oPos.xyz + perp * width * iUV.y;
+	oCol = 0.f;
+}
+
+void singleScatterHair_vs(
+   float4 iPosition : POSITION,
+   float3 iTangent  : TANGENT,   
+   float2 iTexCoord : TEXCOORD0,
+   float4 blendIdx : BLENDINDICES,
+   float4 blendWgt : BLENDWEIGHT,
+   //out
+   out float4 oPosition : POSITION,
+   out float2 oTexCoord : TEXCOORD0,
+   out float3 oTangent  : TEXCOORD1,   
+   out float3 oViewDir  : TEXCOORD2,
+   out float4 oWorldPos : TEXCOORD3,   
+   //parameter
+   uniform float3x4   worldMatrix3x4Array[1],
+   uniform float4x4 viewProjectionMatrix,
+   uniform float hairRootWidth,
+   uniform float hairTipWidth,   
+   uniform float3 eyePosition,
+   uniform float3 viewDirView,
+   uniform float4 spotDir)
+{
+	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPosition).xyz, 1.0f) * blendWgt[0];  
+	float3 blendTangent = mul(worldMatrix3x4Array[blendIdx[0]], float4(iTangent, 0.0f)) * blendWgt[0];  
+
+	oPosition = mul(viewProjectionMatrix, blendPos);
+	oTangent = -mul((float3x3)viewProjectionMatrix, blendTangent);
+
+	float3 perp = normalize(cross(oTangent, viewDirView));
+	float3 wPerp = normalize(cross(blendTangent, viewDirView));
+	float width = lerp(hairRootWidth, hairTipWidth, iTexCoord.x);    
+	oPosition.xyz += perp * width * iTexCoord.y;
+	blendPos.xyz += wPerp * width * iTexCoord.y;
+
+	//oTangent = blendTangent;
+
+	oTexCoord.x = iTexCoord.x + 0.01f;
+	oTexCoord.y = iTexCoord.y /2.0f;
+	//oViewDir = normalize(eyePosition - oPosition); 
+	oViewDir = normalize(eyePosition - blendPos.xyz); 
+	oWorldPos = blendPos;
+}
+
+
+//////////////////////
+// fragment shaders //
+//////////////////////
+
+void  baseHair_fs(			    
+				out float4 result	: COLOR)
+{
+	result = float4(0.f,0.f,0.f,1.f);
+}
+
+void  singleScatterHair_fs(
+				uniform float3 reflectColor,
+			    uniform float3 transmitColor,
+				uniform float3 scatterColor,
+				uniform float3 rootColor,
+				uniform float3 tipColor,
+				uniform float3 diffuseColor,
+				uniform float4 light_colors[8],
+				uniform float4 light_positions[8],
+				uniform float reflectStrength,
+			    uniform float transmitStrength,
+				uniform float scatterStrength,
+				uniform float diffuseStrength,
+				uniform float reflectWidth,
+			    uniform float transmitWidth,
+				uniform float scatterWidth,
+				uniform float reflectShift,
+				uniform float transmitShift,
+				uniform float scatterShift,
+				uniform float lightPower,
+				float2 iTexCoord	: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,				
+				float3 iViewDir		: TEXCOORD2,
+				float4 iWorldPos	: TEXCOORD3,			    
+				//out
+				out float4 result	: COLOR)
+{	
+	// colors of the specular lobes (R,TT,TRT)
+	const float3 _AM_c_R = 0.25f * reflectColor * reflectStrength;
+	const float3 _AM_c_TT = 0.25f * transmitColor * transmitStrength;
+	const float3 _AM_c_TRT = 0.25f * scatterColor * scatterStrength;
+	// diffuse color
+	const float3 _AM_d = 0.08f * diffuseColor * diffuseStrength;
+	// widths (phong exponents) of the specular lobes (R,TT,TRT)
+	// anguar shifts of the specular lobes (R,TT,TRT)
+	const float _AM_s_R = (reflectShift/PIG);
+	const float _AM_s_TT = (transmitShift/PIG);
+	const float _AM_s_TRT = (scatterShift/PIG);
+
+	float lightVec, viewDepSpec, theta_h, cosPhi_i;
+	float3 reflectionColor, transRefTransColor, transTransColor, diffColor, lightDir;
+	for (int i=0; i<8; i++) {
+		lightDir = normalize(light_positions[i] - iWorldPos).xyz;
+		lightVec = dot(lightDir, iTangent);
+		viewDepSpec = dot(iViewDir, iTangent);
+		
+		theta_h = asin(lightVec) + asin(viewDepSpec);
+		cosPhi_i = dot(normalize(lightDir - lightVec*iTangent), normalize(iViewDir - viewDepSpec*iTangent));
+	
+		// R (reflection) component 
+		reflectionColor = saturate(_AM_c_R * pow( abs(cos(theta_h -_AM_s_R)) , reflectWidth )); 
+		
+		// TRT component
+		transRefTransColor = saturate(_AM_c_TRT * pow( abs(cos(theta_h -_AM_s_TRT)) , scatterWidth )); 
+	
+		// TT component
+		transTransColor = saturate(_AM_c_TT * max(0.0f, cosPhi_i) * pow( cos(theta_h -_AM_s_TT) , transmitWidth ));
+
+		// diffuse component
+		diffColor = saturate(_AM_d * sqrt(min(1.0f, lightVec*lightVec)) + (iTexCoord.x * tipColor + iTexCoord.x * rootColor));
+		
+		// sum it up
+		result.xyz += (diffColor + reflectionColor + transTransColor + transRefTransColor) * light_colors[i] * lightPower;
+	}
+	result.a = 1f;
+}

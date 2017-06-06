@@ -1,0 +1,15 @@
+compositor LooseAndSketchy2Compositor
+{
+    technique
+    {
+      target_output
+      {
+            input none
+
+            pass render_quad
+            {
+                material LooseAndSketchy2/LnS2Material
+            }
+      }
+  }
+}

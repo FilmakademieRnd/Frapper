@@ -1,0 +1,29 @@
+void vs_main(  			
+			//in
+			float4 iPosition : POSITION0,
+			float3 iNormal   : NORMAL0,
+			float3 iTangent  : TANGENT,
+			float2 iTexCoord : TEXCOORD0,
+			//out
+			out float4 oPosition : POSITION0,
+			out float3 oNormal   : TEXCOORD0,
+			out float3 oTangent  : TEXCOORD1,
+			out float3 oBinormal : TEXCOORD2,
+			out float2 oTexCoord : TEXCOORD3,			
+			out float3 oViewDir  : TEXCOORD4,
+			//parameter
+			uniform float4x4 worldViewProj,
+			uniform float4x4 view_matrix,
+			uniform float3 eyePosition)
+			
+{
+   oPosition = mul(worldViewProj, iPosition);   
+   oNormal   = mul(view_matrix, float4(iNormal, 0));   
+   oTangent  = mul(view_matrix, float4(iTangent, 0));
+   oBinormal = cross(oNormal, oTangent);
+   oTexCoord = iTexCoord;
+   
+   oViewDir = normalize(eyePosition - oPosition); 
+}
+
+

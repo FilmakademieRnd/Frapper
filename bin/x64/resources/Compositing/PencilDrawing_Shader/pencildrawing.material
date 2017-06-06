@@ -1,0 +1,411 @@
+vertex_program PencilDrawing/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+fragment_program PencilDrawing/SceneFragmentProgram glsl
+{
+	source Scene.frag
+}
+
+fragment_program PencilDrawing/GradientFragmentProgram glsl
+{
+	source Gradients.frag
+}
+
+fragment_program PencilDrawing/G1234FragmentProgram glsl
+{
+	source G1234.frag
+	
+	default_params
+	{
+		param_named KernelRatio float1 200.0
+	}
+}
+
+fragment_program PencilDrawing/G5678FragmentProgram glsl
+{
+	source G5678.frag
+	
+	default_params
+	{
+		param_named KernelRatio float1 200.0
+	}
+}
+
+fragment_program PencilDrawing/C1234FragmentProgram glsl
+{
+	source C1234.frag
+}
+
+fragment_program PencilDrawing/C5678FragmentProgram glsl
+{
+	source C5678.frag
+}
+
+fragment_program PencilDrawing/LineConvolutionFragmentProgram glsl
+{
+	source LineConvolution.frag
+	
+	default_params
+	{
+		param_named KernelRatio float1 200.0
+	}
+}
+
+fragment_program PencilDrawing/ToneDrawingFragmentProgram glsl
+{
+	source ToneDrawing.frag
+	
+	default_params
+	{
+		param_named W1 float1 11.0
+		param_named W2 float1 37.0
+		param_named W3 float1 52.0
+	}
+}
+
+fragment_program PencilDrawing/CombinerFragmentProgram glsl
+{
+	source Combiner.frag
+	
+	default_params
+	{
+		param_named Monochrome int 0
+	}
+}
+
+
+material PencilDrawing/SceneMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/SceneFragmentProgram
+			{
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/GradientMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/GradientFragmentProgram
+			{
+				param_named Scene int 0
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/G1234Material
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/G1234FragmentProgram
+			{
+				param_named Gradients int 0
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/G5678Material
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/G5678FragmentProgram
+			{
+				param_named Gradients int 0
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/C1234Material
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/C1234FragmentProgram
+			{
+				param_named Gradients int 0
+				param_named G1234 int 1
+				param_named G5678 int 2
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/C5678Material
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/C5678FragmentProgram
+			{
+				param_named Gradients int 0
+				param_named G1234 int 1
+				param_named G5678 int 2
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/LineConvolutionMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/LineConvolutionFragmentProgram
+			{
+				param_named C1234 int 0
+				param_named C5678 int 1
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/ToneDrawingMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/ToneDrawingFragmentProgram
+			{
+				param_named LineConvolution int 0
+				param_named tonal_texture int 1
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				texture tonal_texture.png 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material PencilDrawing/CombinerMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PencilDrawing/CombinerFragmentProgram
+			{
+				param_named LineConvolution int 0
+				param_named ToneDrawing int 1
+				param_named Scene int 2
+			}
+			
+			vertex_program_ref PencilDrawing/QuadVertexProgram
+			{
+			}
+	
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

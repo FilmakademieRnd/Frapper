@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PanelFrame</class>
+ <widget class="QWidget" name="PanelFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>343</width>
+    <height>192</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>100</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Panel</string>
+  </property>
+  <layout class="QVBoxLayout" name="ui_vboxLayout">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="ui_hboxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <item>
+      <widget class="QComboBox" name="ui_panelTypeComboBox"/>
+     </item>
+     <item>
+      <spacer name="ui_firstSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>4</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="ui_secondSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>4</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="ui_closeAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/removePanelIcon</normaloff>:/removePanelIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="statusTip">
+    <string>Close this panel</string>
+   </property>
+  </action>
+  <action name="ui_splitHorizontallyAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/splitHorizontallyIcon</normaloff>:/splitHorizontallyIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Split Horizontally</string>
+   </property>
+   <property name="statusTip">
+    <string>Split this panel horizontally into two panels</string>
+   </property>
+  </action>
+  <action name="ui_splitVerticallyAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/splitVerticallyIcon</normaloff>:/splitVerticallyIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Split Vertically</string>
+   </property>
+   <property name="statusTip">
+    <string>Split this panel vertically into two panels</string>
+   </property>
+  </action>
+  <action name="ui_maximizeAction">
+   <property name="text">
+    <string>Maximize</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide all other panels in this window</string>
+   </property>
+  </action>
+  <action name="ui_minimizeAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/hidePanelIcon</normaloff>:/hidePanelIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Minimize</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide this panel</string>
+   </property>
+  </action>
+  <action name="ui_maximizeHorizontallyAction">
+   <property name="text">
+    <string>Maximize Horizontally</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide all other panels in this row</string>
+   </property>
+  </action>
+  <action name="ui_maximizeVerticallyAction">
+   <property name="text">
+    <string>Maximize Vertically</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide all other panels in this column</string>
+   </property>
+  </action>
+  <action name="ui_restoreAction">
+   <property name="text">
+    <string>Restore</string>
+   </property>
+   <property name="statusTip">
+    <string>Restore this window's panel layout</string>
+   </property>
+  </action>
+  <action name="ui_restoreHorizontallyAction">
+   <property name="text">
+    <string>Restore Horizontally</string>
+   </property>
+   <property name="statusTip">
+    <string>Restore this row's panel layout</string>
+   </property>
+  </action>
+  <action name="ui_restoreVerticallyAction">
+   <property name="text">
+    <string>Restore Vertically</string>
+   </property>
+   <property name="statusTip">
+    <string>Restore this column's panel layout</string>
+   </property>
+  </action>
+  <action name="ui_minimizeRowAction">
+   <property name="text">
+    <string>Minimize Row</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide this row</string>
+   </property>
+  </action>
+  <action name="ui_minimizeColumnAction">
+   <property name="text">
+    <string>Minimize Column</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide this column</string>
+   </property>
+  </action>
+  <action name="ui_maximizeRowAction">
+   <property name="text">
+    <string>Maximize Row</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide all other rows in this window</string>
+   </property>
+  </action>
+  <action name="ui_maximizeColumnAction">
+   <property name="text">
+    <string>Maximize Column</string>
+   </property>
+   <property name="statusTip">
+    <string>Hide all other columns in this window</string>
+   </property>
+  </action>
+  <action name="ui_closeRowAction">
+   <property name="text">
+    <string>Close Row</string>
+   </property>
+   <property name="statusTip">
+    <string>Close all panels in this row</string>
+   </property>
+  </action>
+  <action name="ui_closeColumnAction">
+   <property name="text">
+    <string>Close Column</string>
+   </property>
+   <property name="statusTip">
+    <string>Close all panels in this column</string>
+   </property>
+  </action>
+  <action name="ui_duplicateAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/addPanelIcon</normaloff>:/addPanelIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Tear Off Copy</string>
+   </property>
+   <property name="iconText">
+    <string>Tear Off Copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Tear Off Copy</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a new window containing a copy of this panel</string>
+   </property>
+  </action>
+  <action name="ui_extractAction">
+   <property name="text">
+    <string>Tear Off</string>
+   </property>
+   <property name="iconText">
+    <string>Tear Off</string>
+   </property>
+   <property name="toolTip">
+    <string>Tear Off</string>
+   </property>
+   <property name="statusTip">
+    <string>Extract this panel to a new window</string>
+   </property>
+  </action>
+  <action name="ui_panelMenuAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/panelIcon</normaloff>:/panelIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Panel Menu</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

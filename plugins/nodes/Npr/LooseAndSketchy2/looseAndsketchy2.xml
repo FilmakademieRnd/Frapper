@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="LooseAndSketchy2" category="Compositing" color="185, 30, 75" plugin="looseAndsketchy2.dll">
+  <parameters>
+    <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="LooseAndSketchy2" visible="false"/>
+    <parameter name="Reload" type="Command" />
+
+    <parameters name="Shader Parameters Pass 0">
+    	<parameter name="numberSeeds" type="Int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="50000" defaultValue="2000" stepSize="1" description="Number of line seed points."/>
+		<parameter name="seedingThreshold" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.1" stepSize="0.01" description="Gradient magnitude threshold of line seed points."/>
+		<parameter name="numberSteps" type="Int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="30" defaultValue="10" stepSize="1" description="Maximum number of vertices in a line (forward or backward separately)."/>
+		<parameter name="stepSize" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="50" defaultValue="10" stepSize="1" description="Distance between two vertices in a line."/>
+		<parameter name="minSteps" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="30" defaultValue="10" stepSize="1" description="Minimum number of vertices in a line."/>
+		<parameter name="strokeContourCurvature" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.5" stepSize="0.01" description="Limits the curvature in a line."/>
+		<parameter name="strokeThickness" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="50" defaultValue="5" stepSize="1" description="Thickness of the drawn strokes."/>
+    </parameters>
+        
+  </parameters>
+</nodetype>
+

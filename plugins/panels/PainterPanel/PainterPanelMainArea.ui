@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PainterPanelMainArea</class>
+ <widget class="QWidget" name="PainterPanelMainArea">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>768</width>
+    <height>914</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <layout class="QHBoxLayout" name="mainLayout" stretch="30,20">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="paintLayout">
+     <property name="spacing">
+      <number>3</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="historyListLayout">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
+     <property name="margin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QGroupBox" name="optionGroupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>220</width>
+         <height>250</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>220</width>
+         <height>250</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Options</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="penGroupBox">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="statusTip">
+           <string>Change the pen size</string>
+          </property>
+          <property name="whatsThis">
+           <string>Change the pen size</string>
+          </property>
+          <property name="title">
+           <string>Pen Size</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QSlider" name="penSizeSlider">
+             <property name="minimumSize">
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>130</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="statusTip">
+              <string>Change the pen size</string>
+             </property>
+             <property name="whatsThis">
+              <string>Change the pen size</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"> QSlider::handle:horizontal {
+     background:qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #fff, stop:1 #666);
+     border: 1px solid #555;
+     width: 18px;
+     border-radius: 3px;
+     margin: -2px 0;
+ }</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>3</number>
+             </property>
+             <property name="sliderPosition">
+              <number>3</number>
+             </property>
+             <property name="tracking">
+              <bool>true</bool>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="penSizeSpinBox">
+             <property name="statusTip">
+              <string>Change the pen size</string>
+             </property>
+             <property name="whatsThis">
+              <string>Change the pen size</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>3</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="colorGroupBox">
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Change the Outline Color</string>
+          </property>
+          <property name="statusTip">
+           <string>Change the Outline Color</string>
+          </property>
+          <property name="title">
+           <string>Pen Color</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QSlider" name="penColorSlider">
+             <property name="minimumSize">
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>130</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Change the Outline Color</string>
+             </property>
+             <property name="statusTip">
+              <string>Change the Outline Color</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"> QSlider::handle:horizontal {
+     background: #fff;
+     border: 1px solid #555;
+     width: 18px;
+     border-radius: 3px;
+     margin: -2px 0;
+ }</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="penColorSpinBox">
+             <property name="toolTip">
+              <string>Change the Outline Color</string>
+             </property>
+             <property name="statusTip">
+              <string>Change the Outline Color</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="fillGroupBox">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Activate filling</string>
+          </property>
+          <property name="statusTip">
+           <string>Activate filling</string>
+          </property>
+          <property name="title">
+           <string>Fill Color</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QSlider" name="fillColorSlider">
+             <property name="minimumSize">
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>130</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Change the Fill Color</string>
+             </property>
+             <property name="statusTip">
+              <string>Change the Fill Color</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"> QSlider::handle:horizontal {
+     background: #fff;
+     border: 1px solid #555;
+     width: 18px;
+     border-radius: 3px;
+     margin: -2px 0;
+ }
+ QSlider::handle:horizontal:!enabled
+{
+     background: #bbb;
+     border: 1px solid #bbb;
+     width: 18px;
+     border-radius: 3px;
+     margin: -2px 0;
+}</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="fillColorSpinBox">
+             <property name="toolTip">
+              <string>Activate filling</string>
+             </property>
+             <property name="statusTip">
+              <string>Activate filling</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="opacityGroupBox">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Change the opacity</string>
+          </property>
+          <property name="statusTip">
+           <string>Change the opacity</string>
+          </property>
+          <property name="title">
+           <string>Opacity</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QSlider" name="opacitySlider">
+             <property name="minimumSize">
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>130</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Change the opacity</string>
+             </property>
+             <property name="statusTip">
+              <string>Change the opacity</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"> QSlider::handle:horizontal {
+     background: #fff;
+     border: 1px solid #555;
+     width: 18px;
+     border-radius: 3px;
+     margin: -2px 0;
+ }</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+             <property name="sliderPosition">
+              <number>255</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="invertedControls">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="opacitySpinBox">
+             <property name="toolTip">
+              <string>Change the opacity</string>
+             </property>
+             <property name="statusTip">
+              <string>Change the opacity</string>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="itemGroupBox">
+       <property name="minimumSize">
+        <size>
+         <width>220</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>220</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Items</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QListWidget" name="historyListWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="dragEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::InternalMove</enum>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="deleteItemButton">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Delete selected Items</string>
+          </property>
+          <property name="statusTip">
+           <string>Delete selected Items</string>
+          </property>
+          <property name="text">
+           <string>Delete selected Items</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../resources/gui.qrc">
+            <normaloff>:/deleteIcon</normaloff>:/deleteIcon</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../resources/gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>penColorSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>penColorSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>619</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>691</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fillColorSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>fillColorSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>619</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>691</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>penSizeSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>penSizeSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>590</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>opacitySlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>opacitySpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>619</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>691</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>penColorSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>penColorSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>691</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fillColorSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>fillColorSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>691</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>penSizeSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>penSizeSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>590</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>575</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>opacitySpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>opacitySlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>691</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

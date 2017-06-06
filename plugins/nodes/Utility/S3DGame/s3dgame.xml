@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         s3dgame.xml
+  Description:  Contains the XML description of S3DGame nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2011 Filmakademie Baden-Württemberg
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="S3DGame" category="Utility" color="40, 40, 40" plugin="S3DGame.dll">
+  <parameters>
+  <!-- input parameter -->
+    <parameter name="P1_Action" type="Bool" description="Trigger Action of Player 1 (Jump)" pin="in" visible="true" selfEvaluating="true"/>
+    <parameter name="P2_Action" type="Bool" description="Trigger Action of Player 1 (Move Forward)" pin="in" visible="true" selfEvaluating="true"/>
+    <parameter name="Time"      type="Int"  description="System time from Timer node" pin="in" visible="false"/>
+
+    <parameters name="Input Level" visible="false">
+      <parameter name="Level"    description="The Input Level Geometry"      type="Geometry" pin="in" visible="false"/>
+      <parameter name="Player1"  description="Additional Level Geometry only shown to Player 1"      type="Geometry" pin="in" visible="false"/>
+      <parameter name="Player2"  description="Additional Level Geometry only shown to Player 2"      type="Geometry" pin="in" visible="false"/>
+      <parameter name="Logic"    description="The Input Game Logic Geometry"      type="Geometry" pin="in" visible="false"/>
+      <parameter name="ObjectMarker" description="Additional Geometry for Object Markers"  type="Geometry" pin="in" visible="false"/>
+    </parameters>
+
+    <parameter name="PlayerCharacter" description="The Player Character Geometry"     type="Geometry" pin="in" multiplicity="*"/>
+    <parameter name="PlayerCharacterLight" description="Additional Lights attached to the Player Character" type="Light"    pin="in" multiplicity="*"/>
+
+    <parameter name="Reset1" type="Bool" description="Resets the Game if triggered with Reset2" pin="in" defaultValue="false" selfEvaluating="true" visible="false"/>
+    <parameter name="Reset2" type="Bool" description="Resets the Game if triggered with Reset1" pin="in" defaultValue="false" selfEvaluating="true" visible="false"/>
+    
+    <parameter name="Copy Animated Objects" type="Command"/>
+    <parameter name="Reset" type="Command"/>
+    <parameters name="Animated Objects">
+      <parameter name="Platform1"       type="Geometry" pin="in" />
+      <parameter name="Platform2"       type="Geometry" pin="in" />
+      <parameter name="Door"            type="Geometry" pin="in" />
+      <parameter name="Windwheel"       type="Geometry" pin="in" />
+      <parameter name="Windwheel_Small" type="Geometry" pin="in" />
+      <parameter name="Sign"            type="Geometry" pin="in" />
+      <parameter name="Wheel"           type="Geometry" pin="in" />
+      <parameter name="Windwheel_Big"   type="Geometry" pin="in" />
+    </parameters>
+
+    <!-- putput parameter -->
+    <parameter name="ShowGameLogic"     type="Bool" description="Show Game Logic in Viewport"   defaultValue="false"/>
+    <parameter name="ShowLightGeometry" type="Bool" description="Show Light Geometry in Viewport"   defaultValue="true"/>
+    <parameter name="StepSize"       type="Int" description="The Step Size (Timing) of the Game" minValue="10"   maxValue="100"    defaultValue="40"     stepSize="1"   inputMethod="SliderPlusSpinBox"/>
+    <parameter name="IntervalLength" type="Int" description="The Interval Length of a Path" minValue="1"    maxValue="100"    defaultValue="20"    stepSize="10" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="PCScale"        type="Float" description="The Size of the Player Character" minValue="0.1"  maxValue="10.0"   defaultValue="0.5"    stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="AnimScale"      type="Float" description="The Scale of the Animation Parameters" minValue="1.0"  maxValue="1000.0" defaultValue="100.0"  stepSize="1.0" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="LavaStep"       type="Float" description="The Step Size for the Lava Shader" minValue="0.001"  maxValue="0.2"   defaultValue="0.01"   stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="JumpAnimLength" type="Int" description="Length of the Jump Animation"  minValue="50"   maxValue="1000"   defaultValue="300"    stepSize="50"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="WalkAnimLength" type="Int" description="Length of the Walk Cycle Animation"  minValue="50"   maxValue="1000"   defaultValue="300"    stepSize="50"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="FallAnimLength" type="Int" description="Length of the Fall Animation"  minValue="50"   maxValue="1000"   defaultValue="300"    stepSize="50"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="DeathAnimLength" type="Int" description="Length of the Death Animation" minValue="50"   maxValue="2000"   defaultValue="1000"    stepSize="50"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Platform1Time" type="Int" description="Timing of Platform 1"  minValue="50"   maxValue="1000"   defaultValue="1000"    stepSize="100"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Platform2Time" type="Int" description="Timing of Platform 2"  minValue="50"   maxValue="1000"   defaultValue="2000"    stepSize="100"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Platform3Time" type="Int" description="Timing of Platform 3"  minValue="50"   maxValue="1000"   defaultValue="2000"    stepSize="100"  inputMethod="SliderPlusSpinBox"/>
+    <parameter name="StartPath"     type="String" description="The Name of Path where the Game starts" defaultValue="Path1" />
+    <parameter name="CameraTranslate" type="Float" description="Additional translation of Camera attached to Player Character" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="0.25" />
+    
+  <!-- output parameter -->
+    <parameter name="Timer" type="Generic" description="Trigger Update from Timer Node" pin="out" />
+    <parameter name="Stopwatch" type="String" description="Current Game Time as String" pin="out" />
+
+    <!-- output animations -->
+    <parameters name="Animations">
+      <parameter name="DeathAnim"     type="Float" pin="out" visible="false"/>
+      <parameter name="WalkAnim"      type="Float" pin="out" visible="false"/>
+      <parameter name="JumpAnim"      type="Float" pin="out" visible="false"/>
+      <parameter name="FallAnim"      type="Float" pin="out" visible="false"/>
+      <parameter name="DiveAnim"      type="Float" pin="out" visible="false"/>
+      <parameter name="JumpStartAnim" type="Float" pin="out" visible="false"/>
+      <parameter name="JumpEndAnim"   type="Float" pin="out" visible="false"/>
+      <parameter name="DoorOpenAnim"  type="Float" pin="out" visible="false"/>
+      <parameter name="Platform1Anim" type="Float" pin="out" visible="false"/>
+      <parameter name="Platform2Anim" type="Float" pin="out" visible="false"/>
+      <parameter name="Platform3Anim" type="Float" pin="out" visible="false"/>
+      <parameter name="Rings"         type="Float" pin="out" visible="false" defaultValue="100.0"/>
+      <parameter name="EndScreen"     type="Float" pin="out" visible="false" defaultValue="0.0"/>
+      <parameter name="WaitIdleAnim"  type="Bool"  pin="out" visible="false"/>
+      <parameter name="JumpIdleAnim"  type="Bool"  pin="out" visible="false"/>
+    </parameters>
+
+    <!-- output geometry -->
+    <parameters name="Output Geometry">
+      <parameter name="Game_P1"   type="Geometry" description="Geometry to be shown to Player 1" pin="out" />
+      <parameter name="Game_P2"   type="Geometry" description="Geometry to be shown to Player 2" pin="out" />
+      <parameter name="Game_Both" type="Geometry" description="Geometry to be shown to Both Players" pin="out" />
+    </parameters>
+    <parameters name="PlayerCharacterData">
+      <parameter name="Position"    type="Float" description="Current Position of the Player Character for Camera Node" size="3" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="1.0" pin="out" visible="false"/>
+      <parameter name="Orientation" type="Float" description="Current Orientation of the Player Character for Camera Node" size="3" minValue="-360" maxValue="360" defaultValue="0, 0, 0" stepSize="1.0" pin="out" visible="false"/>
+    </parameters>
+  </parameters>
+</nodetype>

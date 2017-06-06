@@ -1,0 +1,105 @@
+compositor OilPaintingCompositor
+{
+    technique
+    {
+		// Temporary textures
+		texture rtScene target_width target_height PF_FLOAT32_RGBA
+		texture rtColors target_width target_height PF_FLOAT32_RGBA
+		texture rtStructureTensors target_width target_height PF_FLOAT32_RGBA
+		texture rtGauss target_width target_height PF_FLOAT32_RGBA
+		texture rtTFM target_width target_height PF_FLOAT32_RGBA
+		texture rtLIC target_width target_height PF_FLOAT32_RGBA
+		texture rtBrush target_width target_height PF_FLOAT32_RGBA
+		texture rtVarnish target_width target_height PF_FLOAT32_RGBA
+	
+		target rtScene
+        {
+            input none
+            pass render_quad
+            {
+                material OilPainting/Scene
+            }
+        }	
+		
+		target rtColors
+        {
+            input none
+            pass render_quad
+            {
+                material OilPainting/Colors
+            }
+        }
+		
+		target rtStructureTensors
+        {
+            input none
+            pass render_quad
+            {
+                material OilPainting/StructureTensor
+				input 0 rtScene
+            }
+        }
+		
+		target rtGauss
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/Gauss
+				input 0 rtStructureTensors
+            }
+        }
+		
+		target rtTFM
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/TFM
+				input 0 rtGauss
+            }
+        }
+		
+		target rtLIC
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/LIC
+				input 0 rtTFM
+            }
+        }
+		
+		target rtBrush
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/Brush
+				input 0 rtLIC
+            }
+        }
+		
+		target rtVarnish
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/Varnish
+				input 0 rtLIC
+            }
+        }
+		
+		target_output
+		{
+            input none
+            pass render_quad
+            {
+                material OilPainting/Composition
+				input 0 rtColors
+				input 1 rtBrush
+				input 2 rtVarnish
+            }
+        }
+    }
+}

@@ -1,0 +1,346 @@
+#include "../commonShader/Eyes_UT.cginc"
+
+void ps_main(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+				float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,
+				float3 iView		: TEXCOORD4,			    
+				//out
+				out float4 result	: COLOR,
+				//parameter								
+				uniform float4	fvAmbient,
+				uniform float	eyeBrightness,
+				uniform float	eyeSpecular,					
+			    uniform float 	eyesBumpDepth,
+				uniform sampler2D	colorMapSampler	: register(s0),
+				uniform sampler2D	bumpMapSampler	: register(s1),
+				uniform samplerCUBE DiffuseCube		: register(s2),
+				uniform samplerCUBE SpecularCube	: register(s3))				
+{	
+	// normal
+	float3 bump = tex2D( bumpMapSampler, iTexCoord ).xyz;	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	bump = lerp(NeutralNormal, bump, eyesBumpDepth);
+	bump = expand( bump);   	
+	bump = normalize( iNormal + (iTangent * bump.x) + (iBinormal * bump.y));
+
+	float3 fvView = normalize( iView );
+	float3 Reflect =  reflect(fvView, bump) ;	 	
+    
+	float3 fvBaseColor = tex2D(colorMapSampler, iTexCoord);
+    float3 SpecCubeValue	= texCUBE(SpecularCube, Reflect) ;  
+    float3 DiffCubeValue	= texCUBE(DiffuseCube, fvView) ;            
+   
+	float3 fvTotalAmbient   = fvAmbient * fvBaseColor; 
+	float3 fvTotalDiffuse   = DiffCubeValue * fvBaseColor * eyeBrightness;   
+    float3 fvTotalSpecular  = eyeSpecular * SpecCubeValue;
+    float3 color = saturate( fvTotalAmbient + fvTotalDiffuse + fvTotalSpecular );	
+	result = float4(color, 0.0);				
+	
+}
+
+struct v2f {
+	float4 hpos : POSITION; // view_space
+	float3 eye : TEXCOORD0;
+	//float2 texcoord : TEXCOORD1;
+	
+	float3 normal : TEXCOORD1; // view_space
+	float3 tangent : TEXCOORD2;
+	float3 binormal : TEXCOORD3;
+	
+	float3 modelViewDir: TEXCOORD4; // model_space
+	float3 modelNormal: TEXCOORD5;
+	float3 modelPos: TEXCOORD6;
+};
+
+// Calculates once per Fragment
+float3 Eyes_AD_FS(
+	v2f IN,
+	
+	uniform float 		scleraReflection,
+	uniform float 		corneaReflection,
+	uniform float 		pupilSize,
+	uniform float 		irisSize,
+	uniform float 		irisDepth,
+	uniform float 		scleraRedness,
+	uniform float 		eyeRadius,
+	uniform float3 		gazeDirection,
+	uniform float 		tearLiquidWidth,
+	uniform float 		tearLiquidIntensity,
+	uniform float 		tearLiquidDepth,
+	uniform float 		irisPigmentation,
+	uniform float 		irisMultiplySSTM,
+	uniform float 		blendIris,
+	
+	uniform float		occlusionStretchX,
+	uniform float 		occlusionMoveX,
+	uniform float 		occlusionStretchY,
+	uniform float 		occlusionMoveY,
+	uniform float		occlusionIntensity,
+	uniform float		occlusionWidth,
+	
+	uniform float		brdf_exponent,  
+	uniform float		brdf_fresnel,
+	uniform float		brdf_fresnelCornea, 
+	uniform float3		brdf_diffuse,   
+	uniform float3		brdf_specular,    
+	uniform float		brdf_envsize,
+	uniform float		brdf_occlusionIntensity,
+
+	uniform float4		fvAmbient,
+	uniform float3		ShadowColor,		
+	uniform float		Occlusion,		
+	uniform float		BumpDepth,		
+	uniform float3		SSSColor,		
+	uniform float		SSSPower,		
+	uniform float		SSSFactor,		
+	uniform float		poreSpec,		
+	uniform float		lipSpec,						
+	uniform float		specPower,
+	uniform float		diffPower,
+	uniform float 		RimLightPower,
+	uniform float		RimLightFactor,				
+	uniform float3 		RimLightColor,
+	uniform float4x4 	viewMatrix,
+	uniform float4x4 	inverseViewMatrix,
+		
+	uniform sampler2D 	colorMap 				: TEXUNIT0,
+	uniform sampler2D 	normalMap 				: TEXUNIT1,
+	uniform sampler2D 	rednessMap	 			: TEXUNIT2,
+	uniform sampler2D 	rednessExpansionMap 	: TEXUNIT3,		
+	uniform sampler2D	specularMap				: TEXUNIT4,
+	uniform sampler2D	lightRefractionMap		: TEXUNIT5,
+	
+	uniform sampler1D 	lightDirs				: TEXUNIT6,
+	uniform sampler1D 	lightPows				: TEXUNIT7,
+	
+	uniform samplerCUBE environmentCubeMap 		: TEXUNIT8,
+	uniform sampler2D 	subsurfaceMap 			: TEXUNIT9,
+	uniform sampler2D 	eyeLidMap 				: TEXUNIT10) : COLOR
+{
+	// Initialization
+	float refraction_index = 1.0;
+	float3 normal = IN.normal;
+	const float3 eye = IN.eye;
+	const float3 eyeN = normalize(eye);
+	eyeRadius *= 11.8696;
+
+	irisDepth *= eyeRadius;
+	gazeDirection = expand(gazeDirection);
+	float3 transformedModelPos = rotatePoint(gazeDirection.x, gazeDirection.y, IN.modelPos / eyeRadius);
+
+	abs(transformedModelPos.x);
+
+	float2[16] eyeLidTopPositions;
+	float2[16] eyeLidDownPositions;
+	
+	float2 val;
+	for (int i = 0; i < 16; i++) {
+		val = tex2D(eyeLidMap, float2(0.5 * (1.0 / 32.0) + float(i) / 31.0, 0.0)).xy;
+		eyeLidTopPositions[i].x = val.x;
+		eyeLidTopPositions[i].y = val.y;
+		val = tex2D(eyeLidMap, float2(float(i) / 31.0 + 0.5 + 0.5 * (1.0 / 32.0), 0.0)).xy;
+		eyeLidDownPositions[i].x = val.x;
+		eyeLidDownPositions[i].y = val.y;
+	}
+
+	// Occlusion of Eyelid
+	float4 eyeLidTop = distanceEyeLid(eyeLidTopPositions, transformedModelPos.xy, occlusionStretchX, occlusionMoveX, occlusionStretchY, occlusionMoveY);
+	float4 eyeLidDown = distanceEyeLid(eyeLidDownPositions, transformedModelPos.xy, occlusionStretchX, occlusionMoveX, occlusionStretchY, occlusionMoveY);
+
+	float eyelid_distance = min(eyeLidTop.x, eyeLidDown.x);
+
+	// determine direction to eyeLid
+	float2 eyelid_direction;
+	if (eyelid_distance == eyeLidTop.x)
+		eyelid_direction = eyeLidTop.yz;
+	else
+		eyelid_direction = eyeLidDown.yz;
+	// is the current fragment visible?
+	if ((eyeLidTop.a == 0.0) || (eyeLidDown.a == 1.0)) {
+		eyelid_distance = 0.0;
+		eyelid_direction *= -1.0;
+	}
+
+	// Tear Liquid
+	float tear_distance = eyelid_distance;
+	eyelid_distance = min(eyelid_distance * occlusionWidth, 1.0) * brdf_occlusionIntensity + 1.0 - brdf_occlusionIntensity;
+	tear_distance = 1.0 - min(tear_distance * tearLiquidWidth, 1.0);
+	if (tear_distance > 0.0) {
+		const float3 tearNormal = float3(eyelid_direction * tearLiquidDepth * tear_distance, 0.0);
+		IN.modelNormal = IN.modelNormal - tearNormal;// + tearNormal;
+		normal = mul((float3x3)viewMatrix, IN.modelNormal);
+		refraction_index += tear_distance;
+	}
+	
+	// Relative Position of current fragment (part of irisSize / pupilSize / scalera)
+	const float irisScaleraBorder = 0.5 + irisSize;
+	float irisPupilBorder = pupilSize;		
+	float2 eyeDir = IN.modelPos.xy / eyeRadius;
+	float pupilDistance = length(eyeDir);	
+	bool inIris = (pupilDistance < irisScaleraBorder );
+	bool inPupil = (pupilDistance < irisPupilBorder);	
+	
+	// Refraction of view ray
+	float3 modelVR;	
+	if (inIris) {
+		modelVR = refract(normalize(IN.modelViewDir), normalize(IN.modelNormal), 1.0 / refraction_index );
+		float irisHeight = IN.modelPos.z - irisDepth;
+		float coordMul = -irisHeight / modelVR.z;
+		eyeDir += (coordMul * modelVR.xy) / eyeRadius;
+		pupilDistance = length(eyeDir);
+	}
+	
+	// pupilSize Variation
+	float2 coord = pupilVariation(inIris, pupilDistance, irisScaleraBorder, pupilSize, eyeDir);
+	float4 color = tex2D(colorMap, coord.xy);
+	
+	// Eye Redness
+	float3 color_eye_redness;
+	float redness_expansion = tex2D(rednessExpansionMap,coord.xy).r;
+	scleraRedness = max(scleraRedness, 0.0);
+	if (scleraRedness > redness_expansion) {
+		float redness = min((scleraRedness - redness_expansion)*5.0, 1.0);
+		color_eye_redness = tex2D(rednessMap,coord.xy).rgb * redness + 1.0 - redness;
+		color.rgb *=  color_eye_redness;
+	}
+	color.rgb *= 1.0 - scleraRedness * float3(0.25, 0.35, 0.35);
+	
+	// Begin BRDF-Shading
+	const float4 SpecularRimBumpfactor = tex2D(specularMap, coord);
+	const float3 extendedSample = expand(lerp(NeutralNormal, tex2D(normalMap, coord ).xyz, BumpDepth * SpecularRimBumpfactor.b));
+	float3 fvNormal = normalize(normal + (IN.tangent * extendedSample.x) + (IN.binormal * extendedSample.y));
+	const float  fNDotV = normalize(dot(fvNormal, eye)); 	
+	const float  afNDotV = abs(dot(fvNormal, eye));
+	float3 fvView = eyeN;
+	float3 Reflect = reflect(fvView, fvNormal);
+	float3 SpecCubeValue = texCUBE(environmentCubeMap, Reflect);
+
+	// irisSize-Shading
+	float3 colorSSTM = 0.0;
+	if (inIris && irisMultiplySSTM > 0.0) {
+		// Determine Thickness of irisSize-Layer
+		const float thicknessStroma = texDepth * expand(tex2D(subsurfaceMap, coord).b) * 1.2;
+		
+		// Define Scattering Step and Samples for simple Subsurface Scattering
+		const float3 scatteringStep = float3(modelVR * 0.0405 / 30.0);// scatteringStep in mm
+		float numberOfSamples = -thicknessStroma / scatteringStep.z;
+
+		// !!! hack to prevent loop blow up !!!
+		if (numberOfSamples > 32)
+			numberOfSamples = 32;
+		
+		// Pigmentation of ABL and Stroma-Layer
+		const float eyeColor_cM = 0.3 + 0.25 * irisPigmentation - 0.075;
+		irisPigmentation += tex2D(subsurfaceMap, coord).g * 1.4;
+
+		// Attenuation Coefficients of Stroma and ABL-Layer
+		const float3 layerAttStroma = (layerAttP + layerAttE) * eyeColor_cM;	
+		const float3 layerAttABL = (layerAttP + layerAttE) * irisPigmentation;			
+			
+		// Determine attenuation of the ABL-Layer (of both the incoming and outgoing light); Note: The attenuation of this layer is static, cause in the irisSize-Top-Layer (ABL) occurs no scattering
+		const float3 attenuationABL = exp(-layerAttABL * thicknessABL * 2);
+
+		static const float inc = 1.0 / 16.0;
+		for(float u = 0.0; u < 1.0; u += inc) {
+			// Look-Up Light Parameters
+			float3 l = tex1D(lightDirs, u).xyz;
+			float3 p = tex1D(lightPows, u).xyz;
+			p /= brdf_envsize;
+			
+			// Convert Light into Model-Space
+			const float3 modelLight = mul((float3x3)inverseViewMatrix, l);
+			
+			// Calculate Eyelid-Occlusion
+			//brdfShadow(modelLight, p, eyelid_direction, eyelid_distance); // <---- ???
+			
+			// Fresnel-Reflection of Cornea				
+			const float VDotH = max(dot(-eyeN, normalize(l-eyeN)),0.0);
+			const float fresnelCornea = 1.0 - lerp(pow(VDotH, 5.0), 1.0, brdf_fresnelCornea);
+			
+			// Light-Refraction of Cornea
+			l = refractLight(blendIris, l, modelLight, eyeDir, irisScaleraBorder, lightRefractionMap, viewMatrix);
+			
+			// Phase-Function
+			const float LdotV = dot(normalize(l), eyeN);
+			const float phaseFunction = lerp(0.1719 / pow(1 - 0.91 * LdotV, 2), 0.5775 / pow(1 + 0.65 * LdotV, 2), 0.19) / 12.566;
+			
+			// Calculate reduced Light on irisSize
+			const float3 reducedLight = fresnelCornea * corneaTransparency * phaseFunction * p;
+
+			// Determine attenuation of the Stroma-Layer (of both the incoming and outgoing light)
+			float3 attenuationStroma = 0.0;
+			float3 attenuationStromaMul = 1.0;
+			const float3 attenuationStromaStep = exp(-layerAttStroma * length(scatteringStep) * 2);
+			// calculate very simple subsurface scattering (depends only on Stroma-Attenuation)
+			for (int i = 0; i < numberOfSamples; i++) {
+				attenuationStroma += attenuationStromaMul;
+				attenuationStromaMul *= attenuationStromaStep;
+			}
+			
+			// Calculate final Color for one Light
+			colorSSTM += reducedLight * length(scatteringStep) * layerScattStroma * attenuationABL * attenuationStroma;		
+		}
+		colorSSTM *= irisMultiplySSTM;
+	}
+
+	// texture lookups
+	const float4 fvBaseColor = float4(color.xyz, 1.0);
+	
+	// BRDF-Shading for white part of the Eye
+	float2 brdf;
+	float3 l,p;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	float corneaReflSSTM = 0.0;
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz;
+		p = tex1D(lightPows, i).xyz;
+		const float3 modelLight = mul((float3x3)inverseViewMatrix, l);
+		p = brdfShadow(modelLight, p, eyelid_direction, eyelid_distance);
+		
+		if (inIris)	{
+			// refraction of incoming light
+			l = refractLight(blendIris, l, modelLight, eyeDir, irisScaleraBorder, lightRefractionMap, viewMatrix);
+			
+			// Calculate Fresnel-Reflection of Cornea
+			const float VDotH = max(dot(-eyeN, normalize(l-eyeN)),0.0);
+			corneaReflSSTM += brdf_fresnelCornea + (1.0 - brdf_fresnelCornea) * pow(VDotH,5.0);
+		}
+		brdf = ASNganBRDF(fvNormal, eye, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;		
+	}
+
+	float2 BRDF_refl = ASNganBRDF(fvNormal, eye, Reflect, brdf_diffuse, brdf_exponent, brdf_fresnel);
+	SpecCubeValue *= BRDF_refl.x;
+	float RimLightStrength = (RimLightFactor - afNDotV) * RimLightPower ;
+	float3 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g *RimLightFactor;
+	
+	float3 comp = brdf_specular /** brdfSpec * specPower * (SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a)*/;  // specular	
+	comp	+= brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower;  // diffuse
+	comp	/= brdf_envsize;  // brdf scaling	
+	comp 	+= max(RimLight, 0.0) * fvBaseColor.xyz;
+	comp	+= fvAmbient * fvBaseColor.xyz;	// ambient	
+	comp	+= saturate(pow(1.0-fNDotV, SSSPower) * brdfDiff) * SSSColor * SSSFactor;  // SSS
+	if (!inIris)
+		comp	+= clamp(SpecCubeValue * BRDF_refl.x * scleraReflection * eyelid_distance, 0.0, 1.0);	// refl
+	comp	*= eyelid_distance * occlusionIntensity + 1.0 - occlusionIntensity;
+	
+	if (inIris) {
+		blendIris *= 0.8;
+		colorSSTM += clamp(SpecCubeValue * corneaReflSSTM * eyelid_distance * corneaReflection, 0.0, 1.0);
+		colorSSTM = comp * colorSSTM;
+		if (length(eyeDir) > irisScaleraBorder - blendIris) {
+			float blend = (length(eyeDir) - (irisScaleraBorder - blendIris)) / blendIris;
+			colorSSTM = lerp(colorSSTM, comp, blend);
+		}
+		comp = colorSSTM;
+	}
+	const float3 UnOccluded = saturate(comp);
+	const float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+
+	return lerp(UnOccluded, Occluded, Occlusion);
+}

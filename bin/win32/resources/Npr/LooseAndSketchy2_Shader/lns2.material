@@ -1,0 +1,78 @@
+fragment_program LooseAndSketchy2/FragmentProgram glsl
+{
+	source lns2.frag
+	
+	default_params
+	{
+		param_named strokeTexture int 1
+	}
+			
+}
+
+geometry_program LooseAndSketchy2/GeometryProgram glsl
+{
+	source lns2.geom
+	
+	default_params
+	{
+		param_named inputMap int 0
+		param_named seedingThreshold float1 0.1
+		param_named numberSteps int 10
+		param_named stepSize int 10
+		param_named minSteps int 10
+		param_named strokeContourCurvature float1 0.5
+		param_named strokeThickness int 5
+	}
+}
+
+vertex_program LooseAndSketchy2/VertexProgram glsl
+{
+	source lns2.vert
+}
+
+
+
+
+material LooseAndSketchy2/LnS2Material
+{
+	technique
+	{
+		pass
+		{	
+			scene_blend alpha_blend
+			scene_blend_op max
+			lightlighting off
+			depth_write off
+		
+			vertex_program_ref LooseAndSketchy2/VertexProgram
+			{
+			}
+			
+			geometry_program_ref LooseAndSketchy2/GeometryProgram
+			{
+				param_named inputMap int 0
+			}
+			
+			fragment_program_ref LooseAndSketchy2/FragmentProgram
+			{
+				param_named strokeTexture int 1
+			}
+			
+			//texture unit 0 (inputMap)
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+			}
+					
+			texture_unit strokeTexture
+			{
+				texture ./texture_stroke.png 2d
+                tex_coord_set 0
+				tex_address_mode wrap
+				filtering anisotropic
+			}
+		}
+	}
+}

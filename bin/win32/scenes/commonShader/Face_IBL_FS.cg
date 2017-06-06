@@ -1,0 +1,885 @@
+static const float INV_PI = 0.3183098861;
+static const float PI_23  = 72.256631032;
+static const float PI_8   = 25.132741228;
+static const float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };
+
+// Ashikmin BRDF model
+float2 ASNganBRDF(
+			in float3 n,
+			in float3 v,
+			in float3 l,
+			in float3 diffuse,
+			in float exponent,
+			in float fresnel) 
+{
+   const float  r = (diffuse.x+diffuse.y+diffuse.z)*0.333333;
+
+   const float3 h = normalize(l-v);
+   const float3 vn = float3(v.x/20.0, v.y/20.0, v.z/20.0);
+
+   const float normalization = (exponent+1.0)/PI_8;
+
+   const float VDotH = max(dot(-vn,h),0.0);
+   const float NDotH = max(dot(n,h),0.0);
+   const float NDotV = max(dot(n,-vn),0.0);
+   const float NDotL = max(dot(n,l),0.0);
+
+   return float2(
+	   max((pow(NDotH,exponent)/(VDotH*max(NDotL,NDotV)))*normalization*(fresnel+(1.0-fresnel)*pow(VDotH,5.0)), 0.0),
+	   max(((28.0*r)/PI_23)*(1.0-fresnel)*(1.0-pow(1.0-(NDotL/2.0),5.0))*(1.0-pow(1.0-(NDotV/2.0),5.0)), 0.0) ) * NDotL;
+}
+
+// Expand a range-compressed vector
+float3 expand(float3 v)
+{
+	return (v - 0.5) * 2;
+}
+
+// void Face_IBL_FS_TS(   
+				// //in 
+			    // float2 uv			: TEXCOORD0,				
+				// float3 light_vector : TEXCOORD1,
+			    // float3 half_angle   : TEXCOORD2,							
+			    // //out
+				// out float4 result	: COLOR,
+				// //parameter				
+				// uniform float4 lightDiffuse,
+				// uniform float4 ambientLight,
+				// uniform float4 specularLight,
+				// uniform float specular_power,
+				// uniform float bumpiness,
+				// // textures
+				// uniform sampler2D	base_map		: register(s0),
+				// uniform sampler2D	bump_map		: register(s1),
+				// uniform sampler2D	specular_map	: register(s2))
+// {
+
+  // float3 base = tex2D( base_map, uv );
+  // float3 bump = tex2D( bump_map, uv );
+  // float specularLevel = tex2D(specular_map, uv).b;
+
+  // //normalise
+  // float3 normalized_light_vector = normalize( light_vector );
+  // float3 normalized_half_angle = normalize( half_angle );
+   
+  // // "Smooth out" the bump based on the bumpiness parameter.
+  // // This is simply a linear interpolation between a "flat"
+  // // normal and a "bumped" normal.  Note that this "flat"
+  // // normal is based on the texture space coordinate basis.
+  // float3 smooth = { 0.5f, 0.5f, 1.0f };
+  // bump = lerp( smooth, bump, bumpiness );
+  // bump = normalize( ( bump * 2.0f ) - 1.0f );  
+  
+
+  // // These dot products are used for the lighting model
+  // // equations.  The surface normal dotted with the light
+  // // vector is denoted by n_dot_l.  The normal vector
+  // // dotted with the half angle vector is denoted by n_dot_h.
+  // float n_dot_l = dot( bump, normalized_light_vector );
+  // float n_dot_h = dot( bump, normalized_half_angle );
+
+  // // Calculate the resulting pixel color,
+  // // based on our lighting model.
+  // // Ambient + Diffuse + Specular
+  // result.rgb =
+     // ( base * ambientLight) +
+     // ( base * lightDiffuse * max( 0.0f, n_dot_l ) ) +
+     // ( specularLight * specularLevel * pow( max( 0.0f, n_dot_h ), specular_power ) );
+
+  // //result.rgb = normalize(iTangent) * 0.5 + float3(0.5, 0.5, 0.5);
+  // result.a = 1.0f; //** Set the alpha component manually
+
+  // // try lit function
+  // //float4 Lit = lit(n_dot_l,n_dot_h, 127);
+  // //result.xyz = base * lightDiffuse * Lit.y + specularLight * specularLevel * Lit.z +  base * ambientLight;
+			
+// }
+
+void Face_IBL_FS(   //in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,								
+			    //out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	exposure,
+				uniform float4	fvAmbient,
+				uniform float4  fvSpecular,
+				uniform float4	fvDiffuse,				
+				uniform float	RimLightPower,	
+				uniform float4	RimLightColor,	
+				uniform float3	ShadowColor,
+				uniform float	bloodFactor,	
+				uniform float	bloodPower,		
+				uniform float	Occlusion,		
+				uniform float	BumpDepth,		
+				uniform float4	SSSColor,		
+				uniform float	SSSPower,		
+				uniform float	SSSFactor,		
+				uniform float	SwitchBump,
+				uniform float	poreSpec,		
+				uniform float	lipSpec,		
+				uniform float	RimLightFactor,
+				uniform float	hairShadow,
+				uniform float	SpecPower,
+				// textures
+				uniform sampler2D	baseMap		: register(s0),
+				uniform sampler2D	bumpMap		: register(s1),
+				uniform sampler2D	SSSMap		: register(s2),
+				uniform sampler2D	specularMap	: register(s3),				
+				uniform samplerCUBE DiffuseCube	: register(s4),
+				uniform samplerCUBE SpecCube	: register(s5))
+				//uniform sampler2D	baseMap		: register(s8),
+				//uniform sampler2D	bumpMap		: register(s9),
+				//uniform sampler2D	SSSMap		: register(s10),
+				//uniform sampler2D	specularMap	: register(s11),				
+				//uniform samplerCUBE DiffuseCube	: register(s12),
+				//uniform samplerCUBE SpecCube	: register(s13))
+{	
+
+	
+	// maps
+	float3x3 rotation = float3x3(iTangent, iBinormal, iNormal);
+	float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	float4 bloodLayer = tex2D(SSSMap, iTexCoord);
+	float4 fvBaseColor = tex2D( baseMap, iTexCoord );
+	float3 bump = tex2D( bumpMap, iTexCoord ).xyz;
+     
+	// generate Normal	
+	bump = lerp(NeutralNormal, bump, BumpDepth * SpecularRimBumpfactor.b);
+	bump = expand(lerp(NeutralNormal, bump, BumpDepth * SpecularRimBumpfactor.b));
+	bump =  normalize(mul(bump,rotation));
+	
+	// cubemaps Z facees in wrong direction
+	float3 nzBump = bump;
+	nzBump.z *= -1;	
+
+	// lighting
+	float DiffCubeValue = texCUBE(DiffuseCube, nzBump) * exposure;
+	float3 fvView = normalize( iView );
+	float3 Reflect = reflect(fvView, nzBump);
+	float SpecCubeValue = texCUBE(SpecCube, Reflect) * exposure; 
+	float fNDotV = abs(dot(bump, fvView)); 			
+	
+	// extract Occlusion Map
+	float Occ = fvBaseColor.a;
+      
+	// calculate standard ambient, diffuse and specular
+	float4 fvTotalAmbient   = fvAmbient * fvBaseColor; 	
+	float4 fvTotalDiffuse   = fvDiffuse * DiffCubeValue * fvBaseColor; 		  
+    float4 fvTotalSpecular  = fvSpecular * SpecCubeValue * (SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a);
+    fvTotalSpecular += (bloodLayer.a * lipSpec) * SpecCubeValue;
+
+	// calculate SSS
+	float SSS = saturate(pow(1-fNDotV, SSSPower) * DiffCubeValue);
+	float4 SSSLight = SSS * SSSColor * SSSFactor;
+  
+    // calculate Rim Light
+    float RimLightStrength = saturate(pow(1-fNDotV, RimLightPower) * DiffCubeValue);
+	float4 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor;	
+	
+    // calculate blood influence
+    float bloodStrength = saturate(pow(1-fNDotV, bloodPower) * DiffCubeValue);   
+	float4 blood = bloodLayer * (1-bloodStrength) * bloodFactor;
+
+	// comp final image
+    float4 comp = (0,0,0,0);
+    comp += fvTotalAmbient;   
+    comp += fvTotalDiffuse;      
+    comp += fvTotalSpecular * SpecPower;   
+    comp += blood;      
+    comp += RimLight;     
+    comp += SSSLight;   
+    float4 UnOccluded = saturate(comp);
+    float4 FinalColor = UnOccluded;    
+    float4 Occluded = lerp(float4(ShadowColor, 0.0), UnOccluded * Occ, Occ);
+    FinalColor = lerp(UnOccluded, Occluded, Occlusion);
+	FinalColor = lerp(FinalColor, FinalColor * SpecularRimBumpfactor.b, hairShadow);
+	result = FinalColor;	
+}
+
+void Face_IBL_FS_BRDF(
+				//in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,				
+			    //out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,   				
+				uniform float4		fvAmbient,
+				uniform float3		ShadowColor,
+				uniform float		bloodFactor,	
+				uniform float		bloodPower,		
+				uniform float		Occlusion,		
+				uniform float		BumpDepth,		
+				uniform float3		SSSColor,		
+				uniform float		SSSPower,		
+				uniform float		SSSFactor,		
+				uniform float		poreSpec,		
+				uniform float		lipSpec,						
+				uniform float		hairShadow,
+				uniform float		specPower,
+				uniform float		diffPower,
+				uniform float 		RimLightPower,
+				uniform float		RimLightFactor,				
+				uniform float3 		RimLightColor,
+				uniform float 		RimLightMulti,				
+				// textures
+				uniform sampler2D	baseMap		: register(s0),
+				uniform sampler2D	bumpMap		: register(s1),
+				uniform sampler2D	SSSMap		: register(s2),
+				uniform sampler2D	specularMap	: register(s3),							
+				uniform sampler1D lightDirs		: TEXUNIT4, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D lightPows		: TEXUNIT5) //array of light colors - rgb intensities (r,g,b)
+{	
+	// generate Normal
+	const float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+     
+	//bend normal
+	const float3 extendedSample   = expand(lerp(NeutralNormal, tex2D(bumpMap, iTexCoord ).xyz, BumpDepth * SpecularRimBumpfactor.b));
+	float3 fvNormal         = normalize(iNormal + (iTangent * extendedSample.x) + (iBinormal * extendedSample.y));	
+			
+	const float  fNDotV           = dot(fvNormal, iView); 		
+	
+	// texture lookups
+	const float4 fvBaseColor      = tex2D(baseMap, iTexCoord);
+	const float4 bloodLayer		  = tex2D(SSSMap, iTexCoord);   
+  
+	float2 brdf;
+	float3 l,p;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	const float s   = 1.0/brdf_nbLights;
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;
+		
+		brdf = ASNganBRDF(fvNormal, iView, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;		
+	}
+	
+	// calculate Rim Light
+	float RimLightStrength = (RimLightFactor - abs(fNDotV)) * RimLightPower ;
+	float3 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g *RimLightFactor;
+	
+
+	float3 comp = brdf_specular * brdfSpec * specPower * ((SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a) + (bloodLayer.a * lipSpec));  // specular	
+    comp	+= brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower;  // diffuse
+	comp	/= brdf_envsize;  // brdf scaling	
+	comp 	+= max(RimLight, 0.0) * fvBaseColor.xyz *RimLightMulti;
+	comp	+= fvAmbient * fvBaseColor.xyz;	// ambient
+	comp	+= bloodLayer.rgb * (1.0 - saturate(pow(1.0 - fNDotV, bloodPower) * brdfDiff)) * bloodFactor;  // blood		
+	comp	+= saturate(pow(1.0-fNDotV, SSSPower) * brdfDiff) * SSSColor * SSSFactor;  // SSS	
+	
+	
+	float3 UnOccluded = saturate(comp);
+	float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+
+	float3 finalColor = lerp(UnOccluded, Occluded, Occlusion);
+	finalColor = lerp(finalColor, finalColor * SpecularRimBumpfactor.b, hairShadow);
+
+	result = float4(finalColor, 1.0);	
+}
+
+void Face_IBL_FS_SaC_BRDF(   //in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,	
+				float3 wWeight		: TEXCOORD5,								
+			    //out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,   				
+				uniform float4		fvAmbient,
+				uniform float3		ShadowColor,
+				uniform float		bloodFactor,	
+				uniform float		bloodPower,		
+				uniform float		Occlusion,		
+				uniform float		BumpDepth,		
+				uniform float3		SSSColor,		
+				uniform float		SSSPower,		
+				uniform float		SSSFactor,		
+				uniform float		poreSpec,		
+				uniform float		lipSpec,						
+				uniform float		hairShadow,
+				uniform float		specPower,
+				uniform float		diffPower,
+				uniform float 		RimLightPower,
+				uniform float		RimLightFactor,				
+				uniform float3 		RimLightColor,
+				uniform float 		RimLightMulti,
+				uniform float		SaCBumpDepth,
+								
+				// textures
+				uniform sampler2D	baseMap		: register(s0),
+				uniform sampler2D	bumpMap		: register(s1),
+				uniform sampler2D	SSSMap		: register(s2),
+				uniform sampler2D	specularMap	: register(s3),		
+				uniform sampler2D 	stretchMap	: register(s4),
+				uniform sampler2D 	compressMap	: register(s5),					
+				uniform sampler1D lightDirs		: TEXUNIT6, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D lightPows		: TEXUNIT7) //array of light colors - rgb intensities (r,g,b)
+{	
+	const float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	float3x3 rotation = float3x3(iTangent, iBinormal, iNormal);
+	float3 bump = tex2D(bumpMap, iTexCoord).xyz;	
+	
+	// generate Normal	
+	bump = expand(lerp(NeutralNormal, bump, BumpDepth * SpecularRimBumpfactor.b));
+	
+	// wrinkle mapping
+	float3 wrinkleMap = { 0.5f, 0.5f, 1.0f };
+	float blendweight = 0;
+	if (wWeight.r > 0.0f){
+		wrinkleMap = tex2D(compressMap, iTexCoord).xyz;		
+		blendweight = wWeight.r;
+	}
+	else if(wWeight.g > 0.0f){
+		wrinkleMap = tex2D(stretchMap, iTexCoord).xyz;		
+		blendweight = wWeight.g;
+	}
+	float3 weightedWrinkleMap = expand(lerp(NeutralNormal, wrinkleMap, blendweight * SaCBumpDepth));		
+	bump = ( float3( weightedWrinkleMap.xy + bump.xy, weightedWrinkleMap.z * bump.z ));			
+	bump =  normalize(mul(bump, rotation));
+     
+	//bend normal
+	//const float3 extendedSample   = expand(lerp(NeutralNormal, tex2D(bumpMap, iTexCoord ).xyz, BumpDepth * SpecularRimBumpfactor.b));
+	//float3 fvNormal         = normalize(iNormal + (iTangent * extendedSample.x) + (iBinormal * extendedSample.y));	
+			
+	const float  fNDotV           = dot(bump, iView); 		
+	
+	// texture lookups
+	const float4 fvBaseColor      = tex2D(baseMap, iTexCoord);
+	const float4 bloodLayer		  = tex2D(SSSMap, iTexCoord);   
+  
+	float2 brdf;
+	float3 l,p;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	const float s   = 1.0/brdf_nbLights;
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;
+		
+		brdf = ASNganBRDF(bump, iView, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;		
+	}
+	
+	// calculate Rim Light
+    // float RimLightStrength = saturate(pow(1.0 - afNDotV, RimLightPower) * RimLightFactor);
+	// float RimLightStrength = (5.0 - afNDotV) * RimLightPower ;
+	float RimLightStrength = (RimLightFactor - abs(fNDotV)) * RimLightPower ;
+	// float RimLightStrength = abs(1.0-(max(dot(fvNormal, iView), 0.0))) * RimLightPower;
+	float3 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g *RimLightFactor;
+	
+
+	float3 comp = brdf_specular * brdfSpec * specPower * ((SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a) + (bloodLayer.a * lipSpec));  // specular	
+    comp	+= brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower;  // diffuse
+	comp	/= brdf_envsize;  // brdf scaling	
+	comp 	+= max(RimLight, 0.0) * fvBaseColor.xyz *RimLightMulti;
+	comp	+= fvAmbient * fvBaseColor.xyz;	// ambient
+	comp	+= bloodLayer.rgb * (1.0 - saturate(pow(1.0 - fNDotV, bloodPower) * brdfDiff)) * bloodFactor;  // blood		
+	comp	+= saturate(pow(1.0-fNDotV, SSSPower) * brdfDiff) * SSSColor * SSSFactor;  // SSS	
+	
+	
+	float3 UnOccluded = saturate(comp);
+	float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+
+	float3 finalColor = lerp(UnOccluded, Occluded, Occlusion);
+	finalColor = lerp(finalColor, finalColor * SpecularRimBumpfactor.b, hairShadow);
+
+	result = float4(finalColor, 1.0);
+	// result = float4(finalColor, 1.0) + float4(wWeight,1);				
+	// result = float4(RimLight, 1.0);
+	// result = float4(brdfDiff/brdf_envsize, 1.0);
+	
+}
+
+void Face_IBL_SaC_FS(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,	
+				float3 wWeight		: TEXCOORD5,				
+			    //out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	exposure,
+				uniform float4	fvAmbient,
+				uniform float4  fvSpecular,
+				uniform float4	fvDiffuse,				
+				uniform float	RimLightPower,	
+				uniform float4	RimLightColor,	
+				uniform float3	ShadowColor,
+				uniform float	bloodFactor,	
+				uniform float	bloodPower,		
+				uniform float	Occlusion,		
+				uniform float	BumpDepth,		
+				uniform float	SaCBumpDepth,
+				uniform float4	SSSColor,		
+				uniform float	SSSPower,		
+				uniform float	SSSFactor,		
+				uniform float	SwitchBump,
+				uniform float	poreSpec,		
+				uniform float	lipSpec,		
+				uniform float	RimLightFactor,
+				uniform float	hairShadow,
+				uniform float	SpecPower,
+				// textures
+				uniform sampler2D	baseMap		: register(s0),
+				uniform sampler2D	bumpMap		: register(s1),
+				uniform sampler2D	SSSMap		: register(s2),
+				uniform sampler2D	specularMap	: register(s3),
+				uniform sampler2D 	stretchMap	: register(s4),
+				uniform sampler2D 	compressMap	: register(s5),				
+				uniform samplerCUBE DiffuseCube	: register(s6),
+				uniform samplerCUBE SpecCube	: register(s7))
+{	
+
+	
+	// maps
+	float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	float4 bloodLayer = tex2D(SSSMap, iTexCoord);
+	float4 fvBaseColor = tex2D( baseMap, iTexCoord );
+	float3x3 rotation = float3x3(iTangent, iBinormal, iNormal);
+	float3 bump = tex2D(bumpMap, iTexCoord).xyz;	
+	     
+	// generate Normal
+	bump = expand(lerp(NeutralNormal, bump, BumpDepth * SpecularRimBumpfactor.b));		
+	
+	// wrinkle mapping
+	float3 wrinkleMap = { 0.5f, 0.5f, 1.0f };
+	float blendweight = 0;
+	if (wWeight.r > 0.0f){
+		wrinkleMap = tex2D(compressMap, iTexCoord).xyz;		
+		blendweight = wWeight.r;
+	}
+	else if(wWeight.g > 0.0f){
+		wrinkleMap = tex2D(stretchMap, iTexCoord).xyz;		
+		blendweight = wWeight.g;
+	}
+	float3 weightedWrinkleMap = expand(lerp(NeutralNormal, wrinkleMap, blendweight * SaCBumpDepth));		
+	bump = ( float3( weightedWrinkleMap.xy + bump.xy, weightedWrinkleMap.z * bump.z ));			
+	bump =  normalize(mul(bump, rotation));
+	
+	// cubemaps Z facees in wrong direction
+	float3 nzBump = bump;
+	nzBump.z *= -1;	
+	
+	// lighting	
+	float DiffCubeValue = texCUBE(DiffuseCube, nzBump) * exposure;
+	float3 fvView = normalize( iView );
+	float3 Reflect = reflect(fvView, nzBump);
+	float SpecCubeValue = texCUBE(SpecCube, Reflect) * exposure; 
+	float fNDotV = abs(dot(bump, fvView)); 			
+	
+	// extract Occlusion Map
+	float Occ = fvBaseColor.a;
+      
+	// calculate standard ambient, diffuse and specular
+	float4 fvTotalAmbient   = fvAmbient * fvBaseColor; 	
+	float4 fvTotalDiffuse   = fvDiffuse * DiffCubeValue * fvBaseColor; 		  
+    float4 fvTotalSpecular  = fvSpecular * SpecCubeValue * (SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a);
+    fvTotalSpecular += (bloodLayer.a * lipSpec) * SpecCubeValue;
+
+	// calculate SSS
+	float SSS = saturate(pow(1-fNDotV, SSSPower) * DiffCubeValue);
+	float4 SSSLight = SSS * SSSColor * SSSFactor;
+  
+    // calculate Rim Light
+    float RimLightStrength = saturate(pow(1-fNDotV, RimLightPower) * DiffCubeValue);
+	float4 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor;	
+	
+    // calculate blood influence
+    float bloodStrength = saturate(pow(1-fNDotV, bloodPower) * DiffCubeValue);   
+	float4 blood = bloodLayer * (1-bloodStrength) * bloodFactor;
+
+	// comp final image
+    float4 comp = (0,0,0,0);
+    comp += fvTotalAmbient;   
+    comp += fvTotalDiffuse;      
+    comp += fvTotalSpecular * SpecPower;   
+    comp += blood;      
+    comp += RimLight;     
+    comp += SSSLight;   
+    float4 UnOccluded = saturate(comp);
+    float4 FinalColor = UnOccluded;    
+    float4 Occluded = lerp(float4(ShadowColor, 0.0), UnOccluded * Occ, Occ);
+    FinalColor = lerp(UnOccluded, Occluded, Occlusion);
+	FinalColor = lerp(FinalColor, FinalColor * SpecularRimBumpfactor.b, hairShadow);
+	result = FinalColor;// + float4(wWeight,1);				
+}
+
+
+void Face_IBL_FS_SaC_VB(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,
+				float4 wWeight		: TEXCOORD5,				
+			    //out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	exposure,
+				uniform float4	fvAmbient,
+				uniform float4  fvSpecular,
+				uniform float4	fvDiffuse,				
+				uniform float	RimLightPower,	
+				uniform float4	RimLightColor,	
+				uniform float3	ShadowColor,
+				uniform float	bloodFactor,	
+				uniform float	bloodPower,		
+				uniform float	Occlusion,		
+				uniform float	BumpDepth,		
+				uniform float	SaCBumpDepth,
+				uniform float	SaCColor,
+				uniform float4	SSSColor,		
+				uniform float	SSSPower,		
+				uniform float	SSSFactor,		
+				uniform float	SwitchBump,
+				uniform float	poreSpec,		
+				uniform float	lipSpec,		
+				uniform float	RimLightFactor,
+				uniform float	hairShadow,
+				uniform float	SpecPower,
+				// textures
+				uniform sampler2D	baseMap		: register(s1),
+				uniform sampler2D	bumpMap		: register(s2),
+				uniform sampler2D	SSSMap		: register(s3),
+				uniform sampler2D	specularMap	: register(s4),
+				uniform sampler2D 	stretchMap	: register(s5),
+				uniform sampler2D 	compressMap	: register(s6),				
+				uniform samplerCUBE DiffuseCube	: register(s7),
+				uniform samplerCUBE SpecCube	: register(s8))
+{	
+
+	
+	// maps
+	float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	float4 bloodLayer = tex2D(SSSMap, iTexCoord);
+	float4 fvBaseColor = tex2D( baseMap, iTexCoord );
+	float3x3 rotation = float3x3(iTangent, iBinormal, iNormal);
+	float3 bump = tex2D(bumpMap, iTexCoord).xyz;	
+	     
+	// generate Normal	
+	bump = expand(lerp(NeutralNormal, bump, BumpDepth * SpecularRimBumpfactor.b));		
+	
+	// wrinkle mapping
+	float3 wrinkleMap = { 0.5f, 0.5f, 1.0f };
+	float blendweight = 0.f;
+	if (wWeight.r > 0.0f){
+		wrinkleMap = tex2D(compressMap, iTexCoord).xyz;		
+		blendweight = wWeight.r;
+	}
+	else if(wWeight.g > 0.0f){
+		wrinkleMap = tex2D(stretchMap, iTexCoord).xyz;		
+		blendweight = wWeight.g;
+	}
+	float3 weightedWrinkleMap = expand(lerp(NeutralNormal, wrinkleMap, blendweight * SaCBumpDepth));		
+	bump = ( float3( weightedWrinkleMap.xy + bump.xy, weightedWrinkleMap.z * bump.z ));			
+	bump =  normalize(mul(bump, rotation));
+	
+	// cubemaps Z facees in wrong direction
+	float3 nzBump = bump;
+	nzBump.z *= -1;	
+	
+	// lighting	
+	float DiffCubeValue = texCUBE(DiffuseCube, nzBump) * exposure;
+	float3 fvView = normalize( iView );
+	float3 Reflect = reflect(fvView, nzBump);
+	float SpecCubeValue = texCUBE(SpecCube, Reflect) * exposure; 
+	float fNDotV = abs(dot(bump, fvView)); 			
+	
+	// extract Occlusion Map
+	float Occ = fvBaseColor.a;
+      
+	// calculate standard ambient, diffuse and specular
+	float4 fvTotalAmbient   = fvAmbient * fvBaseColor; 	
+	float4 fvTotalDiffuse   = fvDiffuse * DiffCubeValue * fvBaseColor; 		  
+    float4 fvTotalSpecular  = fvSpecular * SpecCubeValue * (SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a);
+    fvTotalSpecular += (bloodLayer.a * lipSpec) * SpecCubeValue;
+
+	// calculate SSS
+	float SSS = saturate(pow(1-fNDotV, SSSPower) * DiffCubeValue);
+	float4 SSSLight = SSS * SSSColor * SSSFactor;
+  
+    // calculate Rim Light
+    float RimLightStrength = saturate(pow(1-fNDotV, RimLightPower) * DiffCubeValue);
+	float4 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor;	
+	
+    // calculate blood influence
+    float bloodStrength = saturate(pow(1-fNDotV, bloodPower) * DiffCubeValue);   
+	float4 blood = bloodLayer * (1-bloodStrength) * bloodFactor;
+
+	// comp final image
+    float4 comp = (0,0,0,0);
+    comp += fvTotalAmbient;   
+    comp += fvTotalDiffuse;      
+    comp += fvTotalSpecular * SpecPower;   
+    comp += blood;      
+    comp += RimLight;     
+    comp += SSSLight;   
+    float4 UnOccluded = saturate(comp);
+    float4 FinalColor = UnOccluded;    
+    float4 Occluded = lerp(float4(ShadowColor, 0.0), UnOccluded * Occ, Occ);
+    FinalColor = lerp(UnOccluded, Occluded, Occlusion);
+	FinalColor = lerp(FinalColor, FinalColor * SpecularRimBumpfactor.b, hairShadow);
+	result = FinalColor + (SaCColor * wWeight);
+}
+
+void Face_IBL_FS_SaC_VB_BRDF(
+				//in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+			    float3 iNormalW		: TEXCOORD6,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,
+				float4 wWeight		: TEXCOORD5,
+			    //out
+				out float3 result	: COLOR,
+				//parameter
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,   				
+				uniform float4		fvAmbient,
+				uniform float3		ShadowColor,
+				uniform float		bloodFactor,	
+				uniform float		bloodPower,		
+				uniform float		Occlusion,		
+				uniform float		BumpDepth,
+				uniform float		SaCBumpDepth,
+				uniform float		SaCColor,
+				uniform float3		SSSColor,		
+				uniform float		SSSPower,		
+				uniform float		SSSFactor,		
+				uniform float		poreSpec,		
+				uniform float		lipSpec,						
+				uniform float		hairShadow,
+				uniform float		specPower,
+				uniform float		diffPower,
+				uniform float 		RimLightPower,
+				uniform float		RimLightFactor,				
+				uniform float3 		RimLightColor,
+				// textures
+				uniform sampler2D	baseMap		: TEXUNIT1,
+				uniform sampler2D	bumpMap		: TEXUNIT2,
+				uniform sampler2D	SSSMap		: TEXUNIT3,
+				uniform sampler2D	specularMap	: TEXUNIT4,							
+				uniform sampler2D 	stretchMap	: TEXUNIT5,
+				uniform sampler2D 	compressMap	: TEXUNIT6,
+				uniform sampler1D	lightDirs	: TEXUNIT7, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D	lightPows	: TEXUNIT8) // array of light colors - rgb intensities (r,g,b)
+{	
+	// texture lookups
+	const float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	const float4 fvBaseColor = tex2D(baseMap, iTexCoord);
+	const float4 bloodLayer  = tex2D(SSSMap, iTexCoord); 
+
+	// generate Normal
+	const float3x3 rotation = float3x3(iTangent, iBinormal, iNormalW);
+     
+	//bend normal
+	const float3 extendedSample   = expand(lerp(NeutralNormal, tex2D(bumpMap, iTexCoord ).xyz, BumpDepth * SpecularRimBumpfactor.b));
+	
+	// wrinkle mapping
+	float3 wrinkleMap = { 0.5f, 0.5f, 1.0f };
+	float blendweight = 0.f;
+	if (wWeight.r > 0.0f){
+		wrinkleMap = tex2D(compressMap, iTexCoord).xyz;		
+		blendweight = wWeight.r;
+	}
+	else if(wWeight.g > 0.0f){
+		wrinkleMap = tex2D(stretchMap, iTexCoord).xyz;		
+		blendweight = wWeight.g;
+	}
+	const float3 weightedWrinkleMap = expand(lerp(NeutralNormal, wrinkleMap, blendweight * SaCBumpDepth));		
+	float3 fvNormal = ( float3( weightedWrinkleMap.xy + extendedSample.xy, weightedWrinkleMap.z * extendedSample.z ));			
+	fvNormal = normalize(mul(fvNormal, rotation));
+
+	const float  fNDotV = dot(iNormal, iView);
+  
+	float2 brdf;
+	float3 l,p;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	const float s   = 1.0/brdf_nbLights;
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;
+		
+		brdf = ASNganBRDF(fvNormal, iView, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;		
+	}
+
+	float3 comp = brdf_specular * brdfSpec * specPower * ((SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a) + (bloodLayer.a * lipSpec));  // specular	
+    comp += brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower;  // diffuse
+	comp /= brdf_envsize;  // brdf scaling
+	comp += fvAmbient * fvBaseColor.xyz;	// ambient
+	comp += saturate(RimLightFactor - abs(fNDotV)) * RimLightPower * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor * fvBaseColor.xyz; // rim
+	comp += (1.0 - saturate(pow(1.0 - fNDotV, bloodPower))) * bloodLayer.rgb * bloodFactor;  // blood		
+	comp += saturate(pow(1.0 - fNDotV, SSSPower)) * SSSColor * SSSFactor;  // SSS	
+	
+	float3 UnOccluded = saturate(comp);
+	float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+
+	float3 finalColor = lerp(UnOccluded, Occluded, Occlusion);
+	finalColor = lerp(finalColor, finalColor * SpecularRimBumpfactor.b, hairShadow);
+
+	result = finalColor + SaCColor * wWeight;
+}
+
+void Face_IBL_FS_SaC_VB_Tear_BRDF(
+				//in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,
+				float4 wWeight		: TEXCOORD5,
+			    //out
+				out float3 result	: COLOR,
+				//parameter
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,   				
+				uniform float4		fvAmbient,
+				uniform float3		ShadowColor,
+				uniform float		bloodFactor,	
+				uniform float		bloodPower,		
+				uniform float		Occlusion,		
+				uniform float		BumpDepth,
+				uniform float		SaCBumpDepth,
+				uniform float		SaCColor,
+				uniform float3		SSSColor,		
+				uniform float		SSSPower,		
+				uniform float		SSSFactor,		
+				uniform float		poreSpec,		
+				uniform float		lipSpec,						
+				uniform float		hairShadow,
+				uniform float		specPower,
+				uniform float		diffPower,
+				uniform float 		RimLightPower,
+				uniform float		RimLightFactor,				
+				uniform float3 		RimLightColor,
+				uniform float		tear_bumpDepth,
+				uniform float		tear_reflection,
+				uniform float3		tear_color,
+				uniform float		tear_diffuse,
+				uniform float		eyeLiquid_reflection,
+				// textures
+				uniform sampler2D	baseMap		: TEXUNIT1,
+				uniform sampler2D	bumpMap		: TEXUNIT2,
+				uniform sampler2D	SSSMap		: TEXUNIT3,
+				uniform sampler2D	specularMap	: TEXUNIT4,							
+				uniform sampler2D 	stretchMap	: TEXUNIT5,
+				uniform sampler2D 	compressMap	: TEXUNIT6,
+				uniform sampler1D	lightDirs	: TEXUNIT7, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D	lightPows	: TEXUNIT8, // array of light colors - rgb intensities (r,g,b)
+				uniform sampler2D 	tearTexture	: TEXUNIT9,
+				uniform sampler2D	reflectionMap : TEXUNIT10, //array of light colors - rgb intensities (r,g,b)
+				uniform samplerCUBE environmentCube_map : TEXUNIT11)
+{	
+	// texture lookups
+	const float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	const float4 fvBaseColor = tex2D(baseMap, iTexCoord);
+	const float4 bloodLayer  = tex2D(SSSMap, iTexCoord); 
+	const float4 tearCurrent = tex2D(tearTexture, iTexCoord);
+
+	// generate Normal
+	const float3x3 rotation = float3x3(iTangent, iBinormal, iNormal);
+     
+	//bend normal
+	const float3 extendedSample = expand(lerp(NeutralNormal, tex2D(bumpMap, iTexCoord ).xyz, BumpDepth * SpecularRimBumpfactor.b));
+	
+	// wrinkle mapping
+	float3 wrinkleMap = { 0.5f, 0.5f, 1.0f };
+	float blendweight = 0.f;
+	if (wWeight.r > 0.0f){
+		wrinkleMap = tex2D(compressMap, iTexCoord).xyz;		
+		blendweight = wWeight.r;
+	}
+	else if(wWeight.g > 0.0f){
+		wrinkleMap = tex2D(stretchMap, iTexCoord).xyz;		
+		blendweight = wWeight.g;
+	}
+	const float3 weightedWrinkleMap = expand(lerp(NeutralNormal, wrinkleMap, blendweight * SaCBumpDepth));		
+	float3 fvNormal = ( float3( weightedWrinkleMap.xy + extendedSample.xy, weightedWrinkleMap.z * extendedSample.z ));			
+	fvNormal = normalize(mul(fvNormal, rotation));
+
+	// reflection
+	const float3 Reflect = reflect(iView, tearCurrent.g * fvNormal);
+	const float3 cubeMap = texCUBE(environmentCube_map, Reflect).rgb;
+	const float2 reflectMask = tex2D(reflectionMap, iTexCoord).rg;
+
+	float3 SpecCubeValue = cubeMap * tearCurrent.a * reflectMask.g * tear_reflection;
+	float3 SpecCubeValueEye = cubeMap * reflectMask.r * eyeLiquid_reflection;
+
+	const float  fNDotV = dot(fvNormal, iView);
+  
+	float2 brdf;
+	float3 l,p;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	const float s   = 1.0/brdf_nbLights;
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;
+		
+		brdf = ASNganBRDF(fvNormal, iView, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;		
+	}
+
+	float3 comp = brdf_specular * brdfSpec * specPower * ((SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a) + (bloodLayer.a * lipSpec));  // specular	
+    comp += brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower;  // diffuse
+	comp /= brdf_envsize;  // brdf scaling
+	comp += fvAmbient * fvBaseColor.xyz;	// ambient
+	comp += saturate(RimLightFactor - abs(fNDotV)) * RimLightPower * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor * fvBaseColor.xyz; // rim
+	comp += (1.0 - saturate(pow(1.0 - fNDotV, bloodPower) * brdfDiff)) * bloodLayer.rgb * bloodFactor;  // blood		
+	comp += saturate(pow(1.0 - fNDotV, SSSPower) * brdfDiff) * SSSColor * SSSFactor;  // SSS	
+	
+	float3 UnOccluded = saturate(comp);
+	float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+
+	float3 finalColor = lerp(UnOccluded, Occluded, Occlusion);
+	finalColor = lerp(finalColor, finalColor * SpecularRimBumpfactor.b, hairShadow);
+
+	result = finalColor + SpecCubeValue + SpecCubeValueEye + SaCColor * wWeight;
+}

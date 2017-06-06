@@ -1,0 +1,27 @@
+/////////////////////
+// ColorKey-Shader //
+/////////////////////
+
+
+
+/////////////////
+// Key-Pass //
+/////////////////
+
+void key_fp(in  float2 texCoord			: TEXCOORD0,
+			  out float4 oColor			: COLOR0,
+			  uniform sampler sceneTex	: TEXUNIT0,
+			  uniform float3 key,
+			  uniform float epsilon) 
+{
+	const float3 inColor = tex2D(sceneTex, texCoord).rgb;
+	float alpha = 1.0f;
+	const float3 delta = abs(inColor - key);
+	if (delta.r < epsilon &&
+		delta.g < epsilon && 
+		delta.b < epsilon)
+		alpha = 0.0f;
+	//else
+		//alpha = (delta.r + delta.g + delta.b) / 3.0f;  for color blending
+	oColor = float4(alpha);
+}

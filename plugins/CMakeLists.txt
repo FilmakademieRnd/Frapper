@@ -1,0 +1,23 @@
+project(plugins)
+
+if (FRAPPER_BUILD_PANELS AND NOT FRAPPER_BUILD_DEMO)
+add_subdirectory(panels)
+endif (FRAPPER_BUILD_PANELS AND NOT FRAPPER_BUILD_DEMO)
+
+if (FRAPPER_BUILD_PANELS_ADDITIONAL AND NOT FRAPPER_BUILD_DEMO)
+if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/plugins/panels_additional)
+add_subdirectory(panels_additional)
+endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/plugins/panels_additional)
+endif (FRAPPER_BUILD_PANELS_ADDITIONAL AND NOT FRAPPER_BUILD_DEMO)
+
+if (FRAPPER_BUILD_WIDGETS AND NOT FRAPPER_BUILD_DEMO)
+add_subdirectory(widgets)
+endif (FRAPPER_BUILD_WIDGETS AND NOT FRAPPER_BUILD_DEMO)
+
+add_subdirectory(nodes)
+
+if (FRAPPER_BUILD_NODES_ADDITIONAL AND NOT FRAPPER_BUILD_DEMO)
+if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/plugins/nodes_additional)
+add_subdirectory(nodes_additional)
+endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/plugins/nodes_additional)
+endif (FRAPPER_BUILD_NODES_ADDITIONAL AND NOT FRAPPER_BUILD_DEMO)

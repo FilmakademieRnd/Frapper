@@ -1,0 +1,73 @@
+vertex_program Blur/QuadVP cg
+{
+	source BoxBlur.cg
+	profiles vs_1_1 arbvp1
+	entry_point quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program Blur/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+
+fragment_program Blur/BoxBlurFP cg
+{
+    source BoxBlur.cg
+    entry_point boxBlur_ps
+    profiles ps_3_0 fp40
+}
+
+// scene pass
+material Blur/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Blur/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Blur/BoxBlurMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Blur/BoxBlurFP
+			{
+			}
+						
+			texture_unit	//(inputMap0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

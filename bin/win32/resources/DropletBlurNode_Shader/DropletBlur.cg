@@ -1,0 +1,141 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+ **                                                                                   **
+ **                                    Quad_vs                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_vs(	in float4 iPosition : POSITION,
+				in float2 texCoord : TEXCOORD0,
+				out float4 oPosition : POSITION,
+				out float2 oTexCoord : TEXCOORD0,
+				uniform float4x4 worldViewProj)
+{
+  oPosition = mul(worldViewProj, iPosition);
+  oTexCoord = texCoord;
+}
+
+/**************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_ps( in  float2 texCoord : TEXCOORD0,
+	      out float4 color    : COLOR,
+	       uniform float     saturation,
+	       uniform float     redBalance,
+	       uniform float     greenBalance,
+	       uniform float     blueBalance,
+		   uniform float     offset,
+		   uniform float	 blend,
+	       uniform sampler2D scene     : TEXUNIT0,
+		   uniform sampler2D lookUpTable     : TEXUNIT1) // prerendered scene (nx,ny,nz,1.0)
+
+{
+	float4 tearCurrent = tex2D(scene, texCoord);
+	
+	// blur moving droplets
+	
+	float2 tearLeft = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y)).rg;
+	float2 tearRight = tex2D(scene, float2(texCoord.x + 1.0 / 1023, texCoord.y)).rg;
+	float2 tearTop = tex2D(scene, float2(texCoord.x, texCoord.y  + 1.0 / 1023)).rg;
+	float2 tearTopRight = tex2D(scene, float2(texCoord.x + 1.0 / 1023, texCoord.y  + 1.0 / 1023)).rg;
+	float2 tearTopLeft = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 1.0 / 1023)).rg;
+	float2 tearDown = tex2D(scene, float2(texCoord.x, texCoord.y - 1.0 / 1023)).rg;
+	float2 tearDownRight = tex2D(scene, float2(texCoord.x + 1.0 / 1023, texCoord.y  - 1.0 / 1023)).rg;
+	float2 tearDownLeft = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 1.0 / 1023)).rg;
+	
+	float gauss0x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	float gauss0x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 3.0 / 1023)).r;
+	
+	float gauss1x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	float gauss1x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 2.0 / 1023)).r;
+	
+	float gauss2x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	float gauss2x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 1.0 / 1023)).r;
+	
+	float gauss3x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	float gauss3x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  + 0.0 / 1023)).r;
+	
+	float gauss4x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	float gauss4x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 1.0 / 1023)).r;
+	
+	float gauss5x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	float gauss5x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 2.0 / 1023)).r;
+	
+	float gauss6x0 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x1 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x2 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x3 = tex2D(scene, float2(texCoord.x - 0.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x4 = tex2D(scene, float2(texCoord.x - 1.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x5 = tex2D(scene, float2(texCoord.x - 2.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gauss6x6 = tex2D(scene, float2(texCoord.x - 3.0 / 1023, texCoord.y  - 3.0 / 1023)).r;
+	float gaussMul = 1.0;
+	
+	tearCurrent.r = gauss0x0 * 0.0001 * gaussMul + gauss0x1 * 	0.0050 * gaussMul + gauss0x2 * 0.0100 * gaussMul + gauss0x3 * 0.0200 * gaussMul + gauss0x4 * 0.0100 * gaussMul + gauss0x5 * 0.0050 * gaussMul + gauss0x6 * 0.0001 * gaussMul +
+					gauss1x0 * 0.0050 * gaussMul + gauss1x1 * 	0.0300 * gaussMul + gauss1x2 * 0.0500 * gaussMul + gauss1x3 * 0.0600 * gaussMul + gauss1x4 * 0.0500 * gaussMul + gauss1x5 * 0.0300 * gaussMul + gauss1x6 * 0.0050 * gaussMul +
+					gauss2x0 * 0.0100 * gaussMul + gauss2x1 * 	0.0500 * gaussMul + gauss2x2 * 0.0700 * gaussMul + gauss2x3 * 0.0800 * gaussMul + gauss2x4 * 0.0700 * gaussMul + gauss2x5 * 0.0500 * gaussMul + gauss2x6 * 0.0100 * gaussMul +
+					gauss3x0 * 0.0200 * gaussMul + gauss3x1 * 	0.0600 * gaussMul + gauss3x2 * 0.0800 * gaussMul + gauss3x3 * 0.1000 * gaussMul + gauss3x4 * 0.0800 * gaussMul + gauss3x5 * 0.0600 * gaussMul + gauss3x6 * 0.0200 * gaussMul +
+					gauss4x0 * 0.0100 * gaussMul + gauss4x1 * 	0.0500 * gaussMul + gauss4x2 * 0.0700 * gaussMul + gauss4x3 * 0.0800 * gaussMul + gauss4x4 * 0.0700 * gaussMul + gauss4x5 * 0.0500 * gaussMul + gauss4x6 * 0.0100 * gaussMul +
+					gauss5x0 * 0.0050 * gaussMul + gauss5x1 * 	0.0300 * gaussMul + gauss5x2 * 0.0500 * gaussMul + gauss5x3 * 0.0600 * gaussMul + gauss5x4 * 0.0500 * gaussMul + gauss5x5 * 0.0300 * gaussMul + gauss5x6 * 0.0050 * gaussMul +
+					gauss6x0 * 0.0001 * gaussMul + gauss6x1 * 	0.0050 * gaussMul + gauss6x2 * 0.0100 * gaussMul + gauss6x3 * 0.0200 * gaussMul + gauss6x4 * 0.0100 * gaussMul + gauss6x5 * 0.0050 * gaussMul + gauss6x6 * 0.0001 * gaussMul;
+		
+	// blur static water	
+	tearCurrent.g = 0.2 * tearCurrent.g + 0.1 * tearLeft.g + 0.1 * tearRight.g + 0.1 * tearTop.g + 0.1 * tearDown.g + 0.1 * tearTopLeft.g + 0.1 * tearTopRight.g + 0.1 * tearDownLeft.g + 0.1 * tearDownRight.g;
+	
+	// compose to one height map
+	color = float4((tearCurrent.r / 2.0) + tearCurrent.g / 2.0, 0.0, 0.0, 1.0) * blend;
+}

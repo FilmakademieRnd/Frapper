@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         animatablemesh.xml
+  Description:  Contains the XML description of AnimatableMesh nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="AnimatableMeshDECT" category="Geometry" color="120,70,150" plugin="animatablemeshdect.dll">
+  <parameters>
+    <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
+    <parameter name="Clean empty Skeleton Animation tracks on load" type="Bool" defaultValue="true"/>
+    <parameter name="Number of Vertices" type="TextInfo" />
+    <parameter name="Number of Triangles" type="TextInfo"/>
+    <parameter name="useSaC" type="Bool" defaultValue="false"/>
+    <parameter name="Combine Object IDs for Namespace" type="String" defaultValue="" enabled="true" />
+    <parameter name="Use Spline Interpolation" type="Bool" defaultValue="false"/>
+    <parameter name="mult" type="Float" defaultValue="1.0" maxValue="100000.0"/>
+    <parameter name="autoPose" type="Bool" defaultValue="true"/>
+    <parameter name="Visible" type="Bool" defaultValue="true" pin="in" selfEvaluating="true"/>
+    <parameter name="Global Material Parameter Update" type="Bool" defaultValue="false"/>
+    
+    <parameter name="AOIs"        type="Bool"   defaultValue="false"  pin="in" description="Activate the Areas of Interest - Eye tracker"  selfEvaluating="true" />
+    <parameter name="Show AOIs"   type="Bool"   defaultValue="false"  pin="in" description="Visualize the Areas of Interest - Eye tracker"  selfEvaluating="true" />
+
+    <parameters name="AOI coords" >
+      <parameters name="Right Eye" >
+        <parameter name="REleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="RErightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="REupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="RElowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="Left Eye" >
+        <parameter name="LEleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LErightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LEupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LElowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="Left Eye Region" >
+        <parameter name="LERleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LERrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LERupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LERlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="Right Eye Region" >
+        <parameter name="RERleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="RERrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="RERupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="RERlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="Noise Wrinkler" >
+        <parameter name="NWleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="NWrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="NWupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="NWlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="Forehead" >
+        <parameter name="FleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="FrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="FupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="FlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="LipsMouth" >
+        <parameter name="LMleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LMrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LMupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="LMlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="MouthRegion" >
+        <parameter name="MRleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="MRrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="MRupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="MRlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+      <parameters name="WholeFace" >
+        <parameter name="WFleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="WFrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="WFupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+        <parameter name="WFlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="out" description="Regarding the viewer"/>
+      </parameters>
+    </parameters>
+
+    <parameters name="Bones for AOIs" >
+      <parameters name="Left Eye"  visible="false">
+        <parameter name="MarkerJoint_LLID-upper"  type="TextInfo" visible="false" />  
+        
+        <parameter name="MarkerJoint_LUL4-right"  type="TextInfo" visible="false"/>   <!--Hank-->
+        <parameter name="MarkerJoint_LLL4-right"  type="TextInfo" visible="false"/>   <!--Hank-->        
+        <parameter name="MarkerJoint_LUL12-right"  type="TextInfo" visible="false"/>   <!--Nikita-->
+        <parameter name="MarkerJoint_LLL12-right"  type="TextInfo" visible="false"/>   <!--Nikita-->
+        <parameter name="jnt_left_eyelid_upper_7_end_-right"  type="TextInfo" visible="false"/>  <!--Sara-->
+        <parameter name="jnt_left_eyelid_lower_4_end_-right"  type="TextInfo" visible="false"/>  <!--Sara-->
+        <parameter name="Eye_Rig_v2:jnt_right_eyelid_upper_7_end_-right"   type="TextInfo" visible="false" />        <!--Gunnar-->
+        <parameter name="Eye_Rig_v2:jnt_right_eyelid_lower_7_end_-right"   type="TextInfo" visible="false" />        <!--Gunnar-->
+        
+        <parameter name="MarkerJoint_LLACH-lower" type="TextInfo" visible="false" />
+        
+        <parameter name="MarkerJoint_LLL1-left"   type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LUL1-left"   type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LLL5-left"   type="TextInfo" visible="false" />     <!--Nikita-->
+        <parameter name="MarkerJoint_LUL6-left"   type="TextInfo" visible="false" />     <!--Nikita-->
+        <parameter name="jnt_left_eyelid_lower_9_end_-left"   type="TextInfo" visible="false" />     <!--Sara-->
+        <parameter name="jnt_left_eyelid_upper_10_end_-left"   type="TextInfo" visible="false" />    <!--Sara-->
+        <parameter name="Eye_Rig_v2:jnt_right_eyelid_lower_3_end_-left"   type="TextInfo" visible="false" />        <!--Gunnar-->
+        <parameter name="Eye_Rig_v2:jnt_right_eyelid_upper_4_end_-left"   type="TextInfo" visible="false" />        <!--Gunnar-->
+      </parameters>
+
+      <parameters name="Right Eye"  visible="false">
+        <parameter name="MarkerJoint_RLID-upper"  type="TextInfo" visible="false" />
+        
+        <parameter name="MarkerJoint_RUL1-right"  type="TextInfo" visible="false"/>
+        <parameter name="MarkerJoint_RLL1-right"  type="TextInfo" visible="false"/>
+        <parameter name="MarkerJoint_RLL5-right"  type="TextInfo" visible="false"/>     <!--Nikita-->
+        <parameter name="jnt_right_eyelid_upper_10_end_-left"   type="TextInfo" visible="false" />    <!--Sara-->
+        <parameter name="jnt_right_eyelid_lower_9_end_-left"   type="TextInfo" visible="false" />     <!--Sara-->
+        <parameter name="Eye_Rig_v2:jnt_left_eyelid_upper_4_end_-right"  type="TextInfo" visible="false"/>    <!--Gunnar-->
+        <parameter name="Eye_Rig_v2:jnt_left_eyelid_lower_3_end_-right"  type="TextInfo" visible="false"/>    <!--Gunnar-->           
+
+        <parameter name="MarkerJoint_RLACH-lower" type="TextInfo" visible="false" />
+        
+        <parameter name="MarkerJoint_RLL4-left"   type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RUL4-left"   type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RLL12-left"   type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RUL13-left"   type="TextInfo" visible="false" />
+        <parameter name="jnt_right_eyelid_lower_4_end_-right"  type="TextInfo" visible="false"/>       <!--Sara-->
+        <parameter name="jnt_right_eyelid_upper_7_end_-right"  type="TextInfo" visible="false"/>       <!--Sara-->
+        <parameter name="Eye_Rig_v2:jnt_left_eyelid_lower_7_end_-left"  type="TextInfo" visible="false"/>        <!--Gunnar-->
+        <parameter name="Eye_Rig_v2:jnt_left_eyelid_upper_7_end_-left"  type="TextInfo" visible="false"/>        <!--Gunnar-->
+      </parameters>
+
+      <parameters name="Left Eye Region" visible="false">
+        <parameter name="MarkerJoint_LUBR-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LOBR-right"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LIEY-right"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LMEY-lower" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LOEY-left" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LIBR-left" type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="Right Eye Region" visible="false">
+        <parameter name="MarkerJoint_RUBR-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RIBR-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_ROEY-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RMEY-lower" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RIEY-left"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_ROBR-left"  type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="Noise Wrinkler" visible="false">
+        <parameter name="MarkerJoint_RIBR-upper" type="TextInfo" visible="false" />        
+        <parameter name="MarkerJoint_LIBR-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LOEY-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LOEY-lower" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_ROEY-left" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RIBR-left"  type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="Forehead" visible="false">
+        <parameter name="MarkerJoint_LUFH1-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LUFH-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LUBR-right" type="TextInfo" visible="false" />        
+        <parameter name="MarkerJoint_LIBR-lower" type="TextInfo" visible="false" />                   
+        <parameter name="MarkerJoint_RUBR-left"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RUFH-left" type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="LipsMouth" visible="false">
+        <parameter name="MarkerJoint_RMLP-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LMLP-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LOLP-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LLLP-lower" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RLLP-lower"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_ROLP-left" type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="MouthRegion" visible="false">        
+        <parameter name="MarkerJoint_RMOU-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LMOU-upper" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LMCH-right" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_LCHIN-lower" type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RCHIN-lower"  type="TextInfo" visible="false" />
+        <parameter name="MarkerJoint_RMCH-left" type="TextInfo" visible="false" />
+      </parameters>
+
+      <parameters name="WholeFace" visible="false">
+        <parameter name="Head_end-upper" type="TextInfo" visible="false" />        
+        <parameter name="MarkerJoint_LTJA-right" type="TextInfo" visible="false" />        
+        <parameter name="MarkerJoint_LCHN-lower" type="TextInfo" visible="false" />                
+        <parameter name="MarkerJoint_RTJA-left" type="TextInfo" visible="false" />                
+      </parameters>
+      
+    </parameters>
+    
+  </parameters>
+
+</nodetype>

@@ -1,0 +1,57 @@
+// Expand a range-compressed vector
+float3 expand(float3 v)
+{
+	return (v - 0.5) * 2;
+}
+
+void main_fp(   //in 
+			    float3 iNormal		: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,
+				float3 iBinormal	: TEXCOORD2,
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				float3 iLightDir	: TEXCOORD5,
+			    float3 iHalfVector	: TEXCOORD6,
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float	exposure,
+				uniform float4	fvAmbient,
+				uniform float4	fvDiffuse,
+				uniform float	shirtRimPower,
+				uniform float	shirtRimFactor,
+				uniform float4	shirtRimColor,
+				uniform float	shirtBump,
+				uniform float	shirtOcc,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),
+				uniform sampler2D	bumpMapSampler	: register(s1),
+				uniform samplerCUBE DiffuseCube		: register(s2))
+{	
+	float3 bumpSample = expand(tex2D(bumpMapSampler, iTexCoord).xyz)*shirtBump;    	
+	
+	float3 nNormal = normalize(iNormal);
+    float3 nTangent = normalize(iTangent);
+    float3 nBinormal = normalize(iBinormal);
+	float3 nLightDir = normalize(iLightDir);
+	float3 nViewDir  = normalize(iViewDir);
+	float3 nHalfVector = normalize(iHalfVector);
+   
+	float3 BentNormal = normalize(nNormal + (nTangent * bumpSample.x) + (nBinormal * bumpSample.y));
+	BentNormal.z *= -1;
+
+	float4 DiffCubeValue = texCUBE(DiffuseCube, BentNormal) * exposure;
+	//DiffCubeValue = log (DiffCubeValue) ;
+
+    float4 DiffMap = tex2D(colorMapSampler, iTexCoord);
+
+	float dotVN = dot(nViewDir, BentNormal);
+	float dotNH = max(dot(BentNormal, nHalfVector), 0);
+
+    float RimLightStrength = saturate(pow(1-dotVN, shirtRimPower) * DiffCubeValue);
+	float4 RimLight = RimLightStrength * shirtRimColor * shirtRimFactor;
+	float4 DiffuseColor = DiffCubeValue * DiffMap * fvDiffuse;
+	float4 color = saturate(fvAmbient + DiffuseColor + RimLight);
+	float4 occluded = lerp(color, (color * DiffMap.a), shirtOcc);   
+	result = occluded;	
+}

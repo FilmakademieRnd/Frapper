@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NetworkPanel</class>
+ <widget class="QWidget" name="NetworkPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>194</width>
+    <height>92</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Network Editor</string>
+  </property>
+  <layout class="QVBoxLayout" name="ui_vboxLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+  </layout>
+  <action name="ui_homeAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/homeIcon</normaloff>:/homeIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Home</string>
+   </property>
+   <property name="toolTip">
+    <string>Home [H]</string>
+   </property>
+  </action>
+  <action name="ui_frameAllAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/frameAllIcon</normaloff>:/frameAllIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Frame All</string>
+   </property>
+   <property name="toolTip">
+    <string>Frame All [A]</string>
+   </property>
+  </action>
+  <action name="ui_frameSelectedAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/frameSelectedIcon</normaloff>:/frameSelectedIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Frame Selected</string>
+   </property>
+   <property name="toolTip">
+    <string>Frame Selected [F]</string>
+   </property>
+  </action>
+  <action name="ui_displayAllPinsAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/displayAllPinsIcon</normaloff>:/displayAllPinsIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Display All Pins</string>
+   </property>
+  </action>
+  <action name="ui_displayConnectedPinsAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/displayConnectedPinsIcon</normaloff>:/displayConnectedPinsIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Display Connected Pins Only</string>
+   </property>
+  </action>
+  <action name="ui_displayPinsCollapsedAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/displayPinsCollapsedIcon</normaloff>:/displayPinsCollapsedIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Display Pins Collapsed</string>
+   </property>
+  </action>
+  <action name="ui_scrollbarsAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/scrollbarsIcon</normaloff>:/scrollbarsIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Scrollbars</string>
+   </property>
+   <property name="iconText">
+    <string>Scrollbars</string>
+   </property>
+   <property name="toolTip">
+    <string>Scrollbars [T]</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggles the display of scrollbars</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

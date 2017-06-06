@@ -1,0 +1,133 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+fragment_program ObjectIdFilter/ObjectIdFilterFP_cg cg
+{
+    source ObjectIdFilter.cg
+    entry_point objectidfilter_ps
+    profiles ps_3_0 fp40
+}
+fragment_program ObjectIdFilter/ObjectIdFilterFP_glsl glsl
+{
+	source ObjectIdFilter_Fp.glsl
+	syntax glsl400
+}
+fragment_program ObjectIdFilter/ObjectIdFilterFP unified
+{
+	delegate ObjectIdFilter/ObjectIdFilterFP_cg
+	delegate ObjectIdFilter/ObjectIdFilterFP_glsl
+}
+
+// scene pass
+material ObjectIdFilter/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref CompositorTemplate/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// id pass
+material ObjectIdFilter/IDPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref CompositorTemplate/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material ObjectIdFilter/ObjectIdFilterMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+
+			fragment_program_ref ObjectIdFilter/ObjectIdFilterFP
+			{
+				param_named inputMap0 int 0
+				param_named inputMap1 int 1
+			}	
+			
+			texture_unit	//(inputMap0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit	//(inputMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

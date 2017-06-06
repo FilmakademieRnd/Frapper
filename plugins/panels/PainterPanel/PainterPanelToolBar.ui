@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PainterPanelToolBar</class>
+ <widget class="QWidget" name="PainterPanelToolBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>595</width>
+    <height>105</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+   <item>
+    <widget class="QPushButton" name="selectButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click for selection or movement</string>
+     </property>
+     <property name="statusTip">
+      <string>Click for selection or movement</string>
+     </property>
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/originIcon</normaloff>:/originIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="vertLine1">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="paintButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click for draw with paint tool</string>
+     </property>
+     <property name="statusTip">
+      <string>Click for draw with paint tool</string>
+     </property>
+     <property name="text">
+      <string>Paint</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/painterIcon</normaloff>:/painterIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="eraseButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click for draw with paint tool</string>
+     </property>
+     <property name="statusTip">
+      <string>Click for draw with paint tool</string>
+     </property>
+     <property name="text">
+      <string>Erase</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/editWindowIcon</normaloff>:/editWindowIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="vertLine2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="bezierButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to draw a bezier curve</string>
+     </property>
+     <property name="statusTip">
+      <string>Click to draw a bezier curve</string>
+     </property>
+     <property name="text">
+      <string>Bezier</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/realtimeIcon</normaloff>:/realtimeIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="polygonButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to draw a polygon</string>
+     </property>
+     <property name="statusTip">
+      <string>Click to draw a polygon</string>
+     </property>
+     <property name="text">
+      <string>Polygon</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/pluginIcon</normaloff>:/pluginIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="squareButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to draw a square</string>
+     </property>
+     <property name="statusTip">
+      <string>Click to draw a square</string>
+     </property>
+     <property name="text">
+      <string>Square</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/stopIcon</normaloff>:/stopIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="ellipseButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to draw a ellipse</string>
+     </property>
+     <property name="statusTip">
+      <string>Click to draw a ellipse</string>
+     </property>
+     <property name="text">
+      <string>Ellipse</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/applicationIcon</normaloff>:/applicationIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="circleButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to draw a circle</string>
+     </property>
+     <property name="statusTip">
+      <string>Click to draw a circle</string>
+     </property>
+     <property name="text">
+      <string>Circle</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../resources/gui.qrc">
+       <normaloff>:/applicationIcon</normaloff>:/applicationIcon</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

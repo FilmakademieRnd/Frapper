@@ -1,0 +1,38 @@
+fragment_program Tile/SelectTileFP cg
+{
+    source tile.cg
+    entry_point tileselect_ps
+    profiles fp40
+}
+
+//Final
+material Tile/SelectTile
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+
+			fragment_program_ref Tile/SelectTileFP
+			{
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering bilinear
+			}
+		}
+	}
+}
+
+

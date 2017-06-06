@@ -1,0 +1,77 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+// 82 bones 4 influences, skin deformation and 5 CBS Shapes at the same time
+
+vertex_program test cg
+{
+	source SaC_BW.cg
+	entry_point HW_Skinning_VS_82b_4i_5CBS_SaC_BW
+	profiles vs_3_0 vp40
+	//includes_pose_animation 5
+	includes_skeletal_animation true
+}
+
+geometry_program EmitWeightsAsMapGS cg
+{
+	source SaC_BW.cg
+	entry_point EmitWeightsAsMapGS
+	profiles gp4gp gp4_gp
+}
+
+fragment_program DrawWeightmapPS cg
+{
+	source SaC_BW.cg	
+	profiles ps_3_0 fp40
+	entry_point DrawWeightmapPS
+}
+
+
+material Calculate_Blendweights
+{
+// inluding HW skinning
+	technique 
+	{
+		scheme blendWeightPass
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref test 		
+			{
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				//param_named_auto anim_t animation_parametric				
+				//param_named_auto anim_t2 animation_parametric										
+			}			
+			geometry_program_ref EmitWeightsAsMapGS
+			{			
+			}
+			fragment_program_ref DrawWeightmapPS		
+			{			
+			}	
+		}
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         filterunsharpmask.xml
+  Description:  Contains the XML description of FilterUnsharpMask nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="FilterUnsharpMask" category="Compositing" color="185, 30, 75" plugin="filterunsharpmask.dll">
+  <parameters>
+    <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="UnsharpMask" visible="false"/>
+    <parameter name="Reload" type="Command" />
+	  <parameters name="Polish">
+      <parameter name="Extent" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="100.0" defaultValue="50.0" unit=""/>
+    </parameters>
+  </parameters>
+</nodetype>
+

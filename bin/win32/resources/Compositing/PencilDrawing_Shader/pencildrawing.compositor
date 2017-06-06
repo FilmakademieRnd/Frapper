@@ -1,0 +1,120 @@
+compositor PencilDrawingCompositor
+{
+    technique
+    {
+		// Temporary textures
+		texture Scene target_width target_height PF_FLOAT32_RGBA		
+		texture Gradients target_width target_height PF_FLOAT32_RGBA
+		texture G1234 target_width target_height PF_FLOAT32_RGBA
+		texture G5678 target_width target_height PF_FLOAT32_RGBA
+		texture C1234 target_width target_height PF_FLOAT32_RGBA
+		texture C5678 target_width target_height PF_FLOAT32_RGBA
+		texture LineConvolution target_width target_height PF_FLOAT32_RGBA
+		texture ToneDrawing target_width target_height PF_FLOAT32_RGBA
+	
+        target Scene
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/SceneMaterial
+            }
+		}
+	
+        target Gradients
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/GradientMaterial
+				input 0 Scene
+            }
+		}
+			
+		target G1234
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/G1234Material
+				input 0 Gradients
+            }
+        }
+		
+		target G5678
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/G5678Material
+				input 0 Gradients
+            }
+        }
+		
+		target C1234
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/C1234Material
+				input 0 Gradients
+				input 1 G1234
+				input 2 G5678
+            }
+        }
+		
+		target C5678
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/C5678Material
+				input 0 Gradients
+				input 1 G1234
+				input 2 G5678
+            }
+        }
+		
+		target LineConvolution
+        {
+            input none
+
+            pass render_quad
+            {
+                material PencilDrawing/LineConvolutionMaterial
+				input 0 C1234
+				input 1 C5678
+            }
+        }
+		
+		target ToneDrawing
+        {
+            input none
+        
+            pass render_quad
+            {
+                material PencilDrawing/ToneDrawingMaterial
+				input 0 Scene
+            }
+        }		
+		
+		target_output
+        {
+            input none
+        
+            pass render_quad
+            {
+                material PencilDrawing/CombinerMaterial
+				input 0 LineConvolution
+				input 1 ToneDrawing
+				input 2 Scene
+            }
+        }
+    }
+}

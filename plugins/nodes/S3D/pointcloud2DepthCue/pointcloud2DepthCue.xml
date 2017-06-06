@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         pointcloud2DepthCue.xml
+  Description:  Contains the XML description of OpenCvFeatureNode.
+  Author:       Jonas Trottnow <jonas.trottnow@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="pointcloud2DepthCue" category="S3D" color="171, 192, 255" plugin="pointcloud2DepthCue.dll">
+  <parameters>
+    <parameter  name="Calculate!" type="Command" />
+    <parameter  name="imageWidth" type="Int" defaultValue="1920" minValue="1" maxValue="5000" stepSize="1" visible="true"/>
+    <parameter  name="imageHeight" type="Int" defaultValue="1080" minValue="1" maxValue="5000" stepSize="1" visible="true"/>
+    <parameter  name="featureBasedSelection" type="Bool" defaultValue="false" visible="true"/>
+    <parameter  name="SfM_Output Folder Location" type="Directory" defaultValue="globalSFM" visible="true" pin="in"/>
+    <parameter  name="Output Path" type="Directory" defaultValue="depthCues" visible="true"/>
+  </parameters>
+</nodetype>

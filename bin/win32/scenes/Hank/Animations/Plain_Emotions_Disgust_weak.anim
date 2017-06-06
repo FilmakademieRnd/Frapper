@@ -1,0 +1,24 @@
+anim Frown_CAU4
+{
+	//Time   /    Value
+	0	0
+	1	21.0766
+}
+anim LidT_CAU7
+{
+	//Time   /    Value
+	0	0
+	1	22.432
+}
+anim ULipU_CAU1025
+{
+	//Time   /    Value
+	0	0
+	1	17.9051
+}
+anim DisgC
+{
+	//Time   /    Value
+	0	0
+	1	51.087
+}

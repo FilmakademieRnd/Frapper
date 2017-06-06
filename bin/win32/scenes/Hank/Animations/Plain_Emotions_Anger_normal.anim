@@ -1,0 +1,30 @@
+anim Frown_CAU4
+{
+	//Time   /    Value
+	0	0
+	1	63.6646
+}
+anim LidT_CAU7
+{
+	//Time   /    Value
+	0	0
+	1	29.6584
+}
+anim X2_CAUX2
+{
+	//Time   /    Value
+	0	0
+	1	64.1304
+}
+anim JawO_CAU2627
+{
+	//Time   /    Value
+	0	0
+	1	39.441
+}
+anim LipsU_CAU10
+{
+	//Time   /    Value
+	0	0
+	1	16.1491
+}

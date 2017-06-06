@@ -1,0 +1,140 @@
+<ui version="4.0" >
+ <class>HierarchyPanel</class>
+ <widget class="QWidget" name="HierarchyPanel" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>229</width>
+    <height>128</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Ignored" hsizetype="Ignored" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Hierarchy Editor</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="spacing" >
+    <number>3</number>
+   </property>
+   <property name="margin" >
+    <number>1</number>
+   </property>
+   <item>
+    <widget class="QTreeView" name="sceneTreeView" >
+     <property name="editTriggers" >
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="ui_filterAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/filterIcon</normaloff>:/filterIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Filter</string>
+   </property>
+  </action>
+  <action name="ui_geometryAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/geometryIcon</normaloff>:/geometryIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Geometry</string>
+   </property>
+   <property name="iconText" >
+    <string>Geometry</string>
+   </property>
+   <property name="toolTip" >
+    <string>Geometry</string>
+   </property>
+  </action>
+  <action name="ui_materialsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/materialsIcon</normaloff>:/materialsIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Materials</string>
+   </property>
+  </action>
+  <action name="ui_camerasAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/cameraIcon</normaloff>:/cameraIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Cameras</string>
+   </property>
+  </action>
+  <action name="ui_lightsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/lightsIcon</normaloff>:/lightsIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Lights</string>
+   </property>
+  </action>
+  <action name="ui_imagesAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset>
+     <normaloff>:/imagesIcon</normaloff>:/imagesIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Images</string>
+   </property>
+   <property name="iconText" >
+    <string>Images</string>
+   </property>
+   <property name="toolTip" >
+    <string>Images</string>
+   </property>
+  </action>
+  <action name="ui_resetFilterAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/gui.qrc" >
+     <normaloff>:/resetFilterIcon</normaloff>:/resetFilterIcon</iconset>
+   </property>
+   <property name="text" >
+    <string>Reset Filter</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc" />
+ </resources>
+ <connections/>
+</ui>

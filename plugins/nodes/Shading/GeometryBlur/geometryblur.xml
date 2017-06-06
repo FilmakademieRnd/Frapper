@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         geometryblur.xml
+  Description:  Contains the XML description of GeometryBlur nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="GeometryBlur" category="Shading" color="7, 45, 87" plugin="geometryblur.dll">
+  <parameters>
+    <parameter name="Resource Group Name" type="String" defaultValue="GeometryBlurNode"/>
+    <parameter name="Reload" type="Command"/>
+	<parameter name="Description" type="TextInfo" defaultValue="This node performs a simple box blur on the incoming Map To Blur over as many pixels as you setup with the slider Blurring Size.
+	The specialty of this Node is, that blurring ends at all edges definded by Blurring Angle"/>
+    <parameter name="Map To Blur" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Normal Map" type="Image" pin="in" selfEvaluating="true"/> 
+	<parameter name="Blurring Size" type="Float" defaultValue="6.0" minValue="0.0" maxValue="22.0" stepSize="2.0" inputMethod="SliderPlusSpinBox"/>
+	<parameter name="Blurring Angle" type="Float" defaultValue="0.9" minValue="0.7" maxValue="1.0" stepSize="0.01" inputMethod="SliderPlusSpinBox"/>
+  </parameters>
+</nodetype>
+
+

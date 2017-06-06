@@ -1,0 +1,55 @@
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_vs                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_vs(	in float4 iPosition : POSITION,
+				in float2 iTexCoord : TEXCOORD0,
+				out float4 oPosition : POSITION,
+				out float2 oTexCoord : TEXCOORD0,
+				uniform float4x4 worldViewProj)
+{
+  oPosition = mul(worldViewProj, iPosition);
+  oTexCoord = iTexCoord;
+}
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+
+void scene_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D scene : TEXUNIT0)
+{
+	oColor = tex2D(scene, texCoord);
+}
+
+void quad_ps( in  float2 texCoord : TEXCOORD0,
+	      out float4 color    : COLOR,
+	       uniform float     param0,
+	       uniform float     param1,
+	       uniform float     param2,
+	       uniform float     param3,
+	       uniform float     param4,
+	       uniform sampler2D scene     : TEXUNIT0, // prerendered scene (nx,ny,nz,1.0)
+	       uniform sampler2D normal    : TEXUNIT1, // normal map in camera space (nx,ny,nz,1.0)
+	       uniform sampler2D depth     : TEXUNIT2) // view map (vx,vy,vz) in camera space computed with (vertex-camPosition)
+
+
+{
+   float3 n = tex2D(depth, texCoord).xyz;
+
+   if(n.x == 0.0 && n.y == 0.0 && n.z == 0.0) {
+     // nothing to do... 
+     color = float4(0.0);
+   }
+
+   else {
+	   // ...
+	   color = float4(param0, 0.0, 0.0, 1.0);
+   }
+}

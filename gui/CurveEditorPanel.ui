@@ -1,0 +1,152 @@
+<ui version="4.0" >
+ <class>CurveEditorPanel</class>
+ <widget class="QWidget" name="CurveEditorPanel" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>334</width>
+    <height>116</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Ignored" hsizetype="Ignored" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Curve Editor</string>
+  </property>
+  <layout class="QVBoxLayout" name="ui_vboxLayout" >
+   <property name="spacing" >
+    <number>3</number>
+   </property>
+   <property name="margin" >
+    <number>1</number>
+   </property>
+  </layout>
+ <action name="ui_muteAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/muteIcon</normaloff>:/muteIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Mute</string>
+   </property>
+   <property name="toolTip">
+     <string>Toggle selected Parameters</string>
+   </property>
+ </action>
+ <action name="ui_muteAllAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/muteAllIcon</normaloff>:/muteAllIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Mute</string>
+   </property>
+   <property name="toolTip">
+     <string>Mute all Parameters</string>
+   </property>
+ </action>
+ <action name="ui_unmuteAllAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/unmuteAllIcon</normaloff>:/unmuteAllIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Mute</string>
+   </property>
+   <property name="toolTip">
+     <string>Unmute all Parameters</string>
+   </property>
+ </action>
+ <action name="ui_homeAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/homeIcon</normaloff>:/homeIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Home</string>
+   </property>
+   <property name="toolTip">
+     <string>Home [H]</string>
+   </property>
+ </action>
+ <action name="ui_frameAllAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/frameAllIcon</normaloff>:/frameAllIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Frame All</string>
+   </property>
+   <property name="toolTip">
+     <string>Frame All [A]</string>
+   </property>
+ </action>
+ <action name="ui_frameSelectedAction">
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/frameSelectedIcon</normaloff>:/frameSelectedIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Frame Selected</string>
+   </property>
+   <property name="toolTip">
+     <string>Frame Selected [F]</string>
+   </property>
+ </action>
+ <action name="ui_setKeysAction">
+   <property name="text">
+     <string>Set Keys</string>
+   </property>
+ </action>
+ <action name="ui_scaleKeysAction">
+  <property name="text">
+    <string>Scale Keys</string>
+  </property>
+ </action>
+ <action name="ui_normKeysAction">
+   <property name="text">
+     <string>Norm. Keys</string>
+   </property>
+ </action>
+ <action name="ui_scrollbarsAction">
+   <property name="checkable">
+     <bool>true</bool>
+   </property>
+   <property name="checked">
+     <bool>true</bool>
+   </property>
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/scrollbarsIcon</normaloff>:/scrollbarsIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Scrollbars</string>
+   </property>
+   <property name="iconText">
+     <string>Scrollbars</string>
+   </property>
+   <property name="toolTip">
+     <string>Scrollbars [T]</string>
+   </property>
+   <property name="statusTip">
+     <string>Toggles the display of scrollbars</string>
+   </property>
+ </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc" />
+ </resources>
+ <connections/>
+</ui>

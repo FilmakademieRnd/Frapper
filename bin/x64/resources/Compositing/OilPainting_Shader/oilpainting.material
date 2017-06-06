@@ -1,0 +1,379 @@
+vertex_program OilPainting/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+fragment_program OilPainting/Scene glsl
+{
+	source Scene.frag
+}
+
+fragment_program OilPainting/StructureTensor glsl
+{
+	source StructureTensor.frag
+}
+
+fragment_program OilPainting/Gauss glsl
+{
+	source Gauss.frag
+	
+	default_params
+	{
+		param_named sigma float1 2.0
+	}
+}
+
+fragment_program OilPainting/TFM glsl
+{
+	source TFM.frag
+}
+
+fragment_program OilPainting/LIC glsl
+{
+	source LIC.frag
+	
+	default_params
+	{
+		param_named sigmaT float1 3.0
+	}
+}
+
+fragment_program OilPainting/Brush glsl
+{
+	source Brush.frag
+	
+	default_params
+	{
+		param_named lightSourceAngle float1 0.0
+	}
+}
+
+fragment_program OilPainting/Varnish glsl
+{
+	source Varnish.frag
+	
+	default_params
+	{
+		param_named lic int 0
+		param_named lightSourceAngle float1 0.0
+		param_named kSpecular float1 2.0
+		param_named kShininess float1 1.0
+	}
+}
+
+fragment_program OilPainting/Composition glsl
+{
+	source Composition.frag
+	
+	default_params
+	{
+		param_named scene int 0
+		param_named brush int 1
+		param_named varnish int 2
+		param_named canvas int 3
+	}
+}
+
+// -----------------------------------------------
+
+material OilPainting/Scene
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Scene
+			{
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material OilPainting/Colors
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Scene
+			{
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material OilPainting/StructureTensor
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/StructureTensor
+			{
+				param_named scene int 0
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/Gauss
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Gauss
+			{
+				param_named structureTensors int 0
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/TFM
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/TFM
+			{
+				param_named gauss int 0
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/LIC
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/LIC
+			{
+				param_named tfm int 0
+				param_named scene int 1
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{	
+				texture noise.png 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/Brush
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Brush
+			{
+				param_named lic int 0
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/Varnish
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Varnish
+			{
+				param_named lic int 0
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material OilPainting/Composition
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref OilPainting/Composition
+			{
+				param_named colors int 0
+				param_named brush int 1
+				param_named varnish int 2
+				param_named canvas int 3
+			}
+			
+			vertex_program_ref OilPainting/QuadVertexProgram
+			{
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{	
+				texture canvas.png 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+	<asset>
+		<contributor>
+			<authoring_tool>Filmakademie Application Framework</authoring_tool>
+		</contributor>
+		<created>2011-11-22T11:32:23Z</created>
+		<modified>2011-11-22T11:32:23Z</modified>
+		<unit meter="0.01"/>
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="animatableMesh3">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="-737.556 -252.284" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Monarc/Monarc.mesh" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Skeletal Animation Weights"/>
+								<frapper_group name="Pose Animations"/>
+								<frapper_group name="Pose Animation Weights"/>
+								<frapper_group name="Bone Parameter"/>
+								<frapper_group name="Material Parameter"/>
+								<frapper_group name="blue_car_paintSG1"/>
+								<frapper_group name="black_car_paintSG1"/>
+								<frapper_group name="blinn1SG1"/>
+								<frapper_group name="shiny_metalSG1"/>
+								<frapper_group name="rimSG1"/>
+								<frapper_group name="logoSG1"/>
+								<frapper_group name="brushed_metalSG1"/>
+								<frapper_group name="red_glassSG1"/>
+								<frapper_group name="grainy_metal_matSG1"/>
+								<frapper_group name="dark_grainy_metal_matSG1"/>
+								<frapper_group name="black_plasticSG1"/>
+								<frapper_group name="dark_brushed_metal_matSG1"/>
+								<frapper_group name="Default2"/>
+								<frapper_group name="tire_rubber1"/>
+								<frapper_group name="Object Id Parameter"/>
+								<frapper_parameter name="polySurfaceShape1_Default1" value="12" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_dark_brushed_metal_matSG" value="11" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_dark_grainy_metal_matSG" value="9" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_tire_rubber" value="13" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_grainy_metal_matSG" value="8" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_red_glassSG" value="7" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_black_car_paintSG" value="1" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_blinn1SG" value="2" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_brushed_metalSG" value="6" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_logoSG" value="5" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_shiny_metalSG" value="3" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_black_plasticSG" value="10" state="true"/>
+								<frapper_parameter name="polySurfaceShape1_rimSG" value="4" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="simpleBlend2">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SimpleBlend" position="-222 -192" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Resource Group Name" value="Depth" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animatableMesh">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="-736.086 -166.111" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Dragon/dragon_lowres.mesh" state="true"/>
+								<frapper_parameter name="Light Description File" value="scenes/Lightwarping/rnl_24.txt" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Skeletal Animation Weights"/>
+								<frapper_group name="Pose Animations"/>
+								<frapper_group name="Pose Animation Weights"/>
+								<frapper_group name="Bone Parameter"/>
+								<frapper_group name="Material Parameter"/>
+								<frapper_group name="NoMaterial"/>
+								<frapper_group name="Object Id Parameter"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="simpleBlend3">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SimpleBlend" position="-151 -192" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Resource Group Name" value="View" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="simpleBlend4">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SimpleBlend" position="175.889 -116.667" stageIndex="1" isViewed="1">
+							<frapper_parameters>
+								<frapper_parameter name="Operator" value="1" state="true"/>
+								<frapper_parameter name="Linear Blend Factor" value="100" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="advancedRenderer">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AdvancedRenderer" position="-394 -108" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="lightWarping">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="LightWarping" position="-84 -102" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Light Description File" value="scenes/Lightwarping/stpeter_24.txt" state="true"/>
+								<frapper_parameter name="Number Of Lights" value="20" state="true"/>
+								<frapper_parameter name="cmax" value="5" state="true"/>
+								<frapper_parameter name="exponent" value="50" state="true"/>
+								<frapper_parameter name="fresnel" value="0.01" state="true"/>
+								<frapper_parameter name="diffuse" value="1 1 1" state="true"/>
+								<frapper_parameter name="specular" value="0.5 0.5 0.5" state="true"/>
+								<frapper_parameter name="contrast" value="-1" state="true"/>
+								<frapper_parameter name="enable" value="true" state="true"/>
+								<frapper_parameter name="aniso" value="true" state="true"/>
+								<frapper_parameter name="lightscale" value="2" state="true"/>
+								<frapper_parameter name="envsize" value="800000" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="simpleBlend">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SimpleBlend" position="-296 -193" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Resource Group Name" value="Normal" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="ambientOcclusion">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AmbientOcclusion" position="-78 25" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Radius" value="0.02" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="geometryBlur">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="GeometryBlur" position="47.4619 -19.2233" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Blurring Size" value="2" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="camera">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Camera" position="-581.556 -1.55556" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Transformation"/>
+								<frapper_group name="Render Resolution"/>
+								<frapper_parameter name="Preset" value="3" state="true"/>
+								<frapper_group name="Frustum"/>
+								<frapper_group name="Orbit"/>
+								<frapper_parameter name="Target Point" value="0.398498 0.240688 -0.302459" state="true"/>
+								<frapper_parameter name="Radius" value="3.09695482254028" state="true"/>
+								<frapper_parameter name="Azimuth angle" value="77.1733322143555" state="true"/>
+								<frapper_parameter name="Zenith angle" value="30.7214469909668" state="true"/>
+								<frapper_group name="LookAt Constraint"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="transform2">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Transform" position="-636.383 -260.84" stageIndex="1" isViewed="0">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="transform3">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Transform" position="-515.741 -205.765" stageIndex="1" isViewed="0">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="surfaceCurvature">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SurfaceCurvature" position="-222 -2.76543" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Magnitude" value="0.01" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="transform">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Transform" position="-637.556 -169.765" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Translate" value="3.15 0 0" state="true"/>
+								<frapper_parameter name="Rotate" value="0 90 0" state="true"/>
+								<frapper_parameter name="Scale" value="0.33 0.33 0.33" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<extra>
+				<technique profile="frapper">
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Normal Map" targetNode="surfaceCurvature" targetParameter="Input Map Normal"/>
+					<frapper_connection sourceNode="geometryBlur" sourceParameter="Image" targetNode="simpleBlend4" targetParameter="Input Map Two"/>
+					<frapper_connection sourceNode="transform2" sourceParameter="Transformed Geometry" targetNode="transform3" targetParameter="Geometry to Transform"/>
+					<frapper_connection sourceNode="transform3" sourceParameter="Transformed Geometry" targetNode="advancedRenderer" targetParameter="Geometry to Render"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Normal Map" targetNode="geometryBlur" targetParameter="Normal Map"/>
+					<frapper_connection sourceNode="transform" sourceParameter="Transformed Geometry" targetNode="transform3" targetParameter="Geometry to Transform"/>
+					<frapper_connection sourceNode="lightWarping" sourceParameter="Image" targetNode="simpleBlend4" targetParameter="Input Map One"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Normal Map" targetNode="lightWarping" targetParameter="Input Map Normal"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="View Map" targetNode="simpleBlend3" targetParameter="Input Map One"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Depth Map" targetNode="simpleBlend2" targetParameter="Input Map One"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Normal Map" targetNode="simpleBlend" targetParameter="Input Map One"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Far Clipping Plane" targetNode="ambientOcclusion" targetParameter="Far Clipping Plane"/>
+					<frapper_connection sourceNode="ambientOcclusion" sourceParameter="Image" targetNode="geometryBlur" targetParameter="Map To Blur"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Normal Map" targetNode="ambientOcclusion" targetParameter="Normal Map"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Camera" targetNode="advancedRenderer" targetParameter="Camera"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Screen Space Projection Matix(4x4)" targetNode="ambientOcclusion" targetParameter="Screen Space Projection Matix(4x4)"/>
+					<frapper_connection sourceNode="animatableMesh3" sourceParameter="Mesh" targetNode="transform2" targetParameter="Geometry to Transform"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Far Corner" targetNode="ambientOcclusion" targetParameter="Far Corner"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Depth Map" targetNode="ambientOcclusion" targetParameter="Depth Map"/>
+					<frapper_connection sourceNode="animatableMesh" sourceParameter="Mesh" targetNode="transform" targetParameter="Geometry to Transform"/>
+					<frapper_connection sourceNode="surfaceCurvature" sourceParameter="Image" targetNode="lightWarping" targetParameter="Input Map Hessian"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="View Map" targetNode="lightWarping" targetParameter="Input Map View"/>
+				</technique>
+			</extra>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode"/>
+		<extra>
+			<technique profile="frapper">
+				<timeline frame="1" frameIn="1" frameOut="450" frameRangeIn="1" frameRangeOut="450" fps="25"/>
+			</technique>
+		</extra>
+	</scene>
+</COLLADA>

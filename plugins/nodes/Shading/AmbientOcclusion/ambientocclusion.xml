@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ambientocclusion.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="AmbientOcclusion" category="Shading" color="7, 45, 87" plugin="ambientocclusion.dll">
+  <parameters>
+    <parameter name="Normal Map" type="Image" pin="in" selfEvaluating="true"/> 
+	  <parameter name="Depth Map" type="Image" pin="in" selfEvaluating="true"/>
+	  <parameter name="Far Clipping Plane" type="Float" defaultValue="100.0" minValue="1.0" maxValue="1000.0" stepSize="0.1" visible="false" pin="in"/>
+	  <parameter name="Screen Space Projection Matix(4x4)" type="Float" size="16" defaultValue="1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0" visible="false" pin="in"/>
+	  <parameter name="Far Corner" type="Float" size="3" minValue="0.0" maxValue="1000.0" defaultValue="115.26, 64.84, 0.0" visible="false" pin="in"/>
+    <parameter name="Radius" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.2125" stepSize="0.001" unit=""/>
+    <parameter name="Contrast" type="Float" inputMethod="SliderPlusSpinBox" minValue="1.0" maxValue="100.0" defaultValue="25.0" stepSize="0.1" unit=""/>
+    <parameter name="Reload Shader" type="Command"/>
+  </parameters>
+</nodetype>
+
+

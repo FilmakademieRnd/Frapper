@@ -1,0 +1,453 @@
+
+void ppLightVP_HW83b_4CBS(float4 position	: POSITION,
+              float3 normal		: NORMAL,
+			  float3 tangent	: TANGENT0,
+			  float2 uv			: TEXCOORD0,
+    		  float3 pose1   	: TEXCOORD1, 
+			  float3 pose2   	: TEXCOORD2,
+			  float3 pose3   	: TEXCOORD3,
+			  float3 pose4   	: TEXCOORD4,			             
+			  float4 blendIdx	: BLENDINDICES,
+			  float4 blendWgt	: BLENDWEIGHT,
+              out float4 oPosition : POSITION,             			  
+			  out float4 oPos	   : TEXCOORD0, 
+			  out float3 oNorm     : TEXCOORD1, 
+              out float4 oSpotLightPos1 : TEXCOORD2, 
+			  out float3 oEyePos   : TEXCOORD3,
+			  out float2 oUv	   : TEXCOORD4,		
+			  out float4 oSpotLightPos2 : TEXCOORD5, 
+			  out float4 oPointLightPos1 : TEXCOORD6, 
+              uniform float4 spotLightPos1, 
+			  uniform float4 spotLightPos2, 
+			  uniform float4 pointLightPos1,
+			  uniform float3 eyePosition,              
+			  uniform float3x4   worldMatrix3x4Array[82],
+			  uniform float4x4 viewProjectionMatrix,
+			  uniform float4 anim_t)
+{ 
+	float4 CBSPosition = float4(	
+		//5*(
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w 
+		//)
+		, 1.0);
+	
+	CBSPosition.xyz = CBSPosition.xyz + position.xyz;
+
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 norm = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPosition).xyz, 1.0) * blendWgt[i];
+		norm += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], normal) * 	blendWgt[i];
+	}
+	// view / projection
+	oPosition = mul(viewProjectionMatrix, blendPos);
+	oNorm = normalize(norm);
+
+   //oPosition = mul(worldViewProj, position);
+   oPos = oPosition;
+   //oNorm     = normal; 
+   //oLightPos = lightPosition;
+   oSpotLightPos1 = 	float4(normalize(spotLightPos1.xyz -  (blendPos.xyz * spotLightPos1.w)), 0);
+   oSpotLightPos2 = 	float4(normalize(spotLightPos2.xyz -  (blendPos.xyz * spotLightPos2.w)), 0);
+   oPointLightPos1 = 	float4(normalize(pointLightPos1.xyz -  (blendPos.xyz * pointLightPos1.w)), 0);
+   oEyePos = eyePosition;
+   oUv = uv;      
+}
+
+
+void ppLightVP_HW83b(float4 position	: POSITION,
+              float3 normal		: NORMAL,
+			  float2 uv			: TEXCOORD0, 
+              float3 tangent	: TANGENT0,
+			  float4 blendIdx	: BLENDINDICES,
+			  float4 blendWgt	: BLENDWEIGHT,
+              out float4 oPosition : POSITION,             			  
+			  out float4 oPos	   : TEXCOORD0, 
+			  out float3 oNorm     : TEXCOORD1, 
+              out float4 oSpotLightPos1 : TEXCOORD2, 
+			  out float3 oEyePos   : TEXCOORD3,
+			  out float2 oUv	   : TEXCOORD4,		
+			  out float4 oSpotLightPos2 : TEXCOORD5, 
+			  out float4 oPointLightPos1 : TEXCOORD6, 
+              uniform float4 spotLightPos1, 
+			  uniform float4 spotLightPos2, 
+			  uniform float4 pointLightPos1,
+			  uniform float3 eyePosition,              
+			  uniform float3x4   worldMatrix3x4Array[82],
+			  uniform float4x4 viewProjectionMatrix)
+{ 
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 norm = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		norm += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], normal) * 	blendWgt[i];
+	}
+	// view / projection
+	oPosition = mul(viewProjectionMatrix, blendPos);
+	oNorm = normalize(norm);
+
+   //oPosition = mul(worldViewProj, position);
+   oPos = oPosition;
+   //oNorm     = normal; 
+   //oLightPos = lightPosition;
+   oSpotLightPos1 = 	float4(normalize(spotLightPos1.xyz -  (blendPos.xyz * spotLightPos1.w)), 0);
+   oSpotLightPos2 = 	float4(normalize(spotLightPos2.xyz -  (blendPos.xyz * spotLightPos2.w)), 0);
+   oPointLightPos1 = 	float4(normalize(pointLightPos1.xyz -  (blendPos.xyz * pointLightPos1.w)), 0);
+   oEyePos = eyePosition;
+   oUv = uv;      
+}
+
+void ppLightVP_HW5b(float4 position	: POSITION,
+              float3 normal		: NORMAL,
+			  float2 uv			: TEXCOORD0, 
+              float3 tangent	: TANGENT0,
+			  float4 blendIdx	: BLENDINDICES,
+			  float4 blendWgt	: BLENDWEIGHT,
+              out float4 oPosition : POSITION,             			  
+			  out float4 oPos	   : TEXCOORD0, 
+			  out float3 oNorm     : TEXCOORD1, 
+              out float4 oSpotLightPos1 : TEXCOORD2, 
+			  out float3 oEyePos   : TEXCOORD3,
+			  out float2 oUv	   : TEXCOORD4,		
+			  out float4 oSpotLightPos2 : TEXCOORD5, 
+			  out float4 oPointLightPos1 : TEXCOORD6, 
+              uniform float4 spotLightPos1, 
+			  uniform float4 spotLightPos2, 
+			  uniform float4 pointLightPos1,
+			  uniform float3 eyePosition,              
+			  uniform float3x4   worldMatrix3x4Array[5],
+			  uniform float4x4 viewProjectionMatrix)
+{ 
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 norm = float3(0,0,0);
+	int i;
+	for (i = 0; i < 2; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		norm += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], normal) * 	blendWgt[i];
+	}
+	// view / projection
+	oPosition = mul(viewProjectionMatrix, blendPos);
+	oNorm = normalize(norm);
+
+   //oPosition = mul(worldViewProj, position);
+   oPos = oPosition;
+   //oNorm     = normal; 
+   //oLightPos = lightPosition;
+   oSpotLightPos1 = 	float4(normalize(spotLightPos1.xyz -  (blendPos.xyz * spotLightPos1.w)), 0);
+   oSpotLightPos2 = 	float4(normalize(spotLightPos2.xyz -  (blendPos.xyz * spotLightPos2.w)), 0);
+   oPointLightPos1 = 	float4(normalize(pointLightPos1.xyz -  (blendPos.xyz * pointLightPos1.w)), 0);
+   oEyePos = eyePosition;
+   oUv = uv;      
+}
+
+
+void ppLightVP_HW4b(float4 position		: POSITION,
+              float3 normal				: NORMAL,
+			  float2 uv					: TEXCOORD0, 
+              float3 tangent			: TANGENT0,
+			  float4 blendIdx			: BLENDINDICES,
+			  float4 blendWgt			: BLENDWEIGHT,
+              out float4 oPosition		: POSITION,             			  
+			  out float4 oPos			: TEXCOORD0, 
+			  out float3 oNorm			: TEXCOORD1, 
+              out float4 oSpotLightPos1 : TEXCOORD2, 
+			  out float3 oEyePos		: TEXCOORD3,
+			  out float2 oUv			: TEXCOORD4,		
+			  out float4 oSpotLightPos2 : TEXCOORD5, 
+			  out float4 oPointLightPos1: TEXCOORD6, 
+              uniform float4 spotLightPos1, 
+			  uniform float4 spotLightPos2, 
+			  uniform float4 pointLightPos1,
+			  uniform float3 eyePosition,              
+			  uniform float3x4 worldMatrix3x4Array[7],
+			  uniform float4x4 viewProjectionMatrix)
+{ 
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 norm = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		norm += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], normal) * 	blendWgt[i];
+	}
+   // transform by indexed matrix   
+   oPosition = mul(viewProjectionMatrix, blendPos);
+   // transform normal   
+   oNorm = normalize(norm);
+
+   //oPosition = mul(worldViewProj, position);
+   oPos = oPosition;
+   //oNorm     = normal; 
+   //oLightPos = lightPosition;
+   oSpotLightPos1 = 	float4(normalize(spotLightPos1.xyz -  (blendPos.xyz * spotLightPos1.w)), 0);
+   oSpotLightPos2 = 	float4(normalize(spotLightPos2.xyz -  (blendPos.xyz * spotLightPos2.w)), 0);
+   oPointLightPos1 = 	float4(normalize(pointLightPos1.xyz -  (blendPos.xyz * pointLightPos1.w)), 0);
+   oEyePos = eyePosition;
+   oUv = uv;      
+}
+
+void ppLightVP_HW1b(float4 position	: POSITION,
+              float3 normal		: NORMAL,
+			  float2 uv			: TEXCOORD0, 
+              float3 tangent	: TANGENT0,
+			  float4 blendIdx	: BLENDINDICES,
+			  float4 blendWgt	: BLENDWEIGHT,
+              out float4 oPosition : POSITION,             			  
+			  out float4 oPos	   : TEXCOORD0, 
+			  out float3 oNorm     : TEXCOORD1, 
+              out float4 oSpotLightPos1 : TEXCOORD2, 
+			  out float3 oEyePos   : TEXCOORD3,
+			  out float2 oUv	   : TEXCOORD4,		
+			  out float4 oSpotLightPos2 : TEXCOORD5, 
+			  out float4 oPointLightPos1 : TEXCOORD6, 
+              uniform float4 spotLightPos1, 
+			  uniform float4 spotLightPos2, 
+			  uniform float4 pointLightPos1,
+			  uniform float3 eyePosition,              
+			  uniform float3x4   worldMatrix3x4Array[4],
+			  uniform float4x4 viewProjectionMatrix)
+{ 
+
+   // transform by indexed matrix
+   float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], position).xyz, 1.0) * blendWgt[0];
+   oPosition = mul(viewProjectionMatrix, blendPos);
+   // transform normal
+   float3 norm = mul((float3x3)worldMatrix3x4Array[blendIdx[0]], normal) * blendWgt[0];	
+   oNorm = normalize(norm);
+
+   //oPosition = mul(worldViewProj, position);
+   oPos = oPosition;
+   //oNorm     = normal; 
+   //oLightPos = lightPosition;
+   oSpotLightPos1 = 	float4(normalize(spotLightPos1.xyz -  (blendPos.xyz * spotLightPos1.w)), 0);
+   oSpotLightPos2 = 	float4(normalize(spotLightPos2.xyz -  (blendPos.xyz * spotLightPos2.w)), 0);
+   oPointLightPos1 = 	float4(normalize(pointLightPos1.xyz -  (blendPos.xyz * pointLightPos1.w)), 0);
+   oEyePos = eyePosition;
+   oUv = uv;      
+}
+
+
+void ppLightFP(float4 pos	 	    : TEXCOORD0,
+				float3 normal		: TEXCOORD1, 
+	 			float4 oSpotLightPos1		: TEXCOORD2,
+				float3 eyepos		: TEXCOORD3,
+				float2 uv			: TEXCOORD4,
+				float4 oSpotLightPos2 : TEXCOORD5, 
+			    float4 oPointLightPos1 : TEXCOORD6, 
+				uniform float4 spotLightDiffuse1,
+				uniform float4 spotLightDiffuse2,
+				uniform float4 pointLightDiffuse1,
+				uniform float4 spotParams1,		
+				uniform float4 spotParams2,		
+				uniform float3 spotDirection1,	
+				uniform float3 spotDirection2,	
+				uniform float4 spotLightAttn1,				
+				uniform float4 spotLightAttn2,
+				uniform float4 pointLightAttn1,
+				uniform sampler2D   texture : register(s0),
+				out float4 oColor : COLOR)
+{
+	float3 N = normalize(normal);
+	float3 EyeDir = normalize(eyepos - pos.xyz);
+	
+	// spot1
+	float3 SpotDir1 = normalize(oSpotLightPos1.xyz -  (pos * oSpotLightPos1.w));
+	float3 SpotHalfAngle1 = normalize(SpotDir1 + EyeDir);
+	float NdotL_S1 = dot(SpotDir1, N);
+	float NdotH_S1 = dot(SpotHalfAngle1, N);
+	float4 LitSpot1 = lit(NdotL_S1,NdotH_S1, 127); // 127 is exponent
+	// spot2
+	float3 SpotDir2 = normalize(oSpotLightPos2.xyz -  (pos * oSpotLightPos2.w));
+	float3 SpotHalfAngle2 = normalize(SpotDir2 + EyeDir);	
+	float NdotL_S2 = dot(SpotDir2, N);
+	float NdotH_S2 = dot(SpotHalfAngle2, N);
+	float4 LitSpot2 = lit(NdotL_S2,NdotH_S2, 127); // 127 is exponent
+	// point1
+	float3 PointDir1 = normalize(oPointLightPos1.xyz -  (pos * oPointLightPos1.w));
+	float3 PointHalfAngle1 = normalize(PointDir1 + EyeDir);	
+	float NdotL_P1 = dot(PointDir1, N);
+	float NdotH_P1 = dot(PointHalfAngle1, N);
+	float4 LitPoint1 = lit(NdotL_P1,NdotH_P1, 127); // 127 is exponent
+
+	// texture
+	float3 textColour = tex2D(texture, uv).xyz; 
+
+	// spot factor 1 & 2
+	float spotSat1 = saturate(-dot(SpotDir1, spotDirection1.xyz));
+    float t1 = smoothstep(spotParams1.y, spotParams1.x, spotSat1);
+    float spotFactor1 = pow(t1, spotParams1.z);
+	float spotSat2 = saturate(-dot(SpotDir2, spotDirection2.xyz));
+    float t2 = smoothstep(spotParams2.y, spotParams2.x, spotSat2);
+    float spotFactor2 = pow(t2, spotParams2.z);
+
+	// attenuation
+	float distance_S1 = length(oSpotLightPos1.xyz - pos.xyz); 	
+	float attenuation_S1 = 1 / (spotLightAttn1.y + spotLightAttn1.z * distance_S1 + spotLightAttn1.w * distance_S1 * distance_S1); 	
+	float distance_S2 = length(oSpotLightPos2.xyz - pos.xyz); 	
+	float attenuation_S2 = 1 / (spotLightAttn2.y + spotLightAttn2.z * distance_S2 + spotLightAttn2.w * distance_S2 * distance_S2); 	
+	float distance_P1 = length(oPointLightPos1.xyz - pos.xyz); 	
+	float attenuation_P1 = 1 / (spotLightAttn2.y + pointLightAttn1.z * distance_P1 + pointLightAttn1.w * distance_P1 * distance_P1); 	
+
+	// diffuse color
+	oColor = float4(
+		(spotLightDiffuse1.xyz * LitSpot1.y * attenuation_S1 * spotFactor1
+		+ spotLightDiffuse2.xyz * LitSpot2.y * attenuation_S2 * spotFactor2
+		+ pointLightDiffuse1.xyz * LitPoint1.y * attenuation_P1 ) 
+		* textColour , 1);
+
+} 
+
+void ppLightFP_noTex(float4 pos	 	    : TEXCOORD0,
+				float3 normal		: TEXCOORD1, 
+	 			float4 oSpotLightPos1		: TEXCOORD2,
+				float3 eyepos		: TEXCOORD3,
+				float2 uv			: TEXCOORD4,
+				float4 oSpotLightPos2 : TEXCOORD5, 
+			    float4 oPointLightPos1 : TEXCOORD6, 
+				uniform float4 spotLightDiffuse1,
+				uniform float4 spotLightDiffuse2,
+				uniform float4 pointLightDiffuse1,
+				uniform float4 spotParams1,		
+				uniform float4 spotParams2,		
+				uniform float3 spotDirection1,	
+				uniform float3 spotDirection2,	
+				uniform float4 spotLightAttn1,				
+				uniform float4 spotLightAttn2,
+				uniform float4 pointLightAttn1,
+				uniform float3 difColor,
+				out float4 oColor : COLOR)
+{
+	float3 N = normalize(normal);
+	float3 EyeDir = normalize(eyepos - pos.xyz);
+	
+	// spot1
+	float3 SpotDir1 = normalize(oSpotLightPos1.xyz -  (pos * oSpotLightPos1.w));
+	float3 SpotHalfAngle1 = normalize(SpotDir1 + EyeDir);
+	float NdotL_S1 = dot(SpotDir1, N);
+	float NdotH_S1 = dot(SpotHalfAngle1, N);
+	float4 LitSpot1 = lit(NdotL_S1,NdotH_S1, 127); // 127 is exponent
+	// spot2
+	float3 SpotDir2 = normalize(oSpotLightPos2.xyz -  (pos * oSpotLightPos2.w));
+	float3 SpotHalfAngle2 = normalize(SpotDir2 + EyeDir);	
+	float NdotL_S2 = dot(SpotDir2, N);
+	float NdotH_S2 = dot(SpotHalfAngle2, N);
+	float4 LitSpot2 = lit(NdotL_S2,NdotH_S2, 127); // 127 is exponent
+	// point1
+	float3 PointDir1 = normalize(oPointLightPos1.xyz -  (pos * oPointLightPos1.w));
+	float3 PointHalfAngle1 = normalize(PointDir1 + EyeDir);	
+	float NdotL_P1 = dot(PointDir1, N);
+	float NdotH_P1 = dot(PointHalfAngle1, N);
+	float4 LitPoint1 = lit(NdotL_P1,NdotH_P1, 127); // 127 is exponent
+
+	// spot factor 1 & 2
+	float spotSat1 = saturate(-dot(SpotDir1, spotDirection1.xyz));
+    float t1 = smoothstep(spotParams1.y, spotParams1.x, spotSat1);
+    float spotFactor1 = pow(t1, spotParams1.z);
+	float spotSat2 = saturate(-dot(SpotDir2, spotDirection2.xyz));
+    float t2 = smoothstep(spotParams2.y, spotParams2.x, spotSat2);
+    float spotFactor2 = pow(t2, spotParams2.z);
+
+	// attenuation
+	float distance_S1 = length(oSpotLightPos1.xyz - pos.xyz); 	
+	float attenuation_S1 = 1 / (spotLightAttn1.y + spotLightAttn1.z * distance_S1 + spotLightAttn1.w * distance_S1 * distance_S1); 	
+	float distance_S2 = length(oSpotLightPos2.xyz - pos.xyz); 	
+	float attenuation_S2 = 1 / (spotLightAttn2.y + spotLightAttn2.z * distance_S2 + spotLightAttn2.w * distance_S2 * distance_S2); 	
+	float distance_P1 = length(oPointLightPos1.xyz - pos.xyz); 	
+	float attenuation_P1 = 1 / (spotLightAttn2.y + pointLightAttn1.z * distance_P1 + pointLightAttn1.w * distance_P1 * distance_P1); 	
+
+	// diffuse color
+	oColor = float4(
+		(spotLightDiffuse1.xyz * LitSpot1.y * attenuation_S1 * spotFactor1
+		+ spotLightDiffuse2.xyz * LitSpot2.y * attenuation_S2 * spotFactor2
+		+ pointLightDiffuse1.xyz * LitPoint1.y * attenuation_P1 ) 
+		* difColor , 1);
+
+} 
+
+
+
+//void ppLightVP_HW1b(float4 position	: POSITION,
+//              float3 normal		: NORMAL,
+//			  float2 uv			: TEXCOORD0, 
+//              float3 tangent	: TANGENT0,
+//			  float4 blendIdx	: BLENDINDICES,
+//			  float4 blendWgt	: BLENDWEIGHT,
+//              out float4 oPosition : POSITION,             			  
+//			  out float4 oPos	   : TEXCOORD0, 
+//			  out float3 oNorm     : TEXCOORD1, 
+//              out float4 oLightPos : TEXCOORD2, 
+//			  out float3 oEyePos   : TEXCOORD3,
+//			  out float2 oUv	   : TEXCOORD4,			  			  	
+//              uniform float4 lightPosition, 
+//			  uniform float3 eyePosition,              
+//			  uniform float3x4   worldMatrix3x4Array[4],
+//			  uniform float4x4 viewProjectionMatrix)
+//{ 
+//	// transform by indexed matrix
+//	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], position).xyz, 1.0) * blendWgt[0];
+//	oPosition = mul(viewProjectionMatrix, blendPos);
+//	// transform normal
+//	float3 norm = mul((float3x3)worldMatrix3x4Array[blendIdx[0]], normal) * blendWgt[0];	
+//	oNorm = normalize(norm);
+//
+//   //oPosition = mul(worldViewProj, position);
+//   oPos = oPosition;
+//   //oNorm     = normal; 
+//   oLightPos = lightPosition;
+//   oEyePos = eyePosition;
+//   oUv = uv;   
+//}
+
+
+//
+//void ppLightFP_noTex(float4 pos	 	    : TEXCOORD0,
+//				float3 normal		: TEXCOORD1, 
+//	 			float4 lightpos		: TEXCOORD2,
+//				float3 eyepos		: TEXCOORD3,
+//				float2 uv			: TEXCOORD4,				
+//				uniform float4 lightDiffuse,
+//				uniform float4 spotParams1,				
+//				uniform float3 spotDirection,	
+//				uniform float4 lightAttn,				
+//				uniform float3 difColor,					
+//				out float4 oColor : COLOR)
+//{
+//	float3 N = normalize(normal);
+//	float3 EyeDir = normalize(eyepos - pos.xyz);
+//	float3 LightDir = normalize(lightpos.xyz -  (pos * lightpos.w));
+//	float3 HalfAngle = normalize(LightDir + EyeDir);
+//	float NdotL = dot(LightDir, N);
+//	float NdotH = dot(HalfAngle, N);
+//	float4 Lit = lit(NdotL,NdotH, 127); // 127 is exponent	
+//
+//	// spot factor
+//	float temp = saturate(-dot(LightDir, spotDirection.xyz));
+//    float t = smoothstep(spotParams1.y, spotParams1.x, temp);
+//    float spotFactor = pow(t, spotParams1.z);
+//
+//	// attenuation
+//	float distance = length(lightpos.xyz - pos.xyz); 	
+//	float attenuation = 1 / (lightAttn.y + lightAttn.z * distance + lightAttn.w * distance * distance); 	
+//	
+//	// diffuse color
+//	float3 diffCol = lightDiffuse.xyz * Lit.y;	
+//	diffCol *= difColor; // diffuse texture
+//	if (lightAttn.w != 0)	diffCol *=  attenuation; // the if here is really dirty not sure how I can evaluate if there is attenuation or not...
+//	if (spotParams1 != 1,0,0,1) diffCol *= spotFactor;
+//	
+//	oColor = float4(diffCol, 1) ;
+//
+//} 
+			

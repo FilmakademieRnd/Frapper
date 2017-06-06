@@ -1,0 +1,122 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program GeometryBlurNode_Shader/QuadVertexProgram cg
+{
+	source GeometryBlur.cg
+	profiles vs_1_1 arbvp1
+    entry_point geometryBlur_Quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program GeometryBlurNode_Shader/GeometryBlurX_ps cg
+{
+    source GeometryBlur.cg
+    entry_point geometryBlurX_ps
+    profiles ps_3_0 fp40
+    default_params
+    {
+        param_named_auto invTexSize inverse_texture_size 1
+		param_named mapToBlur int 0
+		param_named normalMap int 1
+		param_named blurringSize float 6
+		param_named blurringAngle float 0.9
+    }
+}
+
+
+fragment_program GeometryBlurNode_Shader/GeometryBlurY_ps cg
+{
+    source GeometryBlur.cg
+    entry_point geometryBlurY_ps
+    profiles ps_3_0 fp40 
+    default_params
+    {
+        param_named_auto invTexSize inverse_texture_size 1
+		param_named normalMap int 1
+		param_named blurringSize float 6
+		param_named blurringAngle float 0.9
+    }
+}
+
+
+material GeometryBlurNode_Shader/GeometryBlurX
+{
+    technique
+    {
+        pass
+        {
+			vertex_program_ref AmbientOcclusionNode_Shader/QuadVertexProgram
+			{
+			}	
+			
+            fragment_program_ref GeometryBlurNode_Shader/GeometryBlurX_ps
+            {
+            }
+
+			texture_unit	//(MapToBlur 0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none  //bilinear
+			}
+			
+			texture_unit	//(normalMap 1)
+			{
+                tex_coord_set 1
+				tex_address_mode clamp
+				filtering none  //bilinear
+			}
+        }
+    }
+}
+
+
+material GeometryBlurNode_Shader/GeometryBlurY
+{
+    technique
+    {
+        pass
+        {
+            fragment_program_ref GeometryBlurNode_Shader/GeometryBlurY_ps
+            {
+            }
+
+            texture_unit ssaoMapBlurX
+            {
+                tex_address_mode clamp
+                filtering none // bilinear <-
+            }
+
+			texture_unit	//(normalMap 1)
+			{
+                tex_coord_set 1
+				tex_address_mode clamp
+				filtering none  //bilinear
+			}
+        }
+    }
+}

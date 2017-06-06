@@ -1,0 +1,94 @@
+project(Example)
+
+cmake_minimum_required(VERSION 2.8)
+
+add_subdirectory(hello)
+add_subdirectory(world)
+
+########################################################################
+# Install the data files. Specify that they belong to the "CTData" and
+# "instructionData" components. This specification is later used by
+# CPack.
+########################################################################
+
+#
+# Get the list of all CT file names and specify where to install them and
+# that they belong to the "CTData" component
+#
+set(CT_DATA_FILE_DIR data/CT)
+file(GLOB CT_FILES "${CMAKE_SOURCE_DIR}/${CT_DATA_FILE_DIR}/*")
+install(FILES ${CT_FILES}
+        DESTINATION ${CT_DATA_FILE_DIR}
+        COMPONENT CTData)
+
+#
+# Same as above for the example.pdf file (intructionData component)
+#
+install(FILES "${CMAKE_SOURCE_DIR}/data/example.pdf"
+        DESTINATION data
+        COMPONENT instructionData)
+
+########################################################################
+
+#
+# Tell CMake to install the windows runtime libraries to the programs
+# directory and tell CPack that they belong to the applications component
+#
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+include(InstallRequiredSystemLibraries)
+install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+        DESTINATION programs
+        COMPONENT applications)
+
+
+########################################################################
+# CPack configuration
+########################################################################
+
+set(CPACK_PACKAGE_NAME "CPackExampleInstaller")
+set(CPACK_PACKAGE_VENDOR "Ziv Yaniv")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Example showing CPack in action")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "CPackExample")
+
+#
+# Tell CPack about the components and group the data components together (CPACK_COMPONENT_${COMPONENT_NAME_ALL_CAPS}_GROUP).
+#
+set(CPACK_COMPONENTS_ALL applications CTData instructionData)
+set(CPACK_COMPONENT_CTDATA_GROUP "data")
+set(CPACK_COMPONENT_INSTRUCTIONDATA_GROUP "data")
+
+#
+# More descriptive names for each of the components, and component groups
+#
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "applications (hello & world)")
+set(CPACK_COMPONENT_GROUP_DATA_DESCRIPTION "data (CT and instructions)")
+
+
+#
+# Text from "license.txt" is displayed in the installer's license tab
+#
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/license.txt")
+
+#
+# Set the icon used inside the installer wizard and the icons for the installer and un-installer
+#
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\hw.bmp")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/hw.ico")
+set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/hw.ico")
+
+
+#
+# Set the programs displayed under the Start menu shortcut
+# We do not use CPACK_PACKAGE_EXECUTABLES because it expects the binaries to be in a
+# directory named "bin" (CMake bug tracker ID: 0007829).
+#
+set(CPACK_NSIS_MENU_LINKS "programs\\hello" "Hello"
+                          "programs\\world" "World"
+                          ${CT_DATA_FILE_DIR} "CT Data"
+                          "data\\example.pdf" "documentation")
+
+include(CPack)

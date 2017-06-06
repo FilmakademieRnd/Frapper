@@ -1,0 +1,12 @@
+project(Animation)
+
+if (FRAPPER_BUILD_NODES_ANIMATION OR FRAPPER_BUILD_DEMO)
+  message( STATUS "Adding plugins from directory Animation")
+  add_subdirectory( AnimationClip)
+  add_subdirectory( RandomBlink)
+  add_subdirectory( TriggerAnimation )
+  add_subdirectory( FadeAnimation )
+  add_subdirectory( LoopAnimation )
+else()  
+  message( STATUS "Skipping plugins from directory Animation")
+endif()

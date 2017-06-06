@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         facetracker.xml
+  Description:  Contains the XML description of FaceTracker nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="FaceTracker" category="Tracking" color="255, 192, 171" plugin="facetracker.dll">
+  <parameters>
+    <parameter name="drawDebugInformation" type="Bool" defaultValue="false"/>
+    <parameter name="flipHorizontal" type="Bool" defaultValue="true"/>
+    <parameter name="faceX" type="Float" defaultValue="0" pin="out"/>
+    <parameter name="faceY" type="Float" defaultValue="0" pin="out"/>
+    <parameter name="noFaceDetected" type="UnsignedInt" defaultValue="0" pin="out"/>
+    <parameter name="switchTime" type="Int" defaultValue="10000" minValue="0" maxValue="20000"/>
+    <parameter name="switchTimeRand" type="Int" defaultValue="5000" minValue="0" maxValue="10000"/>
+    <parameter name="switchDelay" type="Int" defaultValue="0" minValue="0" maxValue="20000"/>
+    <parameter name="switchUserNow" type="Bool" defaultValue="false" pin="in"/>
+    <parameter name="minSize" type="Float" defaultValue="0.1" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" stepSize="0.01"/>
+    <parameter name="maxSize" type="Float" defaultValue="0.2" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" stepSize="0.01"/>
+    <parameter name="randomLook" type="Bool" defaultValue="false"/>
+    <parameter name="focusPointSpeed" type="Float" defaultValue="0.01" inputMethod="SliderPlusSpinBox" minValue="0.0001" maxValue="1.0" stepSize="0.02"/>
+    <parameter name="animationSpeed" type="Float" defaultValue="0.04" inputMethod="SliderPlusSpinBox" minValue="0.0001" maxValue="1.0" stepSize="0.01"/>
+    <parameter name="focusPointMoveLimit" type="Float" defaultValue="0.0"/>
+    <parameter name="jitter" type="Float" defaultValue="0.02"/>
+    <parameter name="probability" type="Float" defaultValue="0.7" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" stepSize="0.02"/>
+  </parameters>
+</nodetype>

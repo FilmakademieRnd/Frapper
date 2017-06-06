@@ -1,0 +1,78 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program SurfaceCurvature/QuadVP cg
+{
+	source SurfaceCurvature.cg
+	profiles vs_1_1 arbvp1
+    entry_point lsd_quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program SurfaceCurvature/SurfaceCurvatureFP cg
+{
+    source SurfaceCurvature.cg
+    entry_point lsd_ps
+    // will run on anything with pixel shader 2.b and up
+    profiles ps_2_x arbfp1
+	default_params
+	{
+		//param_named width float 1024
+		//param_named height float 768
+		//param_named cmax float 5
+		//param_named flatning float 3
+	}
+}
+
+
+material SurfaceCurvature/SurfaceCurvatureMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref SurfaceCurvature/SurfaceCurvatureFP
+			{
+			}
+			
+			vertex_program_ref SurfaceCurvature/QuadVP
+			{
+			}	
+			
+			texture_unit	//(inputMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}		
+		}
+	}
+}
+
+

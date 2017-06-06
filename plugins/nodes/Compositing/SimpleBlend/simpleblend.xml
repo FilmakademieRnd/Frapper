@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ambientocclusion.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="SimpleBlend" category="Compositing" color="185, 30, 75" plugin="simpleblend.dll">
+  <parameters>
+    <parameter name="Resource Group Name" type="String" defaultValue="SimpleBlendNode"/>
+    <parameter name="Reload" type="Command"/>    
+    <parameter name="Input Map One" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Input Map Two" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Output Pixel Format" type="Enumeration" defaultValue="Float16">
+      <literal name="ARGB8" value="RGBA8"/>
+      <literal name="Float16" value="Float16"/>
+    </parameter>
+      <parameter name="Operator" type="Enumeration" defaultValue="Add">
+        <literal name="Add" value="Add"/>
+        <literal name="Mul" value="Mul"/>
+		    <literal name="A over B" value="A over B"/>
+        <literal name="Stencil" value="Stencil"/>
+        <literal name="MultiplyWithAlpha" value="MultiplyWithAlpha"/>
+        <literal name="BlendWithAlpha" value="BlendWithAlpha"/>
+        <literal name="ShowAlpha" value="ShowAlpha"/>
+        <literal name="InvertAlpha" value="InvertAlpha"/>
+        <literal name="PassThrough" value="PassThrough"/>
+        <literal name="B over A" value="B over A"/>
+      </parameter>
+	  <parameter name="Linear Blend Factor" type="Float" minValue="0.0" maxValue="100.0" defaultValue="50.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" unit="" selfEvaluating="true" pin="in"/>
+  </parameters>
+</nodetype>
+
+

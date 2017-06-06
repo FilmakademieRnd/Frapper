@@ -1,0 +1,715 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program HairRenderAlpha/base_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_1_1 arbvp1
+    entry_point base_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/basePoseHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point basePoseHS_vs
+	includes_skeletal_animation true
+	includes_pose_animation 5
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+		param_named_auto anim_t animation_parametric				
+		param_named_auto anim_t2 animation_parametric
+	}
+}
+
+vertex_program HairRenderAlpha/baseHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point baseHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/baseLashHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point baseLashHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/baseAssHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point baseAssHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/baseHair_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_1_1 arbvp1
+    entry_point baseHair_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/baseHairHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point baseHairHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZ_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_2_0 arbvp1 vp20
+    entry_point lightZ_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZLashHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZLashHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZAssHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZAssHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZPoseHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZPoseHS_vs
+	includes_skeletal_animation true
+	includes_pose_animation 5
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+		param_named_auto anim_t animation_parametric				
+		param_named_auto anim_t2 animation_parametric
+	}
+}
+
+vertex_program HairRenderAlpha/lightZAssHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZAssHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZHair_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_2_0 arbvp1 vp20
+    entry_point lightZHair_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/lightZHairHS_vs cg
+{
+    source hairAlpha.cg
+    profiles vs_3_0 vp40
+    entry_point lightZHairHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadow_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_2_0 arbvp1 vp20
+    entry_point shadow_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadowHS_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_3_0 vp40
+    entry_point shadowHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadowLashHS_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_3_0 vp40
+    entry_point shadowLashHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadowAssHS_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_3_0 vp40
+    entry_point shadowAssHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadowPoseHS_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_3_0 vp40
+    entry_point shadowPoseHS_vs
+	includes_skeletal_animation true
+	includes_pose_animation 5
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+		param_named_auto anim_t animation_parametric				
+		param_named_auto anim_t2 animation_parametric
+	}
+}
+
+vertex_program HairRenderAlpha/shadowHair_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_2_0 arbvp1 vp20
+    entry_point shadowHair_vs
+	default_params
+	{
+		param_named_auto wvpMat worldviewproj_matrix
+	}
+}
+
+vertex_program HairRenderAlpha/shadowHairHS_vs cg
+{
+    source hairAlpha.cg
+	profiles vs_3_0 vp40
+    entry_point shadowHairHS_vs
+	includes_skeletal_animation true
+	default_params
+	{
+		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		param_named_auto vpMat viewproj_matrix
+	}
+}
+
+fragment_program HairRenderAlpha/lightZ_fs cg
+{
+    source hairAlpha.cg
+    profiles ps_3_0 fp40
+    entry_point lightZ_fs
+}
+
+fragment_program HairRenderAlpha/shadow_fs cg
+{
+    source hairAlpha.cg
+    profiles ps_3_0 fp40
+    entry_point shadow_fs
+}
+
+
+// this is the technique for the scheme "LightZ"
+material HairRenderAlpha/LightZ
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref HairRenderAlpha/lightZHS_vs  
+	        {
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref HairRenderAlpha/lightZ_fs
+	        {
+	        }
+	    }
+	}
+}
+
+material HairRenderAlpha/LightZPose
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref HairRenderAlpha/lightZPoseHS_vs  
+	        {
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref HairRenderAlpha/lightZ_fs
+	        {
+	        }
+	    }
+	}
+}
+
+material HairRenderAlpha/LightZLash
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref HairRenderAlpha/lightZLashHS_vs  
+	        {
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref HairRenderAlpha/lightZ_fs
+	        {
+	        }
+	    }
+	}
+}
+
+// this is the technique for the assets depth passes
+material HairRenderAlpha/LightZAss
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref HairRenderAlpha/lightZAssHS_vs  
+	        {
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref HairRenderAlpha/lightZ_fs
+	        {
+	        }
+	    }
+	}
+}
+
+// this is the technique for the scheme "Shadow" 
+material HairRenderAlpha/Shadow
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/baseHS_vs  
+            {
+            }
+	    }
+
+	    pass
+	    {
+			depth_write off
+			transparent_sorting off
+			max_lights 8
+			scene_blend add 
+            iteration once_per_light
+
+            vertex_program_ref HairRenderAlpha/shadowHS_vs
+	        {
+				param_named_auto wMat world_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref HairRenderAlpha/shadow_fs
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+	        }
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+                filtering filtering linear linear point 
+                max_anisotropy 2
+                tex_address_mode border
+                tex_border_colour 1 1 1
+			}
+		}
+	}
+}
+
+material HairRenderAlpha/ShadowLash
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/baseLashHS_vs  
+            {
+            }
+	    }
+
+	    pass
+	    {
+			depth_write off
+			transparent_sorting off
+			max_lights 8
+			scene_blend add 
+            iteration once_per_light
+
+            vertex_program_ref HairRenderAlpha/shadowLashHS_vs
+	        {
+				param_named_auto wMat world_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref HairRenderAlpha/shadow_fs
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+	        }
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+                filtering filtering linear linear point 
+                max_anisotropy 2
+                tex_address_mode border
+                tex_border_colour 1 1 1
+			}
+		}
+	}
+}
+
+// this is the technique for the assets
+material HairRenderAlpha/ShadowAss
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/baseAssHS_vs  
+            {
+				param_named brightness float 1.0
+            }
+	    }
+	}
+}
+
+
+// this is the technique for the assets
+material HairRenderAlpha/ShadowEye
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/baseAssHS_vs  
+            {
+				param_named brightness float 0.5
+            }
+	    }
+
+	    pass
+	    {
+			depth_write off
+			transparent_sorting off
+			max_lights 8
+			scene_blend add 
+            iteration once_per_light
+
+            vertex_program_ref HairRenderAlpha/shadowAssHS_vs
+	        {
+				param_named_auto wMat world_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref HairRenderAlpha/shadow_fs
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+	        }
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+                filtering filtering linear linear point 
+                max_anisotropy 2
+                tex_address_mode border
+                tex_border_colour 1 1 1
+			}
+		}
+	}
+}
+
+material HairRenderAlpha/ShadowPose
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/basePoseHS_vs  
+            {
+            }
+	    }
+
+	    pass
+	    {
+			depth_write off
+			transparent_sorting off
+			max_lights 8
+			scene_blend add 
+            iteration once_per_light
+
+            vertex_program_ref HairRenderAlpha/shadowPoseHS_vs
+	        {
+				param_named_auto wMat world_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref HairRenderAlpha/shadow_fs
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+	        }
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+                filtering filtering linear linear point 
+                max_anisotropy 2
+                tex_address_mode border
+                tex_border_colour 1 1 1
+			}
+		}
+	}
+}
+
+
+///// special shaders including hair generation /////
+
+material HairRenderAlpha/LightZHair
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref HairRenderAlpha/lightZHairHS_vs  
+	        {
+				param_named hairRootWidth float 10
+				param_named hairTipWidth float  4
+				param_named viewDir	float3 0.0 0.0 1.0
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref HairRenderAlpha/lightZ_fs
+	        {
+	        }
+	    }
+	}
+}
+
+// this is the technique for the scheme "Shadow" 
+material HairRenderAlpha/ShadowHair
+{
+	technique
+	{
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref HairRenderAlpha/baseHairHS_vs  
+            {
+				param_named hairRootWidth float 0.04
+				param_named hairTipWidth float 0.01 
+				param_named viewDir	float3 0.0 0.0 1.0
+            }
+	    }
+
+	    pass
+	    {
+			depth_write off
+			transparent_sorting off
+			max_lights 8
+			scene_blend add 
+            iteration once_per_light
+
+            vertex_program_ref HairRenderAlpha/shadowHairHS_vs
+	        {
+				param_named hairRootWidth float 0.04
+				param_named hairTipWidth float 0.01 
+				param_named viewDir	float3 0.0 0.0 1.0
+				param_named_auto wMat world_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref HairRenderAlpha/shadow_fs
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+	        }
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+                filtering filtering linear linear point 
+                max_anisotropy 2
+                tex_address_mode border
+                tex_border_colour 1 1 1
+			}
+		}
+	}
+}

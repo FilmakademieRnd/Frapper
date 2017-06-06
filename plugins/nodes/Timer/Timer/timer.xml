@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         timer.xml
+  Description:  Contains the XML description of Timer nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2012 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Timer" category="Timer" color="220, 40, 22" plugin="timer.dll">
+  <parameters>
+    <parameter name="Update" type="Generic" pin="in" visible="false"/>
+    <parameter name="SystemTime" type="Int" pin="out" visible="true"/>
+	<parameter name="NormalizedTime" type="Float" pin="out" minValue="0" maxValue="100" stepSize="0.001" visible="true"/>
+    <parameter name="Active" type="Bool" defaultValue="false" visible="true"/>
+    <parameter name="PerSecond" type="Int" defaultValue="25" minValue="1" maxValue="1000" stepSize="1" visible="true"/>
+    <parameter name="Interval" type="Int" defaultValue="40" minValue="1" maxValue="1000" stepSize="1" visible="true"/>
+    <parameter name="NormalizedTimeInterval" type="Int" defaultValue="1000" minValue="1" maxValue="60000" stepSize="100" visible="true"/>
+    <parameter name="switch" type="Bool" visible="false" pin="in" selfEvaluating="true"/>
+  </parameters>
+</nodetype>

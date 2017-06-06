@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         blur.xml
+  Description:  Contains the XML description of Blur nodes.
+  Author:       Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="BoxBlur" category="Shading" color="7, 45, 87" plugin="ShadingTemplate.dll">
+  <parameters>
+    <parameter name="Shader Name" type="String" defaultValue="BoxBlurShader"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/BoxBlur_Shader"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      <parameter name="blurDistance" type="Float" inputMethod="SliderPlusSpinBox" defaultValue="0.001" minValue="0.0" maxValue="1.0" stepSize="0.001"/>
+    </parameters>
+  </parameters>
+</nodetype>
+
+

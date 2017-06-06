@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         lightdescription.xml
+  Description:  Contains the XML description of Light nodes.
+  Author:       Markus Rapp <markus.rapp@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="LightDescription" category="Lights" color="255, 255, 109" plugin="lightdescription.dll">
+  <parameters>
+    <parameter name="Light Description File" type="Filename" filter="Light Description Files (*.txt)"/>
+		<parameter name="Number of Lights" type="TextInfo"/>
+    <parameter name="Light Power" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.01" maxValue="100" defaultValue="0.3" stepSize="0.01"/>
+    <parameter name="Set Number of Lights" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="16" defaultValue="3" stepSize="1"/>
+  </parameters>
+</nodetype>

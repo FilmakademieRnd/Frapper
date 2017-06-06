@@ -1,0 +1,135 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+fragment_program Depth2Stereo/Depth2StereoFP_cg cg
+{
+    source Depth2Stereo.cg
+    entry_point depth2stereo_ps
+    profiles ps_2_x arbfp1
+}
+fragment_program Depth2Stereo/Depth2StereoFP_glsl glsl
+{
+	source Depth2Stereo_Fp.glsl
+	syntax glsl400
+}
+fragment_program Depth2Stereo/Depth2StereoFP unified
+{
+	delegate Depth2Stereo/Depth2StereoFP_cg
+	delegate Depth2Stereo/Depth2StereoFP_glsl
+}
+
+// color pass
+material Depth2Stereo/ColorPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref CompositorTemplate/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// depth pass
+material Depth2Stereo/DepthPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref CompositorTemplate/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Depth2Stereo/Depth2StereoMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+
+			fragment_program_ref Depth2Stereo/Depth2StereoFP
+			{
+				param_named float eyeDistance 0.0;
+				param_named float hit 0.0;
+				param_named inputMapColor int 0;
+				param_named inputMapDepth int 1;
+			}
+			
+			texture_unit  // Color
+			{
+                tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+			
+			texture_unit  // Depth
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

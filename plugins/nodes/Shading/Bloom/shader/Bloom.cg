@@ -1,0 +1,83 @@
+//////////////////////////////////////////////
+// Horizontal/Vertical Gaussian-Blur passes //
+//////////////////////////////////////////////
+
+
+//We use the Normal-gauss distribution formula
+//f(x) being the formula, we used f(0.5)-f(-0.5); f(1.5)-f(0.5)...
+static const float2 samples[11] =
+{//stddev=2.0
+	-0.05, 0.01222447, 
+	-0.04, 0.02783468,	
+	-0.03, 0.06559061,	
+	-0.02, 0.12097757,	
+	-0.01, 0.17466632,	
+	 0.00, 0.19741265,	
+	 0.01, 0.17466632,	
+	 0.02, 0.12097757,	
+	 0.03, 0.06559061,	
+	 0.04, 0.02783468,	
+	 0.05, 0.01222447
+};
+
+void blurV_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidth)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(0.0, samples[i].x*BlurWidth)) * samples[i].y;
+	oColor = result;
+}
+
+void blurH_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidth)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(samples[i].x*BlurWidth, 0.0)) * samples[i].y;
+	oColor = result;
+}
+
+
+///////////
+// Bloom //
+///////////
+
+void bloom_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler RT	: TEXUNIT0,
+			  uniform sampler Blur1	: TEXUNIT1,
+			  uniform float OriginalImageWeight,
+			  uniform float BlurWeight) 
+{
+	const float4 sharp = tex2D(RT, texCoord);
+	const float4 blur  = tex2D(Blur1, texCoord);
+
+	oColor = blur*BlurWeight + sharp*OriginalImageWeight;
+}
+
+
+/////////////////
+// Bright-Pass //
+/////////////////
+
+// High-pass filter for obtaining lumminance
+// We use an aproximation formula that is pretty fast:
+// f(x) = ( -3 * ( x - 1 )^2 + 1 ) * 2
+// Color += f(Color)
+void bright_ps(in float2 texCoord	: TEXCOORD0,
+			   out float4 oColor	: COLOR0,
+			   uniform sampler RT	: TEXUNIT0)
+{
+	float4 result = tex2D(RT, texCoord);
+
+	result -= 1;
+	float4 bright4 = -6 * result * result + 2;
+	float bright = dot( bright4, float4(0.333333, 0.333333, 0.333333, 0.333333));
+	result += bright + 0.6;
+	oColor = result;
+}

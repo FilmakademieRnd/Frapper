@@ -1,0 +1,237 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_vs                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_vs(	in float4 iPosition : POSITION,
+				in float2 iTexCoord : TEXCOORD0,
+				out float4 oPosition : POSITION,
+				out float2 oTexCoord : TEXCOORD0,
+				uniform float4x4 worldViewProj)
+{
+  oPosition = mul(worldViewProj, iPosition);
+  oTexCoord = iTexCoord;
+}
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+// calculate movement 
+
+void quadSimulation_ps( in  float2 texCoord : TEXCOORD0,
+						out float4 color    : COLOR,
+						uniform sampler2D waterTexture : TEXUNIT0,
+						uniform sampler2D randTexture : TEXUNIT1,
+						uniform sampler2D gravityTexture : TEXUNIT2)
+
+
+{
+   const float width = 1024;
+   const float height = 1024;
+
+
+   // input waterTexture:
+   // r: waterMass
+   // g: waterVelocity
+   float4 n = tex2D(waterTexture, texCoord).rgba;
+   float waterMass = n.r;
+   const float maxWater = 0.01;
+   float random = tex2D(randTexture, float2(texCoord.x * 100 * n.b, texCoord.y * 100 * n.a)).r;
+   float dropletMass = n.r;
+   float2 waterVelocity = 0.0;
+   
+   float waterMovement = 0.0; // 0.0: stay 1.0: move left; 2.0: move down; 3.0: move right
+   
+   if (dropletMass > 0.0) {
+		float3 gravityTex = tex2D(gravityTexture, texCoord).rgb;
+		float2 gravityDirection = float2(0.0, 4.0);
+		if (texCoord.x > 0.5) {
+			gravityDirection += float2(gravityTex.r * 4 + 1, gravityTex.b);
+		}
+		else {
+			gravityDirection += float2(gravityTex.r * (-4) - 1, gravityTex.b);
+		}
+		// Gravitation
+		waterVelocity = float2(n.a - 1.0, n.b);
+		waterVelocity += gravityDirection * (0.7) * 0.01; // velocity vector
+		
+	
+		
+		// Anziehung anderer Tropfen
+		float2 valueDown = tex2D(waterTexture, float2(texCoord.x, texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueTop = tex2D(waterTexture, float2(texCoord.x, texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueRight = tex2D(waterTexture, float2(texCoord.x+(1.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueLeft = tex2D(waterTexture, float2(texCoord.x-(1.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueRight2 = tex2D(waterTexture, float2(texCoord.x+(2.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueLeft2 = tex2D(waterTexture, float2(texCoord.x-(2.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueRight3 = tex2D(waterTexture, float2(texCoord.x+(3.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueLeft3 = tex2D(waterTexture, float2(texCoord.x-(3.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueRight4 = tex2D(waterTexture, float2(texCoord.x+(4.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+		float2 valueLeft4 = tex2D(waterTexture, float2(texCoord.x-(4.0/(width-1)), texCoord.y+(1.0/(height-1)))).rg;
+
+		float moveSide = waterVelocity[0] * 0.1;
+		float moveDown = waterVelocity[1] * 0.15 ;		
+		
+		moveSide += valueRight.r * 2;
+		moveSide -= valueLeft.r * 2;
+		moveSide += valueRight2.r * 1;
+		moveSide -= valueLeft2.r * 1;
+		moveSide += valueRight3.r * 1;
+		moveSide -= valueLeft3.r * 1;
+		moveSide += valueRight4.r * 1;
+		moveSide -= valueLeft4.r * 1;
+		
+		moveDown += valueDown.r * 2;
+		moveDown -= valueTop.r * 2;
+		
+		moveSide += valueRight.g * 0.5;
+		moveSide -= valueLeft.g * 0.5;
+		moveSide += valueRight2.g * 0.25;
+		moveSide -= valueLeft2.g * 0.25;
+		moveSide += valueRight3.g * 0.25;
+		moveSide -= valueLeft3.g * 0.25;
+		moveSide += valueRight4.g * 0.25;
+		moveSide -= valueLeft4.g * 0.25;
+		
+		moveDown += valueDown.g * 0.5;
+		moveDown -= valueTop.g * 0.5;
+
+		if (moveSide > 0) {
+			if (random < moveSide) {
+				if (valueRight.r <= maxWater) {
+					waterMovement = 3.0;
+					//waterVelocity[0] += 30;
+				}
+			}
+		} else {
+			moveSide *= -1;
+			if (random < moveSide) {
+				if (valueLeft.r <= maxWater) {
+					waterMovement = 1.0;
+					//waterVelocity[0] += 20;
+				}
+			}
+		}
+		if (random > moveSide && random < moveSide + moveDown) {
+			if (valueDown.r <= maxWater) {
+				waterMovement = 2.0; // 0.0: stay 1.0: move left down; 2.0: move down; 3.0: move right down
+				//waterVelocity[0] += 10;
+			}
+			else {
+				if (valueLeft.r <= maxWater) {
+					waterMovement = 1.0;
+				}
+			}
+		}
+	}
+	float traversal = n.g;
+	color = float4(waterMass, waterVelocity[1], waterVelocity[0], waterMovement + traversal);
+}
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+// create movement
+ 
+void quadResult_ps( in  float2 texCoord : TEXCOORD0,
+					out float4 color    : COLOR,
+					uniform sampler2D SimulationTexture : TEXUNIT0)
+
+
+{
+/*
+	float3 n = tex2D(SimulationTexture, texCoord).rgb;
+	color = float4(n.rgb, 1.0);
+*/
+	
+   // input SimulationTexture:
+   // r: waterMass
+   // g: waterVelocity
+   // b: waterMovement
+   
+   // values of top and current block
+   
+   const float width = 1024;
+   const float height = 1024;
+
+   
+   float4 valueCurrent = tex2D(SimulationTexture, float2(texCoord.x, texCoord.y)).rgba;
+   float4 valueTop = tex2D(SimulationTexture, float2(texCoord.x, texCoord.y-(1.0/(height-1)))).rgba;
+   float4 valueTopLeft = tex2D(SimulationTexture, float2(texCoord.x-(1.0/(width-1)), texCoord.y-(1.0/(height-1)))).rgba;
+   float4 valueTopRight = tex2D(SimulationTexture, float2(texCoord.x+(1.0/(width-1)), texCoord.y-(1.0/(height-1)))).rgba;
+   
+   // value of water which remains on the surface
+   float traversal = valueCurrent.a;
+   if (traversal > 1.0) {
+	traversal -= 1.0;
+   }
+   if (traversal > 2.0) {
+	traversal -= 1.0;
+   }
+   if (traversal > 3.0) {
+	traversal -= 1.0;
+   }
+   
+   if (traversal > 0.001) {
+	traversal -= 0.001;
+   }
+   if (valueCurrent.r > 0) {
+	traversal = min(0.8, 0.9);
+   }
+   // remain water
+   if (valueCurrent.a >= 1.0) {	
+	valueCurrent.r = valueCurrent.g = valueCurrent.b = 0.0;	
+   }
+   
+   // look if new water comes into this fragment
+   if (valueTopLeft.a >= 3.0) { // from top left
+	valueCurrent.r = valueCurrent.r + valueTopLeft.r - 0.06;
+	// calculate new velocity
+	valueCurrent.g = ((valueCurrent.g * valueCurrent.r) + (valueTopLeft.g * valueTopLeft.r)) / (valueCurrent.r + valueTopLeft.r);
+	valueCurrent.b = ((valueCurrent.b * valueCurrent.r) + (valueTopLeft.b * valueTopLeft.r)) / (valueCurrent.r + valueTopLeft.r);
+   }
+   if (valueTop.a >= 2.0 && valueTop.a < 3.0) { // from top
+	valueCurrent.r = valueCurrent.r + valueTop.r - 0.06;
+	// calculate new velocity
+	valueCurrent.g = ((valueCurrent.g * valueCurrent.r) + (valueTop.g * valueTop.r)) / (valueCurrent.r + valueTop.r);
+	valueCurrent.b = ((valueCurrent.b * valueCurrent.r) + (valueTop.b * valueTop.r)) / (valueCurrent.r + valueTop.r);
+   }
+   if (valueTopRight.a >= 1.0 && valueTopRight.a < 2.0) { // from top right
+	valueCurrent.r = valueCurrent.r + valueTopRight.r - 0.06;
+	// calculate new velocity
+	valueCurrent.g = ((valueCurrent.g * valueCurrent.r) + (valueTopRight.g * valueTopRight.r)) / (valueCurrent.r + valueTopRight.r);
+	valueCurrent.b = ((valueCurrent.b * valueCurrent.r) + (valueTopRight.b * valueTopRight.r)) / (valueCurrent.r + valueTopRight.r); 
+   }
+   
+   color = float4(valueCurrent.r, traversal, valueCurrent.g, valueCurrent.b + 1.0);
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         textRender.xml
+  Description:  Contains the XML description of TextRender nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="TextRender" category="Rendering" color="173, 255, 173" plugin="textRender.dll">
+  <parameters>
+    <parameters name="Resolution">
+      <parameter name="Width" type="UnsignedInt" defaultValue="1280" minValue="1" maxValue="5000"/>
+      <parameter name="Height" type="UnsignedInt" defaultValue="720" minValue="1" maxValue="5000"/>
+    </parameters>
+    <parameter name="Text" type="String" defaultValue="Text to render" pin="in" visible="true" selfEvaluating="true"/>
+    <parameter name="Position X" type="Int" minValue="0" maxValue="5000"/>
+    <parameter name="Position Y" type="Int" minValue="0" maxValue="5000"/>
+    <parameter name="Font Name" type="String" defaultValue="Lucida Calligraphy" />
+    <parameter name="Font Size" type="Int" defaultValue="32" maxValue="5000"/>
+    <parameter name="Font Color" type="Color"/>
+    <parameter name="Bold" type="Bool" defaultValue="true"/>
+  </parameters>
+</nodetype>

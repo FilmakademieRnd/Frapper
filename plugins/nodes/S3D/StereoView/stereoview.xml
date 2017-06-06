@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         picviewershutter.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2011 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="StereoView" category="S3D" color="255, 255, 255" plugin="StereoView.dll">
+  <parameters>
+    <parameter name="Left Image" type="Image" pin="in" />
+    <parameter name="Right Image" type="Image" pin="in" />
+    <parameter name="View Mode" type="Enumeration">
+      <literal name="Interlaced"/>
+      <literal name="NVIDIA 3D Vision"/>
+    </parameter>
+    <parameters name="3D Vision Options">
+      <parameter name="Open Stereo Viewer" type="Command" />
+      <parameter name="Update View" type="Command" />
+      <parameter name="Stereo" type="Bool" defaultValue="true"/>
+      <parameter name="Swap Eyes" type="Bool" defaultValue="false"/>
+      <parameter name="Use Direct3D9 Fullscreen" type="Bool" defaultValue="true"/>
+    </parameters>
+  </parameters>
+</nodetype>
+
+

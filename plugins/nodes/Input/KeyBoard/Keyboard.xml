@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Keyboard.xml
+  Description:  Contains the XML description of Keyboard nodes.
+  Author:       Michael Bussler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document	type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Keyboard" category="Input" color="250,100,50" plugin="Keyboard.dll">
+  <parameters> 
+    <parameter  name="Eat Up Keys"  type="Bool" defaultValue="false" description="Set this option, if key strokes should only be handled by this node, and no where else." />
+    <parameters	name="Characters">
+      <parameter	name="Key_A"	type="Bool"	pin="out"/>
+      <parameter	name="Key_B"	type="Bool"	pin="out"/>
+      <parameter	name="Key_C"	type="Bool"	pin="out"/>
+      <parameter	name="Key_D"	type="Bool"	pin="out"/>
+      <parameter	name="Key_E"	type="Bool"	pin="out"/>
+      <parameter	name="Key_F"	type="Bool"	pin="out"/>
+      <parameter	name="Key_G"	type="Bool"	pin="out"/>
+      <parameter	name="Key_H"	type="Bool"	pin="out"/>
+      <parameter	name="Key_I"	type="Bool"	pin="out"/>
+      <parameter	name="Key_J"	type="Bool"	pin="out"/>
+      <parameter	name="Key_K"	type="Bool"	pin="out"/>
+      <parameter	name="Key_L"	type="Bool"	pin="out"/>
+      <parameter	name="Key_M"	type="Bool"	pin="out"/>
+      <parameter	name="Key_N"	type="Bool"	pin="out"/>
+      <parameter	name="Key_O"	type="Bool"	pin="out"/>
+      <parameter	name="Key_P"	type="Bool"	pin="out"/>  
+      <parameter	name="Key_Q"	type="Bool"	pin="out"/>
+      <parameter	name="Key_R"	type="Bool"	pin="out"/>
+      <parameter	name="Key_S"	type="Bool"	pin="out"/>
+      <parameter	name="Key_T"	type="Bool"	pin="out"/>
+      <parameter	name="Key_U"	type="Bool"	pin="out"/>
+      <parameter	name="Key_V"	type="Bool"	pin="out"/>
+      <parameter	name="Key_W"	type="Bool"	pin="out"/>
+      <parameter	name="Key_X"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Y"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Z"	type="Bool"	pin="out"/>
+    </parameters>
+    <parameters	name="Numbers">
+      <parameter	name="Key_1"	type="Bool"	pin="out"/>
+      <parameter	name="Key_2"	type="Bool"	pin="out"/>
+      <parameter	name="Key_3"	type="Bool"	pin="out"/>
+      <parameter	name="Key_4"	type="Bool"	pin="out"/>
+      <parameter	name="Key_5"	type="Bool"	pin="out"/>
+      <parameter	name="Key_6"	type="Bool"	pin="out"/>
+      <parameter	name="Key_7"	type="Bool"	pin="out"/>
+      <parameter	name="Key_8"	type="Bool"	pin="out"/>
+      <parameter	name="Key_9"	type="Bool"	pin="out"/>
+      <parameter	name="Key_0"	type="Bool"	pin="out"/>
+    </parameters>
+    <parameters	name="Directions">
+      <parameter	name="Key_Up"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Down"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Left"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Right"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Home"	type="Bool"	pin="out"/>
+      <parameter	name="Key_End"	type="Bool"	pin="out"/>
+      <parameter	name="Key_PageUp"	type="Bool"	pin="out"/>
+      <parameter	name="Key_PageDown"	type="Bool"	pin="out"/>
+    </parameters>
+    <parameters	name="Modifiers">   
+      <parameter	name="Key_Shift"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Control"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Meta"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Alt"	type="Bool"	pin="out"/>
+      <parameter	name="Key_AltGr"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Enter"	type="Bool"	pin="out"/>
+      <parameter	name="Key_Return"	type="Bool"	pin="out"/>
+    </parameters>
+  </parameters>
+</nodetype>

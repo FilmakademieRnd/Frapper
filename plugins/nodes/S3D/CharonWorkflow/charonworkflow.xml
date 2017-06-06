@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         charonworkflow.xml
+  Description:  Loads and executes Charon workflow files 
+  Author:       Michael Bussler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="CharonWorkflow" category="S3D" color="255, 255, 255" plugin="charonworkflow.dll">
+  <parameters>
+    <parameter    name="Calculate"      type="Command"      description="Starts the calculation of the loaded charon workflow."/>
+    <parameter    name="Reset"          type="Command"      description="Resets the loaded charon workflow."/>
+    <parameters   name="Setup">
+      <parameter    name="Workflow File"  type="Filename"     description="The charon workflow to load."  filter="Charon Workflows (*.wrp)" defaultValue="" />
+      <parameter    name="Edit in Tuchulcha" type="Command"   description="Opens the charon workflow in Tuchulcha." />
+      <parameter    name="Show Advanced Parameters"           type="Bool" defaultValue="false" description="Hide advanced parameters of the charon nodes." />
+      <parameter    name="Template Type"  type="Enumeration"  description="The default template type that is used for charon plugins that don't specify a template type." defaultValue="float" enabled="false">
+        <literal name="double" value="0" />
+        <literal name="float"  value="1" />
+        <literal name="int"    value="2"/>
+      </parameter>      
+    </parameters>
+    <!--
+    <parameter name="Process" type="Generic" pin="out" visible="false" selfEvaluating="true" />
+    -->
+  </parameters>
+</nodetype>
+

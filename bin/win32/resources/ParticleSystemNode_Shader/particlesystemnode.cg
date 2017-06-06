@@ -1,0 +1,119 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+float3x3 createRotationMatrix(float angleY, float angleX)
+{
+	float3x3 rotationMatrixY  = float3x3(cos(angleY), 0.0, sin(angleY), 0.0, 1.0, 0.0, -sin(angleY), 0, cos(angleY));
+	float3x3 rotationMatrixX  = float3x3(1.0, 0.0, 0.0, 0.0, cos(angleX), sin(angleX), 0.0, -sin(angleX), cos(angleX));
+	return mul(rotationMatrixX, rotationMatrixY);
+}
+
+float3 calculateOrientation(float4 position, float3 orientation, float factor)
+{
+	static const float3 xAxis = float3(1.0, 0.0, 0.0);
+	static const float3 yAxis = float3(0.0, 1.0, 0.0);
+	static const float3 zAxis = float3(0.0, 0.0, 1.0);
+	
+	// calculate rotation around y-axis
+	float3 projOrientation = normalize(float3(orientation.x, 0.0, orientation.z));
+	float angleY = -acos(dot(projOrientation, zAxis));
+	float sign = dot(projOrientation, xAxis);
+	if (sign > 0.0)
+		angleY *= -1.0;
+
+	// calculate rotation around x-axis
+	float angleX = -acos(dot(orientation, projOrientation));
+	sign = dot(yAxis, orientation);
+	if (sign > 0.0)
+		angleX *= -1.0;
+
+	angleY = lerp(0.0, angleY, factor);
+	angleX = lerp(0.0, angleX, factor);
+		
+	float3 rotatedPosition = mul(createRotationMatrix(angleY, angleX), position.xyz);
+	
+	return rotatedPosition;
+}
+
+void main_vs(
+    in float4 posIn : POSITION,
+	in float3 normIn : NORMAL,
+	in float3 uvIn : TEXCOORD0,
+    out float4 posOut : POSITION,
+	out float4 normDepthOut : TEXCOORD0,
+	out float2 uvOut : TEXCOORD1,
+	uniform float far,
+	uniform float4x4 wvpMat,
+	uniform float4x4 wvMat)
+{
+	normDepthOut.xyz = normIn;
+	uvOut = uvIn.xy;
+	normDepthOut.w = length((1.0f - mul(wvMat, posIn).xyz) / far);
+	
+	float size = uvIn.z;
+	
+	// scale and align orientation with z-axis for paticles with negative z position
+	float lerpFactor = 1.0;
+	float scaleFactor = 1.0;
+	if (posIn.z < 0.0) {
+		float backDropFactor = min(1.0, -posIn.z);
+		lerpFactor = 1 - backDropFactor;
+		scaleFactor += backDropFactor;
+	}
+			
+	float2 uv = float2(uvIn.x, uvIn.y * -1.0);
+	// create local positions from texture coordinates
+	float4 posLocal = float4((uvIn.xy + vec2(-0.5, 0.5)) * size * scaleFactor, 0.0, 1.0);
+	float4 rotatedPosLocal = float4(calculateOrientation(posLocal, normalize(normIn), lerpFactor), 1.0);
+	
+	posOut = mul(wvpMat, posIn + rotatedPosLocal);
+}
+
+void main_ps(
+	in float4 normIn : TEXCOORD0,
+	in float2 uvIn : TEXCOORD1,
+    out float4 colOut : COLOR,
+	uniform sampler2D texture)
+{
+	float alpha = tex2D(texture, uvIn.xy).a;
+	//colOut = float4(normIn.xyz, alpha);
+	colOut = float4(1.f, 1.f, 1.f, alpha);
+}
+
+void main_advancedRender_ps(
+	in float4 normDepthIn : TEXCOORD0,
+	in float2 uvIn   : TEXCOORD1,
+	uniform float4 objectId,
+    out float4 normalOut : COLOR0,
+	out float4   depthOut : COLOR1,
+	out float4   viewOut : COLOR2,
+	out float4	   idOut : COLOR3,
+	uniform sampler2D texture)
+{
+	const float alpha = tex2D(texture, uvIn).a;
+	
+	normalOut = float4(normDepthIn.xyz, alpha);
+	depthOut  = float4(normDepthIn.w, 0 , 0, alpha);
+	viewOut   = float4(1.0); // empty
+	idOut     = float4(objectId.x / 100.0f, 0, 0, alpha);
+}

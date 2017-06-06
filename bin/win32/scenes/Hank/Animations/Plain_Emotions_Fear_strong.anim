@@ -1,0 +1,24 @@
+anim IBrowU_CAU1
+{
+	//Time   /    Value
+	0	0
+	1	73.6364
+}
+anim BrowU_CAU1_2
+{
+	//Time   /    Value
+	0	0
+	1	28.1818
+}
+anim L_LLipD_LAU16
+{
+	//Time   /    Value
+	0	0
+	1	63.6364
+}
+anim LipSt_CAU20
+{
+	//Time   /    Value
+	0	0
+	1	51.8182
+}

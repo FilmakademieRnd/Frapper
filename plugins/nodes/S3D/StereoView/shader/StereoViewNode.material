@@ -1,0 +1,38 @@
+fragment_program Interlaced/Interlaced_FP cg
+{
+    source StereoViewNode.cg
+    entry_point InterlacedShader_ps
+    profiles ps_3_0 fp40
+}
+
+material Interlaced/InterlacedMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref Interlaced/Interlaced_FP
+			{
+			}
+			
+			texture_unit	//(inputMap0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}	
+			
+			texture_unit	//(inputMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}				
+		}
+	}
+}

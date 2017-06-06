@@ -1,0 +1,142 @@
+// Geometry shader for not blurred SaC wrinkles
+TRIANGLE
+TRIANGLE_OUT
+void Not_Blurred_Wrinkles_GS(AttribArray<float4> Pos 		: POSITION,
+							 AttribArray<float2> iTexCoord 	: TEXCOORD0,
+							 AttribArray<float3> iNormal  	: TEXCOORD1,
+							 AttribArray<float2> iTangent	: TEXCOORD2,
+							 AttribArray<float3> iBinormal 	: TEXCOORD3,
+							 AttribArray<float3> iViewDir	: TEXCOORD4,
+							 AttribArray<float3> iOldPos	: TEXCOORD5,
+							 AttribArray<float3> iNewPos	: TEXCOORD6)
+{
+	float4 newPos[3];
+	// Positions in world space
+	for (int i = 0; i<3; ++i){
+		newPos[i] = float4(iNewPos[i],1); //mul(inverseWorldViewProjMatrix, Pos[i]);
+	}
+
+	// original triangle area
+	float3 vEdgeA_OS = iOldPos[1].xyz - iOldPos[0].xyz;
+	float3 vEdgeB_OS = iOldPos[2].xyz - iOldPos[0].xyz;
+	float fAreaOS = length( cross( vEdgeA_OS, vEdgeB_OS ) ) * 0.5;
+	// new (skinned) triangle area
+	float3 vEdgeA_WS = newPos[1].xyz - newPos[0].xyz;
+	float3 vEdgeB_WS = newPos[2].xyz - newPos[0].xyz;
+	float fAreaWS = length( cross( vEdgeA_WS, vEdgeB_WS ) ) * 0.5;
+	// Wrinkle weight is [-1,1]
+	float fWrinkleWeight = clamp( (fAreaOS - fAreaWS) / fAreaOS, -1, 1 );
+	
+	float4 fWrinkleWeightColor = float4(0,0,0,1);
+	for (int i = 0; i<3; ++i){
+
+		// generate pixel-color
+		if (fWrinkleWeight > 0)
+			fWrinkleWeightColor = float4(fWrinkleWeight,0,0,1);
+		else if (fWrinkleWeight < 0){
+			fWrinkleWeightColor = float4(0,abs(fWrinkleWeight),0,1);
+		}
+		//fWrinkleWeightColor.b = 1;
+
+		emitVertex(	Pos[i] 			: POSITION, 
+					iTexCoord[i]	: TEXCOORD0,
+					iNormal[i] 		: TEXCOORD1,
+					iTangent[i]		: TEXCOORD2,
+					iBinormal[i] 	: TEXCOORD3,
+					iViewDir[i]		: TEXCOORD4,
+					fWrinkleWeightColor : TEXCOORD5);
+	}
+}
+
+
+
+void HW_Skinning_VS_82b_4i_5CBS_SaC_VB(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float3 iTangent	: TANGENT, 
+						 float  id			: BINORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 pose1   	: TEXCOORD1, 
+						 float3 pose2   	: TEXCOORD2,
+						 float3 pose3   	: TEXCOORD3,
+						 float3 pose4   	: TEXCOORD4,
+						 float3 pose5   	: TEXCOORD5,
+						 //float3 pose6   	: TEXCOORD6,
+						 //float3 pose7   	: TEXCOORD7,						 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,						 
+						 out float2 oTexCoord   : TEXCOORD0,	
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oNormalW    : TEXCOORD6,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 finalWeight : TEXCOORD5,
+						 // params	
+						 uniform float3 eyePosition,              
+						 uniform float3x4 worldMatrix3x4Array[81],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4 anim_t,
+						 uniform float4 anim_t2,						 
+						 uniform float4x4 worldView,
+						 uniform sampler2D weightmap : TEXUNIT0) // Weightmap						 
+{   
+	oTexCoord = iTexCoord;     	
+	float4 CBSPosition = float4(	
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		, 1.0);
+	
+	CBSPosition.xyz = CBSPosition.xyz + position.xyz;
+	//float4 CBSPosition = float4(position.xyz, 1.0);
+
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	oNormalW = float3(0,0,0);
+	float3 tangent = float3(0,0,0);	
+
+	for (int i = 0; i < 4; ++i)
+	{		
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPosition).xyz, 1.0) * blendWgt[i];		
+		oNormalW += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}	
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	// TNB
+	oNormal =  normalize(mul((float3x3)worldView, oNormalW));
+	oTangent =  normalize(mul((float3x3)worldView, tangent));
+    oBinormal =  normalize(cross(oNormal, oTangent));
+	
+	// View Direction
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;		
+	oViewDir = mul((float3x3)worldView, vVec);
+	
+	// SaC-mapping
+	const int targetResolutionX = 256;
+	const float targetResolutionXf = 256.0f;
+	const float targetResolutionYf = 256.0f;
+	
+	float x = ((int(id) % targetResolutionX) / targetResolutionXf) + 1.0f / (2 * targetResolutionXf);	//2 * targetResolutionXf
+	float y = ((int(id / targetResolutionX)) / targetResolutionYf) + 1.0f / (2 * targetResolutionYf);	//2 * targetResolutionYf
+		
+	const float4 rawWeight = tex2D(weightmap, float2(x,y));
+	
+	finalWeight = float3(0,0,0);
+	
+	float pos = rawWeight.x;
+	float neg = rawWeight.y;
+	
+	float w = (pos-neg) / rawWeight.w;
+	
+	if (w > 0.0)
+		finalWeight.r = w;
+	if (w < 0.0)
+		finalWeight.g = abs(w);
+}

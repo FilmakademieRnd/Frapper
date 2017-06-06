@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ExpressionTimer.xml
+  Description:  Contains the XML description of ExpressionTimer nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="ParticleSystemLogic" category="Utility" color="250,100,50" plugin="particlesystemlogic.dll">
+  <parameters>
+    <parameter name="Viseme Index" 	  type="Float"  defaultValue="0.0"  selfEvaluating="true" pin="in"/>
+    <parameter name="Viseme Tag" 	    type="String" defaultValue=""     selfEvaluating="true" pin="in"/>
+    <parameter name="Emotion Tag" 	  type="String" defaultValue=""     selfEvaluating="true" pin="in"/>    
+    <parameter name="Ready"           type="Bool"   defaultValue="true" selfEvaluating="true" pin="in"/>
+    <parameter name="Active"          type="Bool"   defaultValue="true" selfEvaluating="true" pin="in"/>
+
+    <parameter name="Expressions XML" type="String" defaultValue=""     selfEvaluating="true" pin="out"/>
+    <parameter name="Viseme is open"  type="Bool"   defaultValue="false"  selfEvaluating="true" pin="out" />
+    <parameter name="Mouth Force"     type="Float"  defaultValue="0.0"  selfEvaluating="true" pin="out" />
+    <parameter name="Mesh Force"      type="Float"  defaultValue="0.0"  selfEvaluating="true" pin="out" />
+    <parameter name="Inter Particle Force"      type="Float"  defaultValue="0.1"  selfEvaluating="true" pin="out" />
+    
+  </parameters>
+   
+</nodetype>

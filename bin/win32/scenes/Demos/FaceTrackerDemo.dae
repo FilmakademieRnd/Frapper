@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+	<asset>
+		<contributor>
+			<authoring_tool>Filmakademie Application Framework</authoring_tool>
+		</contributor>
+		<created>2012-06-04T17:51:29Z</created>
+		<modified>2012-06-04T17:51:29Z</modified>
+		<unit meter="0.01"/>
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="headLogic">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="HeadLogic" position="140 300">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="sleepingClipNode">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 300">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Sleeping.anim" state="true"/>
+								<frapper_parameter name="length" value="8" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Renaming Options (requires reload!)"/>
+								<frapper_group name="Exclusion Options (requires reload!)"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="hank">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="439 300" stageIndex="1" isViewed="1">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Hank/Hank.mesh" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Skeletal Animation Weights"/>
+								<frapper_group name="Pose Animations"/>
+								<frapper_group name="Pose Animation Weights"/>
+								<frapper_group name="Bone Parameter"/>
+								<frapper_group name="Material Parameter"/>
+								<frapper_group name="Hank_Eyes"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Eyes_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_EyesGlass"/>
+								<frapper_group name="Pass: Hank_EyesGlass_Pass"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hank_EyesGlass_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_JawU"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_JawL"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="Hank_Brows"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i_Brows"/>
+								<frapper_group name="Hank_Whiskers"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_3b_3i_Whiskers"/>
+								<frapper_group name="Hank_Hair"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_Hair"/>
+								<frapper_group name="Hank_Lashes"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="VP: HW_Skinning_VS_5b_3i_Lashes"/>
+								<frapper_group name="Hank_Face"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Face_IBL_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_82b_4i_5CBS"/>
+								<frapper_group name="Hank_Shirt"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="Object Id Parameter"/>
+								<frapper_parameter name="BrowsShape" value="7" state="true"/>
+								<frapper_parameter name="OberkieferShape" value="4" state="true"/>
+								<frapper_parameter name="Shirt_HR_mesh" value="18" state="true"/>
+								<frapper_parameter name="R_Eye_GlasShape" value="1" state="true"/>
+								<frapper_parameter name="UnterkieferShape" value="6" state="true"/>
+								<frapper_parameter name="L_EyeShape" value="2" state="true"/>
+								<frapper_parameter name="Whisker_LShape" value="8" state="true"/>
+								<frapper_parameter name="L_Eye_GlasShape" value="3" state="true"/>
+								<frapper_parameter name="TongueShape" value="5" state="true"/>
+								<frapper_parameter name="Whisker_RShape" value="9" state="true"/>
+								<frapper_parameter name="TopHair3Shape" value="10" state="true"/>
+								<frapper_parameter name="TopHair2Shape" value="11" state="true"/>
+								<frapper_parameter name="TopHair1Shape" value="12" state="true"/>
+								<frapper_parameter name="LLLid1Shape" value="13" state="true"/>
+								<frapper_parameter name="LULid1Shape" value="14" state="true"/>
+								<frapper_parameter name="RLidShape" value="15" state="true"/>
+								<frapper_parameter name="RULid1Shape" value="16" state="true"/>
+								<frapper_parameter name="Hank_HRShape" value="17" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="faceTracker">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="FaceTracker" position="36 304" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="cameraInput">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="CameraInput" position="-66 308" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="randomBlink">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="RandomBlink" position="240 430">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<extra>
+				<technique profile="frapper">
+					<frapper_connection sourceNode="cameraInput" sourceParameter="OpencvMatrix" targetNode="faceTracker" targetParameter="OpencvMatrix"/>
+					<frapper_connection sourceNode="faceTracker" sourceParameter="faceX" targetNode="headLogic" targetParameter="trackX"/>
+					<frapper_connection sourceNode="faceTracker" sourceParameter="faceY" targetNode="headLogic" targetParameter="trackY"/>
+					<frapper_connection sourceNode="faceTracker" sourceParameter="noFaceDetected" targetNode="headLogic" targetParameter="noFaceDetected"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="sleepingWeight" targetNode="sleepingClipNode" targetParameter="weight"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="weightOtherClips" targetNode="randomBlink" targetParameter="weight"/>
+					<frapper_connection sourceNode="randomBlink" sourceParameter="progress" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="randomBlink" sourceParameter="progress" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="HeadDown_AU54" targetNode="hank" targetParameter="HeadDown_AU54"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="LShoulderEnd" targetNode="hank" targetParameter="LShoulderEnd"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="Spine_2" targetNode="hank" targetParameter="Spine_2"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="left" targetNode="hank" targetParameter="HeadTurnLeft_AU51"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="right" targetNode="hank" targetParameter="HeadTurnRight_AU52"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="up" targetNode="hank" targetParameter="HeadUp_AU53"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="down" targetNode="hank" targetParameter="HeadDown_AU54"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="playSleeping" targetNode="sleepingClipNode" targetParameter="play"/>
+				</technique>
+			</extra>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode"/>
+		<extra>
+			<technique profile="frapper">
+				<timeline frame="1" frameIn="1" frameOut="450" frameRangeIn="1" frameRangeOut="450" fps="25"/>
+			</technique>
+		</extra>
+	</scene>
+</COLLADA>

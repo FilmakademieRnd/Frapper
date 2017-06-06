@@ -1,0 +1,742 @@
+//
+//void CBS_Deformation(
+//						 // in
+//						 float4 position	: POSITION,
+//						 float3 iNormal		: NORMAL,
+//						 float3 iTangent	: TANGENT, 
+//						 float2 iTexCoord	: TEXCOORD0, 
+//						 float3 pose1   	: TEXCOORD1, 
+//						 float3 pose2   	: TEXCOORD2,
+//						 float3 pose3   	: TEXCOORD3,
+//						 float3 pose4   	: TEXCOORD4,
+//						 float3 pose5   	: TEXCOORD5,
+//						 float3 pose6   	: TEXCOORD6,
+//						 float3 pose7   	: TEXCOORD7,
+//						 // out
+//						 out float4 oPosition   : POSITION,             			  
+//						 out float2 oTexCoord   : TEXCOORD0,
+//						 out float3 oNormal     : TEXCOORD1,
+//						 out float3 oTangent    : TEXCOORD2,
+//						 out float4 oPosition2  : TEXCOORD3,
+//						 // params
+//						 uniform float4x4 worldViewProj, 
+//						 uniform float4 anim_t,
+//						 uniform float4 anim_t2	)
+//{					
+//	// interpolate
+//	float4 interp = float4(position + 
+//		anim_t.x  * pose1 + 
+//		anim_t.y  * pose2 + 
+//		anim_t.z  * pose3 +
+//		anim_t.w  * pose4 +
+//		anim_t2.x * pose5 + 
+//		anim_t2.y * pose6 + 
+//		anim_t2.z * pose7 		
+//		, 1.0f);
+//	
+//	oPosition = mul(worldViewProj, interp);
+//	oTexCoord = iTexCoord;
+//	//colour = float4(1,0,0,1);
+//	oNormal = iNormal;
+//	oTangent = iTangent;
+//	oPosition2 = mul(worldViewProj, interp);
+//}
+
+
+void HW_Skinning_VS_83b_4i(
+						 // in
+						 float4 position	: POSITION,
+						 float2 iTexCoord	: TEXCOORD0, 						  
+						 float3 iNormal		: TEXCOORD1,
+						 float3 iTangent	: TEXCOORD2,
+						 float4 iCBSPos  	: TEXCOORD3,						 
+						 //float3 iNormal		: NORMAL,
+						 //float3 iTangent	: TANGENT,						 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float3 oNormal     : TEXCOORD0,
+						 out float3 oTangent    : TEXCOORD1,
+						 out float3 oBinormal   : TEXCOORD2,
+						 out float2 oTexCoord   : TEXCOORD3,		
+						 out float3 oViewDir    : TEXCOORD4,						 						 
+						 // params												 
+						 uniform float3 eyePosition,              
+						 uniform float3x4 worldMatrix3x4Array[81],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   oTexCoord = iTexCoord;     
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);
+	int i;
+	float4 newPos = float4(position.xyz + iCBSPos.xyz, 1.0);
+
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], newPos).xyz, 1.0) * blendWgt[i];
+		//blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	// TNB
+	oNormal = normalize(mul((float3x3)viewMatrix, normal));   	
+	oTangent = normalize(mul((float3x3)viewMatrix, tangent));   
+	oBinormal = cross(oTangent, oNormal);
+    	
+	oViewDir = normalize(eyePosition - mul(viewMatrix, blendPos ));	
+
+}
+
+void HW_Skinning_VS_10b_4i(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION, 
+						 out float2 oTexCoord   : TEXCOORD0,								 
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 // params												 
+						 uniform float3 eyePosition,              						 
+						 uniform float3x4 worldMatrix3x4Array[9],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   
+	// texccords
+	oTexCoord = iTexCoord;     
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	// TNB
+	oNormal = mul((float3x3)viewMatrix, normal);
+	oTangent = mul((float3x3)viewMatrix, tangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// View Direction
+	// from eye to vtx
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	// from vtx to eye
+	//const float3 vVec = normalize(eyePosition - blendPos.xyz) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);  
+}
+
+void HW_Skinning_VS_4b_4i(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION, 
+						 out float2 oTexCoord   : TEXCOORD0,								 
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 // params												 
+						 uniform float3 eyePosition,              						 
+						 uniform float3x4 worldMatrix3x4Array[3],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   
+	// texccords
+	oTexCoord = iTexCoord;     
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	// TNB
+	oNormal = mul((float3x3)viewMatrix, normal);
+	oTangent = mul((float3x3)viewMatrix, tangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// View Direction
+	// from eye to vtx
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	// from vtx to eye
+	//const float3 vVec = normalize(eyePosition - blendPos.xyz) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);  
+}
+
+
+void HW_Skinning_VS_13b_4i(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION, 
+						 out float2 oTexCoord   : TEXCOORD0,								 
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 // params												 
+						 uniform float3 eyePosition,              						 
+						 uniform float3x4 worldMatrix3x4Array[12],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   
+	// texccords
+	oTexCoord = iTexCoord;     
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);
+	int i;
+	for (i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	// TNB
+	oNormal = mul((float3x3)viewMatrix, normal);
+	oTangent = mul((float3x3)viewMatrix, tangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// View Direction
+	// from eye to vtx
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	// from vtx to eye
+	//const float3 vVec = normalize(eyePosition - blendPos.xyz) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);  
+}
+
+
+void HW_Skinning_VS_1L_82b_4i_7CBS(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float3 iTangent	: TANGENT0, 
+						 float2 iTexCoord	: TEXCOORD0, 						 
+						 float3 pose1   	: TEXCOORD1, 
+						 float3 pose2   	: TEXCOORD2,
+						 float3 pose3   	: TEXCOORD3,
+						 float3 pose4   	: TEXCOORD4,
+						 float3 pose5   	: TEXCOORD5,
+						 //float3 pose6   	: TEXCOORD6,						 
+						 //float3 pose7   	: TEXCOORD7,						 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition    : POSITION,             			  
+						 out float2 oTexCoord    : TEXCOORD0,	
+						 out float3 oLightVector : TEXCOORD1,						 
+						 out float3 oHalfAngle   : TEXCOORD2,						 
+						 //out float4 oColor       : COLOR,	
+						 // params	
+						 uniform float4 eye_position,     
+						 uniform float4 light_position,
+						 uniform float4x4 invworldmatrix,						 
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float3x4 worldMatrix3x4Array[81],
+						 uniform float4 anim_t,
+						 uniform float4 anim_t2) 
+{  	
+	//
+	oTexCoord = iTexCoord;     	
+	float4 CBSPosition = float4(	
+		//5*(
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		//pose6 * anim_t2.y +
+		//pose7 * anim_t2.z 
+		//)
+		, 1.0);
+	
+	CBSPosition.xyz = CBSPosition.xyz + position.xyz;
+
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);			
+
+	int i;
+	for (i = 0; i < 4; ++i)
+	{		
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPosition).xyz, 1.0) * blendWgt[i];		
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}
+	// view / projection
+	oPosition = mul(viewProjectionMatrix, blendPos);		
+	// TNB	
+	normal = mul((float3x3)invworldmatrix, normal); 
+    normal = normalize(normal);	
+	tangent = mul((float3x3)invworldmatrix, tangent); 
+	tangent = normalize(tangent); 
+	float3 binormal = cross(tangent, normal);
+
+	float3x3 rotation = float3x3(tangent, binormal, normal);
+    		
+	// Calculate the light vector in object space,
+    // and then transform it into texture space.
+    float3 temp_lightDir0 = normalize(light_position.xyz -  (blendPos.xyz * light_position.w));
+    temp_lightDir0 = normalize(mul(rotation, temp_lightDir0));
+    oLightVector = temp_lightDir0;
+
+    // Calculate the view vector in object space,
+    // and then transform it into texture space.
+    float3 eyeDir = normalize(eye_position - blendPos.xyz);
+    eyeDir = normalize(mul(rotation, eyeDir.xyz));
+
+    // Calculate the half angle
+    oHalfAngle = oLightVector + eyeDir;
+
+	//oColor = blendWgt;
+	
+}
+
+void HW_Skinning_VS_82b_4i_5CBS(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float3 iTangent	: TANGENT, 
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 pose1   	: TEXCOORD1, 
+						 float3 pose2   	: TEXCOORD2,
+						 float3 pose3   	: TEXCOORD3,
+						 float3 pose4   	: TEXCOORD4,
+						 float3 pose5   	: TEXCOORD5,
+						 //float3 pose6   	: TEXCOORD6,
+						 //float3 pose7   	: TEXCOORD7,						 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float2 oTexCoord   : TEXCOORD0,	
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oOldPositions : TEXCOORD5,	
+						 out float3 oNewPositions : TEXCOORD6,	
+						 // params	
+						 uniform float3 eyePosition,              
+						 uniform float3x4 worldMatrix3x4Array[81],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4 anim_t,
+						 uniform float4 anim_t2,						 
+						 uniform float4x4 worldView) 
+{   
+	oTexCoord = iTexCoord;     	
+	float4 CBSPosition = float4(	
+		//5*(
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		//pose6 * anim_t2.y +
+		//pose7 * anim_t2.z 
+		//)
+		, 1.0);
+	
+	CBSPosition.xyz = CBSPosition.xyz + position.xyz;
+
+	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);			
+
+	int i;
+	for (i = 0; i < 4; ++i)
+	{		
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPosition).xyz, 1.0) * blendWgt[i];		
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}	
+
+	oOldPositions = position;
+	oNewPositions = blendPos.xyz;
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	// TNB
+	oNormal =  normalize(mul((float3x3)worldView, normal));
+	oTangent =  normalize(mul((float3x3)worldView, tangent));
+    oBinormal =  normalize(cross(oNormal, oTangent));
+	
+	// View Direction
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;		
+	oViewDir = mul((float3x3)worldView, vVec);
+	
+}
+
+void HW_Skinning_VS_5b_3i_Lashes(
+						 // in
+						 float4 position	: POSITION,
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,    
+						 out float4 oColor	: COLOR,
+						 // params												               						 
+						 uniform float3x4 worldMatrix3x4Array[5],
+						 uniform float4x4 viewProjectionMatrix)
+
+{   // transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);	
+	int i;
+	for (i = 0; i < 3; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];		
+	}
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	// some brownish color
+	oColor = float4(0.17356, 0.144383, 0.121318, 1);	
+ 
+}
+
+void HW_Skinning_VS_1b_1i_generic(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION, 
+						 out float2 oTexCoord   : TEXCOORD0,					
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oReflect	: TEXCOORD5,
+						 // params						
+						 uniform float3 eyePosition,              
+						 uniform float3x4 worldMatrix3x4Array[1],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   oTexCoord = iTexCoord;     
+	// transform by indexed matrix
+	float4	blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], position).xyz, 1.0) * blendWgt[0];
+	float3	normal = mul((float3x3)worldMatrix3x4Array[blendIdx[0]], iNormal) * blendWgt[0];
+	float3	tangent = mul((float3x3)worldMatrix3x4Array[blendIdx[0]], iTangent) * blendWgt[0];
+	
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	oNormal = mul((float3x3)viewMatrix, normal);
+	oTangent = mul((float3x3)viewMatrix, tangent);
+    oBinormal = cross(oNormal, oTangent);
+
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);       
+   
+}
+
+void HW_Skinning_VS_5b_4i_generic(
+						 // in
+						 float4 position	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION, 
+						 out float2 oTexCoord   : TEXCOORD0,					
+						 out float3 oNormal     : TEXCOORD1,
+						 out float3 oTangent    : TEXCOORD2,
+						 out float3 oBinormal   : TEXCOORD3,						 
+						 out float3 oViewDir    : TEXCOORD4,
+						 // out float3 oReflect	: TEXCOORD5,
+						 // params						
+						 uniform float3 eyePosition,              
+						 uniform float3x4 worldMatrix3x4Array[5],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{   oTexCoord = iTexCoord;     
+
+	float4 blendPos = float4(0,0,0,0);
+	float3 normal = float3(0,0,0);
+	float3 tangent = float3(0,0,0);			
+
+	int i;
+	for (i = 0; i < 4; ++i)
+	{		
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], position).xyz, 1.0) * blendWgt[i];		
+		normal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iNormal) * blendWgt[i];
+		tangent += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iTangent) * blendWgt[i];
+	}		
+
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+	
+	oNormal = mul((float3x3)viewMatrix, normal);
+	oTangent = mul((float3x3)viewMatrix, tangent);
+    oBinormal = cross(oNormal, oTangent);
+
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);       
+   
+}
+
+void HW_Skinning_VS_1b_1i_Hair(
+						 // in
+						 float4 iPosition	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float3 oNormal     : TEXCOORD0,
+						 out float3 oTangent    : TEXCOORD1,
+						 out float3 oBinormal   : TEXCOORD2,
+						 out float2 oTexCoord   : TEXCOORD3,		
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oLightDir   : TEXCOORD5,						 
+						 // params						
+						 uniform float hairRootWidth,
+						 uniform float hairTipWidth,
+						 uniform float3 viewDirView,
+						 uniform float4 fvLightPosition,
+						 uniform float3 eyePosition,              
+						 //uniform float3x4   worldMatrix3x4Array[24],
+						 uniform float3x4   worldMatrix3x4Array[1],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{ 	
+	// transform by indexed matrix	
+	float4	blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPosition).xyz, 1.0) * blendWgt[0];	
+	float3	blendNormal = mul(worldMatrix3x4Array[blendIdx[0]], float4(iNormal, 0.0)) * blendWgt[0];	
+	float3	blendTangent = mul(worldMatrix3x4Array[blendIdx[0]], float4(iTangent, 0.0)) * blendWgt[0];			
+	
+	float4 wvpPosition = mul(viewProjectionMatrix, blendPos);
+
+	// NTB
+	oNormal = mul((float3x3)viewMatrix, blendNormal);
+	oTangent = mul((float3x3)viewMatrix, blendTangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// stretch hair
+    float3 perp = normalize(cross(oTangent, viewDirView));
+    float width = lerp(hairRootWidth, hairTipWidth, iTexCoord.x);    
+    oPosition = wvpPosition;
+    oPosition.xyz = wvpPosition.xyz + perp * width * iTexCoord.y;
+    // investigate!
+    oTexCoord.x = iTexCoord.x + 0.01;   
+   
+    // View & Light Direction
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);   
+    oLightDir = mul(viewMatrix, float4(normalize(fvLightPosition - oPosition.xyz) ,0));  
+}
+
+// for advanced hair shader
+void HW_Skinning_VS_1b_1i_Hair_ad(
+						 // in
+						 float4 iPosition	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float3 oNormal     : TEXCOORD0,
+						 out float3 oTangent    : TEXCOORD1,
+						 out float3 oBinormal   : TEXCOORD2,
+						 out float2 oTexCoord   : TEXCOORD3,		
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oLightDir   : TEXCOORD5,						 
+						 // params						
+						 uniform float hairRootWidth,
+						 uniform float hairTipWidth,
+						 uniform float3 viewDirView,
+						 uniform float4 fvLightPosition,
+						 uniform float3 eyePosition,              
+						 //uniform float3x4   worldMatrix3x4Array[24],
+						 uniform float3x4   worldMatrix3x4Array[1],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix,
+						 uniform float4 lightDirectionObj,
+						 uniform float4 cameraPositionObj)
+
+{ 	// transform by indexed matrix	
+	float4	blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPosition).xyz, 1.0) * blendWgt[0];		
+	float3	blendNormal = mul(worldMatrix3x4Array[blendIdx[0]], float4(iNormal, 0.0)) * blendWgt[0];		
+	float3	blendTangent = mul(worldMatrix3x4Array[blendIdx[0]], float4(iTangent, 0.0)) * blendWgt[0];				
+	
+	float4 wvpPosition = mul(viewProjectionMatrix, blendPos);
+
+	oNormal = mul(viewProjectionMatrix, float4(blendNormal, 0.0));
+	oTangent = mul(viewProjectionMatrix, float4(blendTangent, 0.0));
+    oBinormal = cross(oNormal, oTangent);
+
+   float3 perp = normalize(cross(oTangent, viewDirView));
+   float width = lerp(hairRootWidth, hairTipWidth, iTexCoord.x);    
+   oPosition = wvpPosition;
+   oPosition.xyz = wvpPosition.xyz + perp * width * iTexCoord.y;
+
+   // investigate!
+   oTexCoord.x = iTexCoord.x + 0.01;
+   //oViewDir = normalize(eyePosition - oPosition); 
+   //oLightDir = mul(viewMatrix, float4(normalize(fvLightPosition - oPosition.xyz) ,0));
+   oViewDir = normalize((cameraPositionObj - iPosition).xyz); 
+   oLightDir = lightDirectionObj.xyz;
+}
+
+void HW_Skinning_VS_3b_3i_Whiskers(
+						 // in
+						 float4 iPosition	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float3 oNormal     : TEXCOORD0,
+						 out float3 oTangent    : TEXCOORD1,
+						 out float3 oBinormal   : TEXCOORD2,
+						 out float2 oTexCoord   : TEXCOORD3,		
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oLightDir   : TEXCOORD5,						 
+						 // params						
+						 uniform float hairRootWidth,
+						 uniform float hairTipWidth,
+						 uniform float3 viewDirView,
+						 uniform float4 fvLightPosition,
+						 uniform float3 eyePosition,              
+						 uniform float3x4   worldMatrix3x4Array[3],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{ 	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 blendNormal = float3(0,0,0);
+	float3 blendTangent = float3(0,0,0);		
+	for (int i = 0; i < 3; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPosition).xyz, 1.0) * blendWgt[i];		
+		blendNormal += mul(worldMatrix3x4Array[blendIdx[i]], float4(iNormal, 0.0)) * blendWgt[i];		
+		blendTangent += mul(worldMatrix3x4Array[blendIdx[i]], float4(iTangent, 0.0)) * blendWgt[i];		
+	}		
+	float4 wvpPosition = mul(viewProjectionMatrix, blendPos);
+
+	// NTB
+	oNormal = mul((float3x3)viewMatrix, blendNormal);
+	oTangent = mul((float3x3)viewMatrix, blendTangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// stretch hair
+    float3 perp = normalize(cross(oTangent, viewDirView));
+    float width = lerp(hairRootWidth, hairTipWidth, iTexCoord.x);    
+    oPosition = wvpPosition;
+    oPosition.xyz = wvpPosition.xyz + perp * width * iTexCoord.y;
+    // investigate!
+    oTexCoord.x = iTexCoord.x + 0.01;   
+   
+    // View & Light Direction
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;
+	oViewDir = mul((float3x3)viewMatrix, vVec);   
+    oLightDir = mul(viewMatrix, float4(normalize(fvLightPosition - oPosition.xyz) ,0));   
+}
+
+void HW_Skinning_VS_10b_4i_Brows(
+						 // in
+						 float4 iPosition	: POSITION,
+						 float3 iNormal		: NORMAL,
+						 float2 iTexCoord	: TEXCOORD0, 
+						 float3 iTangent	: TANGENT0, 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oPosition   : POSITION,             			  
+						 out float3 oNormal     : TEXCOORD0,
+						 out float3 oTangent    : TEXCOORD1,
+						 out float3 oBinormal   : TEXCOORD2,
+						 out float2 oTexCoord   : TEXCOORD3,		
+						 out float3 oViewDir    : TEXCOORD4,
+						 out float3 oLightDir   : TEXCOORD5,						 
+						 // params						
+						 uniform float hairRootWidth,
+						 uniform float hairTipWidth,
+						 uniform float3 viewDirView,
+						 uniform float4 fvLightPosition,
+						 uniform float3 eyePosition,              
+						 //uniform float3x4   worldMatrix3x4Array[24],
+						 uniform float3x4   worldMatrix3x4Array[10],
+						 uniform float4x4 viewProjectionMatrix,
+						 uniform float4x4 viewMatrix)
+
+{ 	// transform by indexed matrix
+	float4 blendPos = float4(0,0,0,0);
+	float3 blendNormal = float3(0,0,0);
+	float3 blendTangent = float3(0,0,0);		
+	for (int i = 0; i < 4; ++i)
+	{
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPosition).xyz, 1.0) * blendWgt[i];		
+		blendNormal += mul(worldMatrix3x4Array[blendIdx[i]], float4(iNormal, 0.0)) * blendWgt[i];		
+		blendTangent += mul(worldMatrix3x4Array[blendIdx[i]], float4(iTangent, 0.0)) * blendWgt[i];		
+	}		
+	
+	float4 wvpPosition = mul(viewProjectionMatrix, blendPos);
+
+	// NTB
+	oNormal = mul((float3x3)viewMatrix, blendNormal);
+	oTangent = mul((float3x3)viewMatrix, blendTangent);
+    oBinormal = cross(oNormal, oTangent);
+	
+	// stretch hair
+    float3 perp = normalize(cross(oTangent, viewDirView));
+    float width = lerp(hairRootWidth, hairTipWidth, iTexCoord.x);    
+    oPosition = wvpPosition;
+    oPosition.xyz = wvpPosition.xyz + perp * width * iTexCoord.y;
+    // investigate!
+    oTexCoord.x = iTexCoord.x + 0.01;   
+   
+    // View & Light Direction
+	const float3 vVec = normalize(blendPos.xyz - eyePosition) * 10.0;	
+	oViewDir = mul((float3x3)viewMatrix, vVec);   
+    oLightDir = mul(viewMatrix, float4(normalize(fvLightPosition - oPosition.xyz) ,0));    
+}

@@ -1,0 +1,176 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                                      TEX2DLOD                                     **
+**                                                                                   **
+***************************************************************************************/
+
+ps_3_0 float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0, 0));
+}
+
+float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2D(map, uv);
+}
+
+
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    ps                                             **
+ **                                                                                   **
+ ***************************************************************************************/
+ 
+/*  */
+static const half weights[7] =
+{
+	0.006, 0.061, 0.242, 0.382, 0.242, 0.061, 0.006
+};
+
+/*  */
+static const float3 w0 = float3( 0.3251, 0.4500, 0.3583 );
+static const float3 w1 = float3( 0.3400, 0.1864, 0.0000 );
+static const float3 w2 = float3( 0.4600, 0.0000, 0.0402 );
+
+
+bool isIdEqual(float id1, float id2)
+{	
+	if (id1 > (id2 - 0.45) && id1 < (id2 + 0.45))
+		return true;
+	else 
+		return false;
+}
+
+
+void blurX_ps(in  float2 texCoord	 : TEXCOORD0,
+			  out float4 oColor		 : COLOR0,
+			  uniform float skinId,
+			  uniform float invWidth,
+			  uniform float sssWidth,
+			  uniform float correction,
+			  uniform sampler2D tex0 : TEXUNIT0,
+			  uniform sampler2D tex1 : TEXUNIT1,
+			  uniform sampler2D tex2 : TEXUNIT2 )
+{
+	if( isIdEqual( tex2D( tex2, texCoord ).x * 256, skinId ) )
+	{
+		float depth = TEX2DLOD( tex1, texCoord ).r;
+		float d_x = 1.0 - (depth + correction * min(abs(ddx(depth)), 0.001));
+		
+		float finalWidth = d_x * invWidth * sssWidth;
+		
+		if( d_x * sssWidth > 0.125 )
+		{
+			oColor = float4( 0, 0, 0, 1 );
+			
+			float offset = -finalWidth;
+			
+			for( int i=0; i<7; i++ )
+			{
+				oColor += weights[i] * TEX2DLOD( tex0, float2( texCoord.x + offset, texCoord.y ) );
+				offset += finalWidth / 3.0;
+			}
+		}
+		else
+		{
+			oColor = TEX2DLOD( tex0, texCoord );
+		}
+	}
+	else
+	{
+		oColor = TEX2DLOD( tex0, texCoord );
+	}
+}
+
+
+void blurY_ps(in  float2 texCoord	 : TEXCOORD0,
+			  out float4 oColor		 : COLOR0,
+			  uniform float skinId,
+			  uniform float invHeight,
+			  uniform float sssWidth,
+			  uniform float correction,
+			  uniform sampler2D tex0 : TEXUNIT0,
+			  uniform sampler2D tex1 : TEXUNIT1,
+			  uniform sampler2D tex2 : TEXUNIT2 )
+{
+	if( isIdEqual( tex2D( tex2, texCoord ).x * 256, skinId ) )
+	{
+		float depth = TEX2DLOD( tex1, texCoord ).r;
+		float d_y = 1.0 - (depth + correction * min(abs(ddy(depth)), 0.001));		//y
+		
+		float finalHeight = d_y * invHeight * sssWidth;
+		
+		if( d_y * sssWidth > 0.125 )
+		{
+			oColor = float4( 0, 0, 0, 1 );
+			
+			float offset = -finalHeight;
+			
+			for( int i=0; i<7; i++ )
+			{
+				oColor += weights[i] * TEX2DLOD( tex0, float2( texCoord.x, texCoord.y + offset ) );		//y
+				offset += finalHeight / 3.0;
+			}
+		}
+		else
+		{
+			oColor = TEX2DLOD( tex0, texCoord );
+		}
+	}
+	else
+	{
+		oColor = TEX2DLOD( tex0, texCoord );
+	}
+}
+
+
+void mix_ps( in  float2 texCoord	: TEXCOORD0,
+			 out float4 oColor		: COLOR0,
+			 uniform float skinId,
+			 uniform float correction,
+			 uniform sampler tex0	: TEXUNIT0,
+			 uniform sampler tex1	: TEXUNIT1,
+			 uniform sampler tex2	: TEXUNIT2,
+			 uniform sampler tex3	: TEXUNIT3,
+			 uniform sampler tex4	: TEXUNIT4 ) 
+{
+	if( isIdEqual( tex2D( tex4, texCoord ).x * 256, skinId ) )
+	{
+		const float3 c0 = TEX2DLOD( tex0, texCoord ).rgb;
+		const float3 c1 = TEX2DLOD( tex1, texCoord ).rgb;
+		const float3 c2 = TEX2DLOD( tex2, texCoord ).rgb;
+		const float3 c3 = TEX2DLOD( tex3, texCoord ).rgb;
+		
+		float3 mix0 = w0*c1 + (1.0-w0)*c0;
+		float3 mix1 = w1*c2 + (1.0-w1)*mix0;
+		oColor      = float4(w2*c3 + (1.0-w2)*mix1, 1);
+	}
+	else
+	{
+		oColor = float4(tex2D( tex0, texCoord ).rgb, 1);
+	}
+}

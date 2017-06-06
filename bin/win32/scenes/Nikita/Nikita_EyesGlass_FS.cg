@@ -1,0 +1,16 @@
+void ps_main(   //in 
+				float2 iTexCoord	: TEXCOORD0,								
+				float3 iReflect		: TEXCOORD2,			    
+				//out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	eye_exposure,					
+				uniform samplerCUBE HighLightEyeCube	: register(s0))
+{		    
+	float4 FinalColor;   
+    iReflect.y += 0.5;    //0.2	
+	FinalColor = texCUBE(HighLightEyeCube, iReflect) * eye_exposure;
+	FinalColor.a = 0;
+	result = FinalColor;
+
+}

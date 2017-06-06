@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         MaskEdit.xml
+  Description:  Contains the XML description of s3d ndoe.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="MaskEdit" category="S3D" color="255, 255, 255" plugin="MaskEdit.dll">
+  <parameters>
+    <parameter name="Template Type" type="Enumeration" defaultValue="0">
+      <literal name="double" value="0" />
+      <literal name="float"  value="1" />
+      <literal name="int"    value="2" />
+    </parameter>
+    <parameter name="Render Frame"    type="Command"/>
+    <parameter name="Render Sequence" type="Command"/>
+    <parameter name="Clear Frame"     type="Command"/>
+    <parameter name="Clear Sequence"  type="Command"/>
+    <!--
+    <parameter name="Monitor Output" type="Enumeration" defaultValue="0">
+      <literal name="image" value="0" />
+      <literal name="mask"  value="1" />
+    </parameter>
+    -->
+    <parameter name="Update on frame change" type="Bool" defaultValue="true" />
+    <parameter name="Use LUT" type="Bool" defaultValue="false" description="Use lookup table for paint items." />
+    <parameter name="Background Darken Factor" description="Makes background darker by this factor." type="Float" defaultValue="0.5" minValue="0.0" maxValue="1.0" stepSize="0.05" inputMethod="SliderPlusSpinBox"/>
+    
+    <parameters name="Edge Layer">
+      <parameter name="Layer Color" type="Color"/>
+    </parameters>
+                
+    <parameters name="Painter Panel Items"/>
+    <parameter name="Images In" type="Generic" pin="in" />
+    <parameter name="Edge In"   type="Image"   pin="in" />    
+    <parameter name="Mask In"   type="Image"   pin="in" />
+    <parameter name="Masks Out" type="Generic" pin="out" />
+  </parameters>
+</nodetype>
+

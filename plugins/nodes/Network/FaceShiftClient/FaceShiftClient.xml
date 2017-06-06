@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         FaceShiftClient.xml
+  Description:  Contains the XML description of SpeechInput nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="FaceShiftClient" category="Network" color="50,100,10" plugin="FaceShiftClient.dll">
+  <parameters>
+	  <parameter name="Port" type="UnsignedInt" defaultValue="33433" maxValue="65535" description="test" />
+    <parameter name="Host" type="String" defaultValue="localhost" description="test" />
+    <parameter name="Run" type="Bool" defaultValue="False" description="test" />
+
+    <parameter name="Calibrate Neutral Pose" type="Bool" defaultValue="False" pin="in" selfEvaluating="true" description="test" />
+    
+    <parameter name="Head Orientation" type="Enumeration" defaultValue="Relative">
+      <literal name="Relative"/>
+      <literal name="Absolute"/>
+    </parameter>
+    
+    <parameter name="Update Rate" type="Int" defaultValue="0" minValue="0" maxValue="" visible="true" description="test" />
+    <parameters name="Animations">
+        <parameter name="EyeBlink_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeBlink_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeSquint_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeSquint_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeDown_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeDown_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeIn_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeIn_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeOpen_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeOpen_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeOut_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeOut_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeUp_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="EyeUp_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="BrowsD_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="BrowsD_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="BrowsU_C" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="BrowsU_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="BrowsU_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="JawFwd" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="JawLeft" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="JawOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="JawChew" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="JawRight" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthLeft" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthRight" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthFrown_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthFrown_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthSmile_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthSmile_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthDimple_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="MouthDimple_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsStretch_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsStretch_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsUpperClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsLowerClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsUpperUp" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsLowerDown" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsUpperOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsLowerOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsFunnel" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="LipsPucker" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="ChinLowerRaise" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="ChinUpperRaise" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="Sneer" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="Puff" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="CheekSquint_L" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+        <parameter name="CheekSquint_R" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+    </parameters>
+    <parameters name="Head">
+      <parameter name="Rotation Offset" type="Float" size="3" minValue="-180.0" maxValue="180.0" stepSize="5" defaultValue="0,0,0" inputMethod="SliderPlusSpinBox"  description="test" />
+      <parameter name="Orientation" type="Float" size="6" minValue="-180" maxValue="180" pin="out"  description="test" />
+      <parameter name="Head Yaw Scale" type="Float" defaultValue="1.0" minValue="0.1" maxValue="10" description="test" />
+      <parameter name="Head Roll Scale" type="Float" defaultValue="1.0" minValue="0.1" maxValue="10" description="test" />
+      <parameter name="Head Pitch Scale" type="Float" defaultValue="1.0" minValue="0.1" maxValue="10" description="test" />
+      <parameter name="Maximum Head Up"   type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="Maximum Head Down" type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="Maximum Head Left" type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="Maximum Head Right" type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="Maximum Head Tilt Left" type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="Maximum Head Tilt Right" type="Float" minValue="1.0" maxValue="180.0" defaultValue="90.0"  description="test" />
+      <parameter name="HeadLeft" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="HeadRight" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="HeadUp" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="HeadDown" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="HeadTiltLeft" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="HeadTiltRight" type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+    </parameters>
+
+    <parameters name="Eyes">
+      <!-- eye gaze in degrees -->
+      <parameter name="Maximum Up"   type="Float" minValue="0.1" maxValue="90.0" defaultValue="12.0"  description="test" />
+      <parameter name="Maximum Down" type="Float" minValue="0.1" maxValue="90.0" defaultValue="10.0"  description="test" />
+      <parameter name="Maximum Left" type="Float" minValue="0.1" maxValue="90.0" defaultValue="27.5"  description="test" />
+      <parameter name="Maximum Right" type="Float" minValue="0.1" maxValue="90.0" defaultValue="27.5"  description="test" />
+      <parameter name="EyeGazeLeft"  type="Float" size="6" minValue="-100.0" maxValue="100.0" pin="out" description="test" />
+      <parameter name="EyeGazeRight" type="Float" size="6" minValue="-100.0" maxValue="100.0" pin="out" description="test" />
+      <parameter name="EyesUp"       type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="EyesDown"     type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="EyesLeft"     type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+      <parameter name="EyesRight"    type="Float" minValue="0" maxValue="100.0" defaultValue="0.0" pin="out" description="test" />
+    </parameters>
+  </parameters>
+</nodetype>

@@ -1,0 +1,250 @@
+vertex_program CLD/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+fragment_program CLD/FragScene glsl
+{
+	source Scene.frag
+}
+
+fragment_program CLD/FragETF glsl
+{
+	source ETF.frag
+}
+
+fragment_program CLD/FragSmoothH glsl
+{
+	source SmoothH.frag
+	
+	default_params
+	{
+		param_named SmoothH int 5
+	}
+}
+
+fragment_program CLD/FragSmoothV glsl
+{
+	source SmoothV.frag
+	
+	default_params
+	{
+		param_named SmoothV int 5
+	}
+}
+
+fragment_program CLD/FragDDoG glsl
+{
+	source DDoG.frag
+	
+	default_params
+	{
+		param_named tau float1 0.99
+		param_named sigma_1 float1 1.0
+	}
+}
+
+fragment_program CLD/FragFDoG glsl
+{
+	source FDoG.frag
+
+	default_params
+	{
+		param_named sigma_3 float1 3.0
+	}
+}
+
+material CLD/CLDScene
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref CLD/FragScene
+			{
+			}
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material CLD/CLDETF
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			
+			fragment_program_ref CLD/FragETF
+			{
+				param_named rtScene int 0
+			}
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material CLD/SmoothH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref CLD/FragSmoothH
+			{
+				param_named rtETF int 0
+			}
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material CLD/SmoothV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref CLD/FragSmoothV
+			{
+				param_named rtSmoothH int 0
+			}
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material CLD/DDoG
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref CLD/FragDDoG
+			{
+				param_named rtScene int 0
+				param_named rtSmoothV int 1
+			}
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material CLD/FDoG
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref CLD/FragFDoG
+			{
+				param_named rtSmoothV int 0
+				param_named rtDDoG int 1
+			}  
+			
+			vertex_program_ref CLD/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode mirror
+				filtering bilinear
+			}
+		}
+	}
+}

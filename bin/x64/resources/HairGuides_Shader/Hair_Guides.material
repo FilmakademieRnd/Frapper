@@ -1,0 +1,466 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program Ogre/Tessellation/VertexProgram glsl
+{
+	source Hair_GuidesVp.glsl
+	syntax glsl400
+}
+
+
+tessellation_hull_program Ogre/Tessellation/TessellationHullProgramSingleStrand glsl
+{
+	source Hair_GuidesThSingleStrand.glsl
+	syntax glsl400
+
+	default_params
+	{
+		param_named g_tessellationFactor float 64.0
+		param_named g_detailFactor float 2.0
+		param_named g_textureSize float 16.0f
+		param_named g_coordinateFramesTextureSize float 16.0f
+		param_named Tex0 int 0
+		param_named TexTangents int 1
+		param_named TexCoordinateFrames int 6
+	}
+}
+
+tessellation_hull_program Ogre/Tessellation/TessellationHullProgramMultiStrand glsl
+{
+	source Hair_GuidesThMultiStrand.glsl
+	syntax glsl400
+
+	default_params
+	{
+		param_named_auto g_mViewProjection viewproj_matrix
+		param_named_auto g_viewDirection view_direction
+		param_named_auto g_screenResolutionX viewport_width
+		param_named_auto g_screenResolutionY viewport_height
+		param_named g_tessellationFactor float 64.0
+		param_named g_detailFactor float 2.0
+		param_named g_textureSize float 16.0f
+		param_named g_textureSizeIndices float 16.0f
+		param_named g_maxDistance float 50.0f
+		param_named g_maxAngle float 360.0f
+		param_named g_coordinateFramesTextureSize float 16.0f
+		param_named g_maxDistanceAngleTextureSize float 16.0f
+		param_named g_scalpNormalsTextureSize float 16.0f
+		param_named g_backFaceCullingScale float 0.3f
+		param_named g_screenSpaceTessellationScale float 0.25f
+		param_named g_screenSpaceAdpativeTessellation float 0.0f
+		param_named Tex0 int 0
+		param_named TexTangents int 1
+		param_named TexCoordinateFrames int 6
+		param_named TexIndices int 7
+		param_named TexIndicesEnd int 8
+		param_named TexMaxDistanceAngle int 10
+		param_named TexSculpNormalIndices int 11
+		param_named TexSculpNormals int 12
+		param_named TexStrandBend int 13
+	}
+}
+
+
+tessellation_domain_program Ogre/Tessellation/TessellationDomainProgramSingleStrand glsl
+{
+	source Hair_GuidesTdSingleStrand.glsl
+	syntax glsl400
+
+	default_params
+	{
+		param_named g_rootRadius float 0.5f
+		param_named g_tipRadius float 0.48f
+		param_named g_clumpWidth float 1.0f
+		param_named g_strandWidth float 0.01f
+		param_named g_strandTaperingStart float 2.0f
+		param_named g_totalStrandVertices float 10.0f
+		param_named g_curlTextureSize float 16.0f
+		param_named g_curlyHairScale float 0.0f
+		param_named g_deviationsTextureSize float 16.0f
+		param_named g_deviationHairScale float 0.0f
+		param_named g_numStrandVariables int 1024
+		param_named g_thinning float 0.5f
+		param_named g_strandWidthLOD float 1.0f
+		param_named TexCurlDeviations int 2
+		param_named TexDeviations int 3
+		param_named TexStrandLength int 4
+		param_named TexRandomCircularCoordinates int 5
+	}
+}
+
+tessellation_domain_program Ogre/Tessellation/TessellationDomainProgramMultiStrand glsl
+{
+	source Hair_GuidesTdMultiStrand.glsl
+	syntax glsl400
+
+	default_params
+	{
+		param_named g_rootRadius float 0.5f
+		param_named g_tipRadius float 0.48f
+		param_named g_clumpWidth float 3.0f
+		param_named g_strandWidth float 0.01f
+		param_named g_strandTaperingStart float 2.0f
+		param_named g_totalStrandVertices float 10.0f
+		param_named g_curlTextureSize float 16.0f
+		param_named g_curlyHairScale float 0.0f
+		param_named g_deviationsTextureSize float 16.0f
+		param_named g_deviationHairScale float 0.0f
+		param_named g_numStrandVariables int 1024
+		param_named g_thinning float 0.5f
+		param_named g_clumpTransitionLength float 1.0f
+		param_named g_strandWidthLOD float 1.0f
+		param_named TexCurlDeviations int 2
+		param_named TexDeviations int 3
+		param_named TexStrandLength int 4
+		param_named TexRandomCircularCoordinates int 5
+		param_named TexStrandCoordinates int 9
+	}
+}
+
+geometry_program Ogre/Tessellation/GeometryProgram glsl
+{
+	source Hair_GuidesGp.glsl
+	syntax glsl400
+
+	default_params
+	{
+		param_named_auto g_mWorldViewProjection worldviewproj_matrix
+		param_named_auto g_mWorldView worldview_matrix
+		param_named_auto g_CameraPosition camera_position_object_space
+	}
+}
+
+fragment_program Ogre/Tessellation/FragmentProgram glsl
+{
+	source Hair_GuidesFp.glsl
+	syntax glsl400
+}
+
+fragment_program Ogre/Tessellation/SingleScatterHair glsl
+{
+	source singleScatterHair_fs.glsl
+	syntax glsl400
+	
+	default_params
+	{
+		param_named_auto light_colors 		light_diffuse_colour_array 96
+		param_named_auto light_powers		light_power_array 96
+		param_named_auto light_directions	light_direction_object_space_array 96
+		param_named_auto lightNumber		light_count
+		param_named rootColor			float3	0.4 0.33 0.27
+		param_named tipColor			float3	0.8 0.67 0.53
+		param_named reflectWidth		float	200
+		param_named scatterWidth		float	50
+		param_named transmitWidth		float	25
+		param_named lightPower			float	0.8
+		param_named _AM_c_R				float3	0.675 0.675 0.675
+		param_named _AM_c_TT			float3	0.525 0.3 0.075
+		param_named _AM_c_TRT			float3	0.375 0.15 0.0375
+		param_named _AM_d				float3	0.352 0.256 0.1536
+		param_named _AM_s_R				float	-0.0088419402
+		param_named _AM_s_TT			float	0.0044209701
+		param_named _AM_s_TRT			float	0.013262910
+	}
+}
+
+fragment_program Ogre/Tessellation/SingleScatterHairAR glsl
+{
+	source advancedRenderHair_fs.glsl
+	syntax glsl400
+	
+	default_params
+	{
+		param_named_auto far far_clip_distance
+		param_named_auto objectId custom 0
+	}
+}
+
+material SingleStrandHair
+{
+	technique
+	{
+		pass
+		{
+			//cull_hardware none
+			//cull_software none
+			
+			vertex_program_ref Ogre/Tessellation/VertexProgram
+			{
+			
+			}
+			
+			tessellation_hull_program_ref Ogre/Tessellation/TessellationHullProgramSingleStrand
+			{
+				
+			}
+			
+			tessellation_domain_program_ref Ogre/Tessellation/TessellationDomainProgramSingleStrand
+			{
+			
+			}
+			
+			geometry_program_ref Ogre/Tessellation/GeometryProgram
+			{
+			
+			}
+			
+			fragment_program_ref Ogre/Tessellation/SingleScatterHair
+			{
+
+			}
+
+			// sampler s0
+			texture_unit Tex0
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexTangents
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCurlDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandLength
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexRandomCircularCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCoordinateFrames
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+		}
+	}
+}
+
+
+material MultiStrandHair
+{
+	technique
+	{
+		pass
+		{
+			//depth_write off
+			//depth_check off
+			//transparent_sorting off
+			//scene_blend alpha_blend
+			
+			vertex_program_ref Ogre/Tessellation/VertexProgram
+			{
+			
+			}
+			
+			tessellation_hull_program_ref Ogre/Tessellation/TessellationHullProgramMultiStrand
+			{
+				
+			}
+			
+			tessellation_domain_program_ref Ogre/Tessellation/TessellationDomainProgramMultiStrand
+			{
+			
+			}
+			
+			geometry_program_ref Ogre/Tessellation/GeometryProgram
+			{
+			
+			}
+			
+			fragment_program_ref Ogre/Tessellation/SingleScatterHair
+			{
+				param_named colorGradientWidth	float	1.0
+				param_named colorGradientShift	float	0.0
+			}
+
+			// sampler s0
+			texture_unit Tex0
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexTangents
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCurlDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandLength
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexRandomCircularCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCoordinateFrames
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndicesEnd
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexMaxDistanceAngle
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormalIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormals
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandBend
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+		}
+	}
+}
+
+
+// Material for hair strand debug view
+vertex_program DefaultMaterial/VertexProgram glsl
+{
+    source DefaultVp.glsl
+    syntax glsl400
+	
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+	}
+}
+
+fragment_program DefaultMaterial/FragmentProgram glsl
+{
+    source DefaultFp.glsl
+    syntax glsl400
+}
+
+material CurveMaterial
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+
+            vertex_program_ref DefaultMaterial/VertexProgram
+            {
+
+            }
+
+            fragment_program_ref DefaultMaterial/FragmentProgram
+            {
+			
+            }
+        }
+    }
+}

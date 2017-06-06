@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         cld.xml
+  Description:  Implementation of the coherent line drawing algorithm: "Coherent Line Drawing" - Kang et al. 2007
+  Author:       Marc Spicker <marc.spicker@uni-konstanz.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="CoherentLineDrawing" category="Compositing" color="185, 30, 75" plugin="compositortemplate.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="CLDCompositor"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="CLDShader"/>
+
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      <parameter name="SmoothH" type="Int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="20" defaultValue="5" stepSize="1" description="Horizontal Smoothing Size"/>
+      <parameter name="SmoothV" type="Int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="20" defaultValue="5" stepSize="1" description="Vertical Smoothing Size"/>
+      <parameter name="tau" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.99" stepSize="0.001" description="Noise suppression"/>
+      <parameter name="sigma_1" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="10.0" defaultValue="1.0" stepSize="0.1" description="Kernel width orthogonal to flow"/>
+      <parameter name="sigma_3" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="20.0" defaultValue="3.0" stepSize="0.1" description="Kernel width along flow"/>
+    </parameters>
+    <parameters name="Predefined Values">
+      <parameter name="Preset" type="Enumeration" defaultValue="No Preset" description="values are 'smoothH x smoothV x tau x sigma_1 x sigma_3' ">
+        <literal name="No Preset" />
+        <literal name="Low Abstraction"     value="0 x 0 x 0.99 x 1 x 1.5" />
+        <literal name="Medium Abstraction"  value="5 x 5 x 0.98 x 1 x 4" />
+        <literal name="High Abstraction"    value="8 x 8 x 0.97 x 0.7 x 6" />
+      </parameter>
+      <parameter name="Preset Index" type="Float" defaultValue="0.0" pin="in" selfEvaluating="true" />
+    </parameters>
+  </parameters>
+</nodetype>
+
+

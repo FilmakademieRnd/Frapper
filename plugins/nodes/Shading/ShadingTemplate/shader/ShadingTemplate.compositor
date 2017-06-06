@@ -1,0 +1,17 @@
+compositor ShadingTemplateCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ShadingTemplate/ShadingTemplateMaterial
+            }
+        }
+    }
+
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+  Project:      Filmakademie Application Framework
+  File:         animatablemeshhair.xml
+  Description:  Contains the XML description of AnimatableMeshHair nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+				Markus Rapp <markus.rapp@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+
+<nodetype name="AnimatableMeshHair" category="Geometry" color="7, 45, 87" plugin="animatablemeshhair.dll">
+	<parameters>
+		<parameters name="Hair Geometry">
+			<parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
+			<parameter name="Scalp Mesh Name" type="String" defaultValue="ScalpMesh" enabled="true" />
+			<parameter name="Hair Guides Name" type="String" defaultValue="GuideStrip" enabled="true" />
+			<parameter name="Combine Object IDs for Namespace" type="String" defaultValue="GuideStrip" enabled="true" />
+			<parameter name="Distance Root Vertex to Scalp Vertex" type="Float" defaultValue="0.01" minValue="0.0"  maxValue="0.5" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="Assigned Bone Name" type="String" defaultValue="Head" enabled="true" />
+			<parameter name="Hair Style Initial Position"  type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" stepSize="0.05"/>
+
+			<parameter name="Single Strand" type="Bool" defaultValue="false"/>
+
+			<parameter name="g_rootRadius" type="Float" defaultValue="0.5" minValue="0.0"  maxValue="1.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_tipRadius" type="Float" defaultValue="0.48" minValue="0.0"  maxValue="1.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_clumpWidth" type="Float" defaultValue="1.0" minValue="0.0"  maxValue="10.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+
+			<parameter name="g_strandWidth" type="Float" defaultValue="0.01" minValue="0.001"  maxValue="0.5" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_strandTaperingStart" type="Float" defaultValue="2.0" minValue="0.0"  maxValue="64" stepSize="1.0" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_curlyHairScale" type="Float" defaultValue="0.0" minValue="0.0"  maxValue="5.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_deviationHairScale" type="Float" defaultValue="0.0" minValue="0.0"  maxValue="0.1" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_thinning" type="Float" defaultValue="0.5" minValue="0.0"  maxValue="1.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+		
+			<parameter name="g_clumpTransitionLength" type="Float" defaultValue="1.0" minValue="0.0"  maxValue="1.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_maxDistance" type="Float" defaultValue="50.0" minValue="0.0"  maxValue="50.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_maxAngle" type="Float" defaultValue="360.0" minValue="0.0"  maxValue="360.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="Render Guide Strands" type="Bool" defaultValue="false"/>
+			<parameter name="Render Scalp Mesh" type="Bool" defaultValue="false"/>
+			
+			<parameter name="Number of Hair Segments" type="TextInfo"/>
+			<parameter name="Texture Size" type="TextInfo"/>
+			<parameter name="Number of Guide Hairs" type="TextInfo"/>
+			<parameter name="Clean empty Skeleton Animation tracks on load" type="Bool" defaultValue="true"/>
+			<parameter name="Number of Vertices" type="TextInfo"/>
+			<parameter name="Number of Triangles" type="TextInfo"/>
+			<parameter name="useSaC" type="Bool" defaultValue="false"/>
+			<parameter name="Use Spline Interpolation" type="Bool" defaultValue="false"/>
+			<parameter name="mult" type="Float" defaultValue="1.0" maxValue="100000.0"/>
+			<parameter name="manual" type="Bool" defaultValue="false"/>
+			<parameter name="bones" type="Bool" defaultValue="false"/>
+			<parameter name="manualMat" type="Bool" defaultValue="false"/>
+			<parameter name="autoPose" type="Bool" defaultValue="true"/>
+			<parameter name="Global Material Parameter Update" type="Bool" defaultValue="false"/>
+		</parameters>
+		<parameters name="Hair LOD">
+			<parameter name="Hair LOD Factor" type="Float" defaultValue="1.0" minValue="0.0"  maxValue="2.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_tessellationFactor" type="Float" defaultValue="64.0" minValue="-1.0"  maxValue="64.0" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_detailFactor" type="Float" defaultValue="2.0" minValue="-1.0"  maxValue="64.0" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="g_backFaceCullingScale" type="Float" defaultValue="0.3" minValue="0.0"  maxValue="1.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="Screen Space Adaptive LOD" type="Bool" defaultValue="false"/>
+			<parameter name="Segment Screen Size" type="Float" defaultValue="4.0" minValue="0.0"  maxValue="50.0" stepSize="0.001" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="Bend Angle Meaningful" type="Float" defaultValue="5.0" minValue="0.0"  maxValue="45.0" stepSize="1.0" inputMethod="SliderPlusSpinBox"/>
+			<parameter name="Bend Angle Max Tessellation" type="Float" defaultValue="45.0" minValue="0.0"  maxValue="180.0" stepSize="1.0" inputMethod="SliderPlusSpinBox"/>
+		</parameters>
+		<parameters name="Hair Shading">
+      <parameter name="lightPower" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.01" maxValue="1" defaultValue="0.3" stepSize="0.01" description="Sets the intensity of the light"/>
+			<parameter name="rootColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.4, 0.33, 0.27"/>
+      <parameter name="tipColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.8, 0.67, 0.53"/>
+      <parameter name="colorGradientWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.01" maxValue="10" defaultValue="1.0" stepSize="0.01" description="Sets the gradients behaviour"/>
+      <parameter name="colorGradientShift" type="Float" inputMethod="SliderPlusSpinBox" minValue="-1.0" maxValue="1.0" defaultValue="0.0" stepSize="0.01" description="Sets the gradients behaviour"/>
+      <parameter name="diffuseColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.55, 0.4, 0.24"/>
+			<parameter name="diffuseStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="8.0" stepSize="0.01"/>
+			<parameter name="reflectColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.9, 0.9, 0.9"/>
+			<parameter name="reflectStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+			<parameter name="reflectWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="200" stepSize="1"/>
+			<parameter name="reflectShift" type="Float" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="-5" stepSize="0.5"/>
+			<parameter name="scatterColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.5, 0.2, 0.05"/>
+			<parameter name="scatterStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+			<parameter name="scatterWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="0" stepSize="1"/>
+			<parameter name="scatterShift" type="Float" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="7.5" stepSize="0.5"/>
+			<parameter name="transmitColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.7, 0.4, 0.1"/>
+			<parameter name="transmitStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+			<parameter name="transmitWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="25" stepSize="1"/>
+			<parameter name="transmitShift" type="Float" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="2.5" stepSize="0.5"/>
+		</parameters>
+	</parameters>
+</nodetype>
+
+

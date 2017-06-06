@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         AvateeringClient.xml
+  Description:  Contains the XML description of SpeechInput nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="AvateeringClient" category="Network" color="50,100,10" plugin="AvateeringClient.dll">
+  <parameters>
+    <parameter name="Port" type="UnsignedInt" defaultValue="33434" maxValue="65535"/>
+    <parameter name="Host" type="String" defaultValue="localhost"/>
+    <parameter name="Run" type="Bool" defaultValue="False"/>
+
+    <parameter name="Load Retarget Data" type="Command"/>
+    <parameter name="Save Retarget Data" type="Command"/>
+
+    <parameter name="Update Rate" type="Int" defaultValue="0" minValue="0" maxValue="" visible="true"/>
+    <parameters name="Bones">
+      <parameter name="HipCenter" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="Spine" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="ShoulderCenter" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="Head" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="ShoulderLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="ElbowLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="WristLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="HandLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="ShoulderRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="ElbowRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="WristRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="HandRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="HipLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="KneeLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="AnkleLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="FootLeft" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="HipRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="KneeRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="AnkleRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+      <parameter name="FootRight" type="Float" minValue="-100.0" maxValue="100.0" size="7" pin="out"/>
+    </parameters>
+    <parameters name="Bone Setup">
+      <parameter name="Bone" type="Enumeration" defaultValue="0">
+        <literal name="HipCenter"/>
+        <literal name="Spine"/>
+        <literal name="ShoulderCenter"/>
+        <literal name="Head"/>
+        <literal name="ShoulderLeft"/>
+        <literal name="ElbowLeft"/>
+        <literal name="WristLeft"/>
+        <literal name="HandLeft"/>
+        <literal name="ShoulderRight"/>
+        <literal name="ElbowRight"/>
+        <literal name="WristRight"/>
+        <literal name="HandRight"/>
+        <literal name="HipLeft"/>
+        <literal name="KneeLeft"/>
+        <literal name="AnkleLeft"/>
+        <literal name="FootLeft"/>
+        <literal name="HipRight"/>
+        <literal name="KneeRight"/>
+        <literal name="AnkleRight"/>
+        <literal name="FootRight"/>
+      </parameter>
+      <parameter name="Coordinate Mapping" type="Enumeration" defaultValue="0">
+        <literal name="+X +Y +Z"/>
+        <literal name="-X +Y +Z"/>
+        <literal name="+X -Y +Z"/>
+        <literal name="-X -Y +Z"/>
+        <literal name="+X +Y -Z"/>
+        <literal name="-X +Y -Z"/>
+        <literal name="+X -Y -Z"/>
+        <literal name="-X -Y -Z"/>
+        <literal name="+X +Z +Y"/>
+        <literal name="-X +Z +Y"/>
+        <literal name="+X -Z +Y"/>
+        <literal name="-X -Z +Y"/>
+        <literal name="+X +Z -Y"/>
+        <literal name="-X +Z -Y"/>
+        <literal name="+X -Z -Y"/>
+        <literal name="-X -Z -Y"/>
+		
+        <literal name="+Y +X +Z"/>
+        <literal name="-Y +X +Z"/>
+        <literal name="+Y -X +Z"/>
+        <literal name="-Y -X +Z"/>
+        <literal name="+Y +X -Z"/>
+        <literal name="-Y +X -Z"/>
+        <literal name="+Y -X -Z"/>
+        <literal name="-Y -X -Z"/>
+        <literal name="+Y +Z +X"/>
+        <literal name="-Y +Z +X"/>
+        <literal name="+Y -Z +X"/>
+        <literal name="-Y -Z +X"/>
+        <literal name="+Y +Z -X"/>
+        <literal name="-Y +Z -X"/>
+        <literal name="+Y -Z -X"/>
+        <literal name="-Y -Z -X"/>
+		
+        <literal name="+Z +Y +X"/>
+        <literal name="-Z +Y +X"/>
+        <literal name="+Z -Y +X"/>
+        <literal name="-Z -Y +X"/>
+        <literal name="+Z +Y -X"/>
+        <literal name="-Z +Y -X"/>
+        <literal name="+Z -Y -X"/>
+        <literal name="-Z -Y -X"/>
+        <literal name="+Z +X +Y"/>
+        <literal name="-Z +X +Y"/>
+        <literal name="+Z -X +Y"/>
+        <literal name="-Z -X +Y"/>
+        <literal name="+Z +X -Y"/>
+        <literal name="-Z +X -Y"/>
+        <literal name="+Z -X -Y"/>
+        <literal name="-Z -X -Y"/>
+      </parameter>
+      <parameter name="Rotation" type="Float" size="3" minValue="-360.0" maxValue="360.0" stepSize="5" defaultValue="0,0,0" inputMethod="SliderPlusSpinBox" />
+    </parameters>
+  </parameters>
+</nodetype>

@@ -1,0 +1,243 @@
+fragment_program Skin/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+material Skin/ColorPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			
+			fragment_program_ref Skin/SceneFP
+			{
+				default_params
+				{
+					param_named texMap int 0
+				}
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Skin/DepthPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Skin/SceneFP
+			{
+				default_params
+				{
+					param_named texMap int 1
+				}
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Skin/IDsPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Skin/SceneFP
+			{
+				default_params
+				{
+					param_named texMap int 2
+				}
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+fragment_program Skin/BlurXFP cg
+{
+    source Skin.cg
+    entry_point blurX_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Skin/BlurYFP cg
+{
+    source Skin.cg
+    entry_point blurY_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Skin/MixFP cg
+{
+    source Skin.cg
+    entry_point mix_ps
+    profiles ps_3_0 fp40
+}
+
+
+material Skin/BlurX
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Skin/BlurXFP
+			{
+				param_named_auto invWidth inverse_viewport_width
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Skin/BlurY
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Skin/BlurYFP
+			{
+				param_named_auto invHeight inverse_viewport_height
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Skin/MixBlend
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Skin/MixFP
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+    }
+}
+

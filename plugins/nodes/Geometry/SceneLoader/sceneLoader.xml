@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         sceneLoader.xml
+  Description:  Contains the XML description of sceneLoader nodes.
+  Author:       Michael Bussler <Michael.Bussler@filmakademie.de>
+  Copyright:    (c) 2012 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="SceneLoader" category="Geometry" color="120,70,150" plugin="sceneLoader.dll">
+  <parameters>
+    <parameter name="Scene File" type="Filename" filter="Ogre Scene Files (*.scene)"/>
+  </parameters>
+</nodetype>

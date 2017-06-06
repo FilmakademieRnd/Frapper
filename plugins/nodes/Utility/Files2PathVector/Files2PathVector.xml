@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         timer.xml
+  Description:  Contains the XML description of Timer nodes.
+  Author:       Jonas Trottnow <jtrottno@filmakademie.de>
+  Copyright:    (c) 2012 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Files2PathVector" category="Utility" color="40, 40, 40" plugin="Files2PathVector.dll">
+  <parameters>
+    <parameter name="First Image of Sequence" type="String" visible="true"/>
+    <parameter  name="Load image Sequence" type="Command" />
+    <parameter name="PathVector" type="String" pin="out"/>
+  </parameters>
+</nodetype>

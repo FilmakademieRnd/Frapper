@@ -1,0 +1,50 @@
+
+
+<!ELEMENT nodetype (parameter|parameters)*>
+<!ATTLIST nodetype
+	name			CDATA				#REQUIRED
+	category (Animation|Cameras|Character|Compositing|Geometry|Images|Input|Lights|Network|Rendering|Shading|Timer|Tracking|Utility|S3D|Solver|rtSolver) 
+										#REQUIRED
+	color			CDATA				#REQUIRED
+	plugin			CDATA				#REQUIRED
+>
+
+<!ELEMENT parameter (literal|separator)*>
+<!ATTLIST parameter
+	name			CDATA				#REQUIRED
+	type			(Bool|Int|UnsignedInt|Float|String|Filename|Directory|Color|Enumeration|TextInfo|Command|Geometry|Light|Camera|Image|Group|PlugIn|Generic) 
+										#REQUIRED
+	size			CDATA	            #IMPLIED
+    multiplicity	CDATA				#IMPLIED
+    defaultValue	CDATA				#IMPLIED
+    visible			(true|1|false|0)	#IMPLIED
+    enabled			(true|1|false|0)	#IMPLIED
+    readOnly		(true|1|false|0)	#IMPLIED
+    selfEvaluating	(true|1|false|0)	#IMPLIED
+    affects			CDATA				#IMPLIED
+    description		CDATA				#IMPLIED
+    unit			CDATA				#IMPLIED
+    pin				(in|out)			#IMPLIED
+    inputMethod		(SpinBox|SliderPlusSpinBox)	
+										#IMPLIED
+    minValue		CDATA				#IMPLIED
+    maxValue		CDATA				#IMPLIED
+    stepSize		CDATA				#IMPLIED
+    filter			CDATA				#IMPLIED
+>
+
+<!ELEMENT literal EMPTY>
+<!ATTLIST literal
+	name			CDATA				#REQUIRED
+	value			CDATA				#IMPLIED
+>
+
+<!ELEMENT parameters (parameter|parameters)*>
+<!ATTLIST parameters
+	name			CDATA				#IMPLIED
+	enabled			(true|false)		#IMPLIED
+    visible			(true|false)	#IMPLIED
+
+>
+
+<!ELEMENT separator EMPTY>

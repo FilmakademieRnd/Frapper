@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         mocapmesh.xml
+  Description:  Contains the XML description of MocapMesh nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="MocapMesh" category="Geometry" color="120,70,150" plugin="mocapmesh.dll">
+  <parameters>    
+    <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
+    <parameter name="Clean empty Skeleton Animation tracks on load" type="Bool" defaultValue="true"/>
+    <parameter name="Number of Vertices" type="TextInfo"/>
+    <parameter name="Number of Triangles" type="TextInfo"/>
+    <parameter name="useSaC" type="Bool" defaultValue="false"/>
+    <parameter name="Use Spline Interpolation" type="Bool" defaultValue="false"/>
+    <parameter name="mult" type="Float" defaultValue="1.0" maxValue="100000.0"/>
+    <parameter name="autoPose" type="Bool" defaultValue="true"/>
+    <parameter name="Use bone blending" type="Bool" defaultValue="true"/>
+    <parameter name="Bone blending range" type="Float" defaultValue="0.1"  minValue="0.01" maxValue="1.0"/>
+    <parameter name="Bone blending dead zone" type="Float" defaultValue="0"  minValue="0" stepSize="0.01" maxValue="1.0"/>
+    <parameter name="Bone blending skip animations" type="String"/>
+    <parameter name="Free Hands" type="Bool" defaultValue="false"/>
+    <parameter name="Global Material Parameter Update" type="Bool" defaultValue="false"/>
+    <parameter name="Chest position" type="Float" pin="out" size="6" minValue="" maxValue="" visible="false"/>
+    <parameter name="Init Bones" type="Command"/>
+    <parameter name="HandLeft Orientation"  type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-180" maxValue="180" defaultValue="0, 0, 0"/>
+    <parameter name="HandRight Orientation" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-180" maxValue="180" defaultValue="0, 0, 0"/>
+  </parameters>
+</nodetype>

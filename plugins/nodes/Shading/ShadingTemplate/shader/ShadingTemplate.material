@@ -1,0 +1,65 @@
+vertex_program ShadingTemplate/QuadVP cg
+{
+	source ShadingTemplate.cg
+	profiles vs_1_1 arbvp1
+    entry_point quad_vs
+	
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program ShadingTemplate/ShadingTemplateFP cg
+{
+    source ShadingTemplate.cg
+    entry_point quad_ps
+    profiles ps_3_0 fp40
+
+	default_params
+	{
+		//param_named exampleParam float3 0.0 1.0 2.0
+	}
+}
+
+material ShadingTemplate/ShadingTemplateMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref ShadingTemplate/ShadingTemplateFP
+			{
+			}
+			
+			vertex_program_ref ShadingTemplate/QuadVP
+			{
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering none
+			 }
+			
+			 texture_unit	// (normal)
+			 {
+                 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering none
+				 // filtering linear linear linear
+			 }
+
+			 texture_unit	// (depth)
+			 {
+                 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering none
+			 	 // filtering linear linear linear
+			 }
+		}
+	}
+}

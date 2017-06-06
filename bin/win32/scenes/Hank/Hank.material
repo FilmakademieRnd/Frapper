@@ -1,0 +1,1341 @@
+// HW Skinning Shader
+// pose deformation only
+//vertex_program CBS_Deformation cg
+//{
+//	source ../commonShader/HW_Skinning.cg
+//	entry_point CBS_Deformation
+//	profiles vs_3_0 vp40 arbvp1	
+//	includes_pose_animation 7
+//	includes_skeletal_animation true	
+//}
+// 82 bones 4 influences, skin deformation only
+//vertex_program skinDefOnly cg
+//{
+//	source ../commonShader/HW_Skinning.cg
+//	entry_point skinDefOnly
+//	profiles vs_3_0 vp40 arbvp1		
+//	includes_skeletal_animation true	
+//	includes_pose_animation 7
+//}
+// 82 bones 4 influences, skin deformation and 5 CBS Shapes at the same time
+vertex_program HW_Skinning_VS_82b_4i_5CBS cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_82b_4i_5CBS
+	profiles vs_3_0 vp40 arbvp1		
+	includes_pose_animation 5
+	includes_skeletal_animation true	
+}
+// 1 light, 82 bones 4 influences, skin deformation and 7 CBS Shapes at the same time
+vertex_program HW_Skinning_VS_1L_82b_4i_7CBS cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_1L_82b_4i_7CBS
+	profiles vs_3_0 vp40 arbvp1				
+	includes_pose_animation 5	
+	includes_skeletal_animation true
+
+}
+// 9 bones 4 influences
+vertex_program HW_Skinning_VS_10b_4i cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_10b_4i
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 5 bones 3 influences, Lashes
+vertex_program HW_Skinning_VS_5b_3i_Lashes cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_5b_3i_Lashes
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 1 bone 1 influence generic
+vertex_program HW_Skinning_VS_1b_1i_generic cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_1b_1i_generic	
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 1 bone 1 influence Hair vertex shader
+vertex_program HW_Skinning_VS_1b_1i_Hair cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_1b_1i_Hair	
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 1 bone 1 influence Hair vertex shader, advanced hair shading
+vertex_program HW_Skinning_VS_1b_1i_Hair_ad cg
+{
+	source ../commonShader/HW_Skinning.cg	
+	entry_point HW_Skinning_VS_1b_1i_Hair_ad
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 3 bones 3 influences Hair vertex shader
+vertex_program HW_Skinning_VS_3b_3i_Whiskers cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_3b_3i_Whiskers
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// 10 bones 4 influences Hair vertex shader
+vertex_program HW_Skinning_VS_10b_4i_Brows cg
+{
+	source ../commonShader/HW_Skinning.cg
+	entry_point HW_Skinning_VS_10b_4i_Brows
+	profiles vs_2_0 arbvp1
+	includes_skeletal_animation true	
+}
+// END HW Skinning Shader
+
+vertex_program Face_IBL_VS cg
+{
+	source ../commonShader/Face_IBL_VS.cg
+	profiles vs_2_0 arbvp1 
+	entry_point vs_main
+}
+fragment_program Face_IBL_FS cg
+{
+	source ../commonShader/Face_IBL_FS.cg	
+	profiles ps_3_0 arbfp1
+	entry_point Face_IBL_FS
+}
+fragment_program Face_IBL_FS_BRDF cg
+{
+	source ../commonShader/Face_IBL_FS.cg	
+	profiles ps_3_0 fp40
+	entry_point Face_IBL_FS_BRDF
+}
+// fragment_program Face_IBL_FS_TS cg
+// {
+	// source ../commonShader/Face_IBL_FS.cg	
+	// profiles ps_3_0 arbfp1
+	// entry_point Face_IBL_FS_TS
+
+	// default_params
+	// { 
+		// param_named_auto lightDiffuse light_diffuse_colour 0
+		// param_named_auto ambientLight ambient_light_colour
+		// param_named_auto specularLight light_specular_colour 0
+		// param_named specular_power float 200
+		// param_named bumpiness float 1
+	// }
+
+// }
+// Generic Color Occlusion BMP
+fragment_program Generic_ColOccBmp_FS cg
+{
+	 source ../commonShader/Generic_Color_Occlusion_Bump.cg		
+	entry_point main_fp
+	profiles ps_3_0 arbfp1
+}
+material Hank_Face
+// View Space
+{
+	//// inluding HW skinning
+	technique 
+	{
+		pass 
+		{		
+			 // colour_write off
+			 // depth_write off
+			
+			vertex_program_ref HW_Skinning_VS_82b_4i_5CBS
+			{				
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix									
+				param_named_auto worldView worldview_matrix
+				param_named_auto anim_t animation_parametric				
+				param_named_auto anim_t2 animation_parametric					
+			}						
+			fragment_program_ref Face_IBL_FS			
+			{
+				param_named	exposure		float	0.591
+				param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				param_named fvSpecular		float4	0.1765	 0.2832 0.3125 0 
+				param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000							
+				param_named RimLightPower	float	3.2
+				param_named RimLightColor	float4	0.7255 0.7895 0.8316 1	
+				param_named bloodFactor		float	0.45
+				param_named bloodPower		float	2.754
+				param_named Occlusion		float	0.836
+				param_named BumpDepth		float	0.956
+				param_named SSSColor		float4	1 0.528 0.4 1
+				param_named SSSPower		float	1.246
+				param_named SSSFactor		float	0.1				
+				param_named poreSpec		float	0.15
+				param_named lipSpec			float	0.16
+				param_named RimLightFactor	float	0.6
+				param_named hairShadow		float	0.8
+				param_named SpecPower		float	0.25
+			}	
+			texture_unit			
+			{			
+				texture Hank_Face_Color.dds								
+			}
+			texture_unit
+			{			
+				texture Hank_Face_Bump.dds				
+			}
+			texture_unit
+			{			
+				texture Hank_Face_SSS.dds
+			}
+			texture_unit
+			{			
+				texture Hank_Face_SpecRimBump.dds
+			}				
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	 
+			}	
+			texture_unit
+			{					
+				texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	 				
+			}
+		}
+	}
+	technique BRDF
+	{
+		pass 
+		{			
+			vertex_program_ref HW_Skinning_VS_82b_4i_5CBS
+			{				
+				param_named_auto eyePosition camera_position														
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix									
+				// param_named_auto viewMatrix view_matrix
+				param_named_auto anim_t animation_parametric				
+				param_named_auto anim_t2 animation_parametric
+				param_named_auto worldView worldview_matrix
+			}						
+			fragment_program_ref Face_IBL_FS_BRDF			
+			{
+				param_named	brdf_nbLights	float	16.0
+				param_named brdf_exponent	float	5.0
+				param_named brdf_fresnel	float   0.27
+				param_named brdf_diffuse  	float3  0.8 0.8 0.8
+				param_named brdf_specular 	float3  0.3 0.3 0.35
+				// param_named brdf_specular 	float3  1.0 1.0 1.0
+				param_named brdf_lightscale float   10.0
+				param_named brdf_envsize  	float   300.0				
+				param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000				
+				param_named ShadowColor		float3	0.0 0.0 0.0
+				param_named bloodFactor		float	0.5
+				param_named bloodPower		float	4
+				param_named Occlusion		float	0.84
+				param_named BumpDepth		float	1
+				param_named SSSColor		float3	1 0.528 0.4
+				param_named SSSPower		float	1.25
+				param_named SSSFactor		float	0.22				
+				param_named poreSpec		float	0.36
+				param_named lipSpec			float	0.17
+				param_named hairShadow		float	0.8
+				param_named specPower		float	0.31			
+				param_named diffPower		float	0.8
+			}	
+			texture_unit			
+			{			
+				texture Hank_Face_Color.dds								
+			}
+			texture_unit
+			{			
+				texture Hank_Face_Bump.dds				
+			}
+			texture_unit
+			{			
+				texture Hank_Face_SSS.dds
+			}
+			texture_unit
+			{			
+				texture Hank_Face_SpecRimBump.dds
+			}				
+			texture_unit LightDirs
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit LightPows
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+	//technique 
+	//{
+	//	
+	//	pass
+	//	{
+	//		vertex_program_ref skinDefOnly
+	//		{				
+	//			param_named_auto eyePosition camera_position_object_space							
+	//			param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+	//			param_named_auto viewProjectionMatrix viewproj_matrix				
+	//			param_named_auto viewMatrix view_matrix		
+	//		}
+	//		fragment_program_ref Face_IBL_FS			
+	//		{
+	//			param_named	exposure		float	0.591
+	//			param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+	//			param_named fvSpecular		float4	0.1765	 0.2832 0.3125 0 
+	//			param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000							
+	//			param_named RimLightPower	float	3
+	//			param_named RimLightColor	float4	0.7255 0.7895 0.8316 1	
+	//			param_named bloodFactor		float	0.393
+	//			param_named bloodPower		float	2.754
+	//			param_named Occlusion		float	0.836
+	//			param_named BumpDepth		float	0.956
+	//			param_named SSSColor		float4	1 0.528 0.4 1
+	//			param_named SSSPower		float	1.246
+	//			param_named SSSFactor		float	0.1				
+	//			param_named poreSpec		float	1.7348
+	//			param_named lipSpec			float	0.16
+	//			param_named RimLightFactor	float	2
+	//			param_named hairShadow		float	0.8
+	//			param_named SpecPower		float	0.5
+
+
+	//		}
+	//		texture_unit			
+	//		{			
+	//			texture Hank_Face_Color.dds								
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_Bump.dds				
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_SSS.dds
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_SpecRimBump.dds
+	//		}				
+	//		texture_unit
+	//		{					
+	//			texture ../commonMaps/campus_diff.dds cubic combinedUVW
+	//			tex_coord_set 1
+	//			tex_address_mode clamp	 
+	//		}	
+	//		texture_unit
+	//		{					
+	//			texture ../commonMaps/campus_spec.dds cubic combinedUVW
+	//			tex_coord_set 1
+	//			tex_address_mode clamp	 				
+	//		}
+	//	}
+	//}
+	// no HW skinning
+	//technique 
+	//{
+	//	pass
+	//	{
+	//		vertex_program_ref Face_IBL_VS
+	//		{				
+	//			param_named fvEyePosition	float3  0.0 10.0 -10000.0				
+	//			param_named_auto worldViewProj worldviewproj_matrix
+	//			param_named_auto view_matrix view_matrix 
+	//		}
+	//		fragment_program_ref Face_IBL_FS			
+	//		{
+	//			param_named	exposure		float	0.591
+	//			param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+	//			param_named fvSpecular		float4	0.1765	 0.2832 0.3125 0 
+	//			param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000							
+	//			param_named RimLightPower	float	3
+	//			param_named RimLightColor	float4	0.7255 0.7895 0.8316 1	
+	//			param_named bloodFactor		float	0.393
+	//			param_named bloodPower		float	2.754
+	//			param_named Occlusion		float	0.836
+	//			param_named BumpDepth		float	0.956
+	//			param_named SSSColor		float4	1 0.528 0.4 1
+	//			param_named SSSPower		float	1.246
+	//			param_named SSSFactor		float	0.1				
+	//			param_named poreSpec		float	1.7348
+	//			param_named lipSpec			float	0.16
+	//			param_named RimLightFactor	float	2
+	//			param_named hairShadow		float	0.8
+	//			param_named SpecPower		float	0.5
+
+
+	//		}
+	//		texture_unit			
+	//		{			
+	//			texture Hank_Face_Color.dds								
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_Bump.dds				
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_SSS.dds
+	//		}
+	//		texture_unit
+	//		{			
+	//			texture Hank_Face_SpecRimBump.dds
+	//		}				
+	//		texture_unit
+	//		{					
+	//			texture ../commonMaps/campus_diff.dds cubic combinedUVW
+	//			tex_coord_set 1
+	//			tex_address_mode clamp	 
+	//		}	
+	//		texture_unit
+	//		{					
+	//			texture ../commonMaps/campus_spec.dds cubic combinedUVW
+	//			tex_coord_set 1
+	//			tex_address_mode clamp	 				
+	//		}
+	//	}
+	//}
+	////fixed function
+	//technique
+	//{
+	//	pass
+	//	{
+	//		texture_unit
+	//		{
+	//			texture Hank_Face_Color.dds		
+	//		}
+	//	}
+	//}
+}
+
+material Hank_Lashes
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{			
+			vertex_program_ref HW_Skinning_VS_5b_3i_Lashes
+			{
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix				
+			}				
+		}
+	}
+	// fixed function, no HW skinning
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.17356 0.144383 0.121318 1
+			specular 0.08264 0.0650552 0.0511542 10
+			emissive 0 0 0
+		}
+	}
+}
+
+vertex_program Hair_VS cg
+{
+	source ../commonShader/Hair_VS.cg
+	profiles vs_1_1 arbvp1 
+	entry_point vs_main
+}
+fragment_program Hair_FS cg
+{
+	source ../commonShader/Hair_FS.cg	
+	profiles ps_3_0 arbfp1	
+	entry_point fs_main
+}
+fragment_program Hair_FS_ad cg
+{
+	source ../commonShader/Hair_FS.cg	
+	profiles ps_3_0 arbfp1	
+	entry_point fs_main_advanced
+}
+
+material Hank_Hair
+{
+	// advanced hair shading, including HW skinning
+	// technique 
+	//{
+	//	pass
+	//	{
+	//		cull_hardware none
+	//		vertex_program_ref HW_Skinning_VS_1b_1i_Hair_ad
+	//		{
+	//			param_named hairRootWidth	float	0.1 
+	//			param_named hairTipWidth	float	0.05 
+	//			param_named viewDirView		float3	0.0 0.0 1.0				
+	//			param_named fvLightPosition float4	0.0 260.0 120.0 1.0
+	//			param_named_auto eyePosition camera_position_object_space							
+	//			param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+	//			param_named_auto viewProjectionMatrix viewproj_matrix
+	//			param_named_auto viewMatrix view_matrix	
+	//			param_named_auto lightDirectionObj light_direction_object_space
+	//			param_named_auto cameraPositionObj camera_position_object_space
+	//		}
+	//		fragment_program_ref Hair_FS_ad			
+	//		{
+	//			param_named exposure		float	0.591640 
+	//			param_named fvSpecPower1	float	150
+	//			param_named fvSpecPower2	float	10 
+	//			param_named fvTangBend1		float	0.08
+	//			param_named fvTangBend2		float	0.54
+	//			param_named hairSpecColor1	float3	0.169 0.172 0.172
+	//			param_named hairSpecColor2	float3  0.085 0.09 0.09				
+	//			param_named baseColor		float4	0.14 0.1277 0.1 1.0
+	//			param_named tipColor		float4	0.721 0.60 0.533 1.0				
+	//		}			
+	//		texture_unit
+	//		{					
+	//			texture Hank_HairSpecularMap1D2.dds
+	//		}
+	//		texture_unit
+	//		{					
+	//			texture ../commonMaps/campus_diff.dds cubic combinedUVW
+	//			tex_coord_set 1
+	//			tex_address_mode clamp		
+	//		}	
+	//	}
+	//}
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{
+			cull_hardware none
+			vertex_program_ref HW_Skinning_VS_1b_1i_Hair
+			{
+				param_named hairRootWidth	float	0.12 
+				param_named hairTipWidth	float	0.07 
+				param_named viewDirView		float3	0.0 0.0 1.0				
+				param_named fvLightPosition float4	0.0 260.0 120.0 1.0
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix	
+			}
+			fragment_program_ref Hair_FS			
+			{
+				param_named exposure		float	0.591640 
+				param_named fvSpecPower1	float	150
+				param_named fvSpecPower2	float	10 
+				param_named fvTangBend1		float	0.08
+				param_named fvTangBend2		float	0.54
+				param_named hairSpecColor1	float3	0.169 0.172 0.172
+				param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			}			
+			texture_unit
+			{					
+				texture Hank_HairSpecularMap1D2.dds
+			}
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp		
+			}	
+		}
+	}
+	// // no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// cull_hardware none
+			// vertex_program_ref Hair_VS
+			// {
+				// param_named hairRootWidth	float	0.1
+				// param_named hairTipWidth	float	0.05 
+				// param_named fvLightPosition float3	0.0 260.0 120.0
+				// param_named viewDirView		float3	0.0 0.0 1.0
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hair_FS			
+			// {
+				// param_named exposure		float	0.591640 
+				// param_named fvSpecPower1	float	150
+				// param_named fvSpecPower2	float	10 
+				// param_named fvTangBend1		float	0.08
+				// param_named fvTangBend2		float	0.54
+				// param_named hairSpecColor1	float3	0.169 0.172 0.172
+				// param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				// param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				// param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			// }			
+			// texture_unit
+			// {					
+				// texture Hank_HairSpecularMap1D2.dds
+			// }
+			// texture_unit
+			// {					
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp		
+			// }	
+		// }
+	// }
+	// fixed function
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.17356 0.144383 0.121318 1
+			specular 0.08264 0.0650552 0.0511542 10
+			emissive 0 0 0
+		}
+	}
+}
+
+
+material Hank_Brows
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{
+			cull_hardware none
+			vertex_program_ref HW_Skinning_VS_10b_4i_Brows
+			{
+				param_named hairRootWidth	float	0.06 
+				param_named hairTipWidth	float	0.05 
+				param_named viewDirView		float3	0.0 0.0 1.0				
+				param_named fvLightPosition float4	0.0 260.0 120.0 1.0
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix	
+			}
+			fragment_program_ref Hair_FS			
+			{
+				param_named exposure		float	0.591640 
+				param_named fvSpecPower1	float	150
+				param_named fvSpecPower2	float	10 
+				param_named fvTangBend1		float	0.08
+				param_named fvTangBend2		float	0.54
+				param_named hairSpecColor1	float3	0.169 0.172 0.172
+				param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			}			
+			texture_unit
+			{					
+				texture Hank_HairSpecularMap1D2.dds
+			}
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp		
+			}	
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// cull_hardware none
+			// vertex_program_ref Hair_VS
+			// {
+				// param_named hairRootWidth	float	0.05 
+				// param_named hairTipWidth	float	0.04 
+				// param_named fvLightPosition float3	0.0 260.0 120.0
+				// param_named viewDirView		float3	0.0 0.0 1.0
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hair_FS			
+			// {
+				// param_named exposure		float	0.591640 
+				// param_named fvSpecPower1	float	150
+				// param_named fvSpecPower2	float	10 
+				// param_named fvTangBend1		float	0.08
+				// param_named fvTangBend2		float	0.54
+				// param_named hairSpecColor1	float3	0.169 0.172 0.172
+				// param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				// param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				// param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			// }			
+			// texture_unit
+			// {					
+				// texture Hank_HairSpecularMap1D2.dds
+			// }
+			// texture_unit
+			// {					
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp		
+			// }	
+		// }
+	// }
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.17356 0.144383 0.121318 1
+			specular 0.08264 0.0650552 0.0511542 10
+			emissive 0 0 0
+		}
+	}
+}
+
+
+material Hank_Whiskers
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{
+			cull_hardware none
+			vertex_program_ref HW_Skinning_VS_3b_3i_Whiskers
+			{
+				param_named hairRootWidth	float	0.07 
+				param_named hairTipWidth	float	0.05 
+				param_named viewDirView		float3	0.0 0.0 1.0				
+				param_named fvLightPosition float4	0.0 260.0 120.0 1.0
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix	
+			}
+			fragment_program_ref Hair_FS			
+			{
+				param_named exposure		float	0.591640 
+				param_named fvSpecPower1	float	150
+				param_named fvSpecPower2	float	10 
+				param_named fvTangBend1		float	0.08
+				param_named fvTangBend2		float	0.54
+				param_named hairSpecColor1	float3	0.169 0.172 0.172
+				param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			}			
+			texture_unit
+			{					
+				texture Hank_HairSpecularMap1D2.dds
+			}
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp		
+			}	
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// cull_hardware none
+			// vertex_program_ref Hair_VS
+			// {
+				// param_named hairRootWidth	float	0.05 
+				// param_named hairTipWidth	float	0.04 
+				// param_named fvLightPosition float3	0.0 260.0 120.0
+				// param_named viewDirView		float3	0.0 0.0 1.0
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hair_FS			
+			// {
+				// param_named exposure		float	0.591640 
+				// param_named fvSpecPower1	float	150
+				// param_named fvSpecPower2	float	10 
+				// param_named fvTangBend1		float	0.08
+				// param_named fvTangBend2		float	0.54
+				// param_named hairSpecColor1	float3	0.169 0.172 0.172
+				// param_named hairSpecColor2	float3  0.085 0.09 0.09				
+				// param_named baseColor		float4	0.14 0.1277 0.1 1.0
+				// param_named tipColor		float4	0.721 0.60 0.533 1.0				
+			// }			
+			// texture_unit
+			// {					
+				// texture Hank_HairSpecularMap1D2.dds
+			// }
+			// texture_unit
+			// {					
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp		
+			// }	
+		// }
+	// }
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.17356 0.144383 0.121318 1
+			specular 0.08264 0.0650552 0.0511542 10
+			emissive 0 0 0
+		}
+	}
+}
+
+vertex_program Hank_EyesGlass_VS cg
+{
+	source Hank_EyesGlass_VS.cg
+	profiles vs_1_1 arbvp1 
+	entry_point vs_main
+}
+fragment_program Hank_EyesGlass_FS cg
+{	
+	source ../commonShader/Eyes_Glass_FS.cg	
+	profiles ps_3_0 arbfp1
+	entry_point ps_main
+}
+
+material Hank_EyesGlass
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass Hank_EyesGlass_Pass
+		{			
+			scene_blend add 
+			depth_check on
+			depth_func less_equal
+			depth_write off
+
+			// vertex_program_ref HW_Skinning_VS_1b_1i_HankEyesGlass
+			vertex_program_ref HW_Skinning_VS_1b_1i_generic
+			{					
+				param_named_auto eyePosition camera_position_object_space				
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix								
+			}
+			fragment_program_ref Hank_EyesGlass_FS			
+			{				
+				param_named eyeGlassSpecular		float 0.05			
+				param_named eyesGlassBumpDepth 		float 1.0				
+				param_named xShift 					float 0.11				
+				param_named yShift	 				float 0.16				
+				param_named xScale	 				float 1.0		
+				param_named yScale	 				float 1.8	
+			}			
+			texture_unit
+			{												
+				texture Hank_Eyes_Bump.dds 
+			}	
+			texture_unit
+			{									
+				texture ../commonMaps/campus_highlight.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}			
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass Hank_EyesGlass_Pass
+		// {			
+			// scene_blend add 
+			// depth_check on
+			// depth_func less_equal
+			// depth_write off
+
+			// vertex_program_ref Hank_EyesGlass_VS
+			// {
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+			// }
+			// fragment_program_ref Hank_EyesGlass_FS			
+			// {
+				// param_named eye_exposure			float 0.52	
+				// param_named eyeGlassSpecularLens	float 0.39 
+				// param_named eyeGlassSpecularOut		float 0.00 
+				// param_named eyeVisibilityScale		float 0.34				
+			// }			
+			// texture_unit
+			// {												
+				// texture Hank_Eyes_Bump.dds 
+			// }	
+			// texture_unit
+			// {									
+				// texture ../commonMaps/campus_highlight.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }
+			// texture_unit
+			// {									
+				// texture Hank_EyeVisibility.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }
+		// }
+	// }
+	// fixed function
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture Hank_Eyes_Color.dds
+			}
+		}
+	}
+}
+
+vertex_program Hank_Eyes_VS cg
+{
+	source Hank_Eyes_VS.cg
+	profiles vs_1_1 arbvp1 
+	entry_point vs_main
+}
+fragment_program Eyes_FS cg
+{
+	source ../commonShader/Eyes_FS.cg	
+	profiles ps_3_0 arbfp1
+	entry_point ps_main
+}
+
+material Hank_Eyes
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{			
+			// vertex_program_ref HW_Skinning_VS_1b_1i_Eyes
+			vertex_program_ref HW_Skinning_VS_1b_1i_generic
+			{			
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix								
+			}
+			fragment_program_ref Eyes_FS			
+			{
+				param_named eyesBumpDepth	float 	1.0								
+				param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				param_named eyeBrightness	float	1.0
+				param_named eyeSpecular		float	0.2				
+			}			
+			texture_unit
+			{					
+				texture Hank_Eyes_Color.dds
+			}
+			texture_unit
+			{												
+				texture Hank_Eyes_Bump.dds 
+			}	
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}
+			texture_unit
+			{									
+				texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// vertex_program_ref Hank_Eyes_VS
+			// {
+				// param_named fvEyePosition   float3	0 10 -10000
+				// param_named fvLightPosition float4	0.0 260.0 120.0 0.0
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+			// }
+			// fragment_program_ref Eyes_FS			
+			// {
+				// param_named eye_exposure	float	0.52	
+				// param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				// param_named eyeBrightness	float	2.87
+				// param_named eyeSpecular		float	0.2
+			// }			
+			// texture_unit
+			// {					
+				// texture Hank_Eyes_Color.dds
+			// }
+			// texture_unit
+			// {												
+				// texture Hank_Eyes_Bump.dds 
+			// }	
+			// texture_unit
+			// {					
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }
+			// texture_unit
+			// {									
+				// texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }
+			// texture_unit
+			// {									
+				// texture ../commonMaps/campus_eyespec.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }
+		// }
+	// }
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Hank_Eyes_Color.dds
+			}
+		}
+	}
+}
+
+
+vertex_program Hank_Jaw_VS cg
+{
+	source Hank_Jaw_VS.cg
+	profiles vs_1_1 arbvp1 
+	entry_point vs_main
+}
+material Hank_JawU
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{			
+			// vertex_program_ref HW_Skinning_VS_4b_1i
+			vertex_program_ref HW_Skinning_VS_1b_1i_generic
+			{					
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix								
+			}
+			fragment_program_ref Generic_ColOccBmp_FS			
+			{
+				param_named Bump	 		float 	2.0				
+				param_named ambientColor	float4	0.226302 0.229630 0.229630 1.000000
+				param_named diffuseColor	float4	0.934465 0.967063 1.000000 1.000000
+				param_named Specular 		float	0.06
+				param_named Diffuse 		float	0.09
+				param_named Brightness 		float	2.20
+				param_named Occlusion		float	0.79
+			}
+			texture_unit
+			{			
+				texture Hank_JawU_Color.dds
+			}
+			texture_unit
+			{			
+				texture Hank_JawU_Bump.dds
+			}	
+			texture_unit
+			{	
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}	
+			texture_unit
+			{	
+				texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}	
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// vertex_program_ref Hank_Jaw_VS
+			// {
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hank_Jaw_FS			
+			// {
+				// param_named exposure		float	0.45 
+				// param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				// param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000
+				// param_named fvSpecularTeeth float4	0.030596 0.059259 0.088889 0.000000
+				// param_named teethBrightness float	1
+				// param_named teethOcc		float	0.649046
+				// param_named teethColor		float4	1.0 1.0 1.0 1.0
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_JawU_Color.dds
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_JawU_Bump.dds
+			// }	
+			// texture_unit
+			// {	
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }	
+			// texture_unit
+			// {	
+				// texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }	
+		// }
+	// }
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			texture_unit
+			{			
+				texture Hank_JawU_Color.dds
+			}
+		}
+	}
+}
+
+
+material Hank_JawL
+{
+	// inluding HW skinning
+	technique 
+	{
+		pass
+		{
+			// vertex_program_ref HW_Skinning_VS_4b_1i			
+			vertex_program_ref HW_Skinning_VS_10b_4i
+			{					
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix								
+			}
+			fragment_program_ref Generic_ColOccBmp_FS			
+			{
+				param_named Bump	 		float 	2.0				
+				param_named ambientColor	float4	0.226302 0.229630 0.229630 1.000000
+				param_named diffuseColor	float4	0.934465 0.967063 1.000000 1.000000
+				param_named Specular 		float	0.06
+				param_named Diffuse 		float	0.09
+				param_named Brightness 		float	2.20
+				param_named Occlusion		float	0.79
+			}
+			texture_unit
+			{			
+				texture Hank_JawL_Color.dds
+			}
+			texture_unit
+			{			
+				texture Hank_JawL_Bump.dds
+			}	
+			texture_unit
+			{	
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}	
+			texture_unit
+			{	
+				texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}	
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {
+			// vertex_program_ref Hank_Jaw_VS
+			// {
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hank_Jaw_FS			
+			// {
+				// param_named exposure		float	0.45 
+				// param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				// param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000
+				// param_named fvSpecularTeeth float4	0.030596 0.059259 0.088889 0.000000
+				// param_named teethBrightness float	1
+				// param_named teethOcc		float	0.649046
+				// param_named teethColor		float4	1.0 1.0 1.0 1.0
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_JawL_Color.dds
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_JawL_Bump.dds
+			// }	
+			// texture_unit
+			// {	
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }	
+			// texture_unit
+			// {	
+				// texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp	
+			// }	
+		// }
+	}
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			texture_unit
+			{			
+				texture Hank_JawL_Color.dds
+			}
+		}
+	}
+}
+
+vertex_program Hank_Shirt_VS cg
+{
+	source Hank_Shirt_VS.cg	
+	entry_point main_vp	
+	profiles vs_1_1 arbvp1 
+}
+
+material Hank_Shirt
+{	
+	// inluding HW skinning
+	technique 
+	{		
+		pass
+		{
+			vertex_program_ref HW_Skinning_VS_10b_4i
+			{					
+				param_named_auto eyePosition camera_position_object_space							
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix
+				param_named_auto viewMatrix view_matrix								
+			}
+			fragment_program_ref Generic_ColOccBmp_FS			
+			{
+				param_named Bump	 		float 	1.0				
+				param_named ambientColor	float4	0.226302 0.229630 0.229630 1.000000
+				param_named diffuseColor	float4	0.934465 0.967063 1.000000 1.000000
+				param_named Specular 		float	0.0
+				param_named Diffuse 		float	0.9
+				param_named Brightness 		float	1.0
+				param_named Occlusion		float	0.9
+			}
+			texture_unit
+			{			
+				texture Hank_Shirt_Color.dds	
+			}
+			texture_unit
+			{			
+				texture Hank_Shirt_Bump.dds
+			}	
+			texture_unit
+			{					
+				texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp					
+			}	
+			texture_unit
+			{	
+				texture ../commonMaps/campus_spec.dds cubic combinedUVW
+				tex_coord_set 1
+				tex_address_mode clamp	
+			}	
+		}
+	}
+	// no HW skinning
+	// technique 
+	// {
+		// pass
+		// {		
+			// vertex_program_ref Hank_Shirt_VS
+			// {
+				// param_named fvLightPosition float3	0.0 260.0 120.0
+				// param_named_auto worldViewProj worldviewproj_matrix
+				// param_named_auto view_matrix view_matrix 
+				// param_named_auto eyePosition camera_position 
+			// }
+			// fragment_program_ref Hank_Shirt_FS			
+			// {
+				// param_named exposure		float	0.591640 
+				// param_named fvAmbient		float4	0.226302 0.229630 0.229630 1.000000
+				// param_named fvDiffuse		float4	0.934465 0.967063 1.000000 1.000000				
+				// param_named shirtRimPower	float	0.2
+				// param_named shirtRimFactor	float	0.05
+				// param_named shirtRimColor	float4	0.75 0.75 0.75 0.0	
+				// param_named shirtBump		float	1
+				// param_named shirtOcc		float   0.85
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_Shirt_Color.dds	
+			// }
+			// texture_unit
+			// {			
+				// texture Hank_Shirt_Bump.dds
+			// }	
+			// texture_unit
+			// {					
+				// texture ../commonMaps/campus_diff.dds cubic combinedUVW
+				// tex_coord_set 1
+				// tex_address_mode clamp					
+			// }	
+		// }
+	// }
+	// fixed function
+	technique 
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Hank_Shirt_Color.dds		
+			}
+		}
+	}
+}

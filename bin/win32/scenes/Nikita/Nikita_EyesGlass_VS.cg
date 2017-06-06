@@ -1,0 +1,32 @@
+void vs_main(  			
+			//in
+			float4 iPosition : POSITION,
+			float3 iNormal   : NORMAL0,			
+			float2 iTexCoord : TEXCOORD0,
+			float4 blendIdx : BLENDINDICES,
+			float4 blendWgt : BLENDWEIGHT,
+			//out
+			out float4 oPosition	: POSITION,
+			out float2 oTexCoord	: TEXCOORD0,						
+			out float3 oReflect		: TEXCOORD2,			
+			//parameter
+			uniform float3x4   worldMatrix3x4Array[4],
+			uniform float4x4 viewProjectionMatrix,		
+			uniform float4x4 worldViewProj,
+			uniform float4x4 view_matrix)
+			
+{
+	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPosition).xyz, 1.0) * blendWgt[0];		
+	float3 blendNormal = mul(worldMatrix3x4Array[blendIdx[0]], float4(iNormal, 0.0)) * blendWgt[0];			
+	oPosition = mul(viewProjectionMatrix, blendPos);	
+
+	oTexCoord = iTexCoord;
+       
+	float3 Pview = mul( view_matrix, oPosition ); 
+
+	float3 wvpNormal = mul((float3x3)viewProjectionMatrix, blendNormal);	
+ 
+	float3 tmpView = normalize( Pview );
+   	oReflect = -reflect(tmpView, wvpNormal);
+   
+}

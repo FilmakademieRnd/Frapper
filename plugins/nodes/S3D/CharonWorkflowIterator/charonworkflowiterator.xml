@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         charonworkflow.xml
+  Description:  Loads and executes Charon workflow files 
+  Author:       Michael Bussler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="CharonWorkflowIterator" category="S3D" color="255, 255, 255" plugin="charonworkflowiterator.dll">
+  <parameters>
+    <parameter name="Start Iteration" type="Command" description="Start processing the connected charon workflow." />
+    <parameter name="In Frame"  type="Int" defaultValue="0" description="The in-frame for the iteration." />
+    <parameter name="Out Frame" type="Int" defaultValue="99" description="The Out-frame for the iteration." />
+    <parameter name="Filename Template" type="String" defaultValue="output_%1.png" description="The filename template for the output files." />
+    <parameter name="startFrame" type="Int" pin="out" />
+    <parameter name="endFrame"   type="Int" pin="out" />
+    <parameter name="filename" type="Generic" pin="out" visible="false" />
+    <parameter name="Process" type="Generic" pin="in" visible="false" />
+  </parameters>
+</nodetype>
+

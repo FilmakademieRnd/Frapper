@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         OpenMvgFeatureFinder.xml
+  Description:  Contains the XML description of OpenCvFeatureNode.
+  Author:       Jonas Trottnow <jtrottno@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="OpenMvgFeatureFinder" category="S3D" color="171, 192, 255" plugin="OpenMvgFeatureFinder.dll">
+  <parameters>
+    <parameter  name="Calculate!" type="Command" />
+    <parameter  name="exe Location" type="Directory" visible="true" pin="out"/>
+    <parameter  name="Image Location" type="Directory" defaultValue="img_FULL" visible="true" pin="out"/>
+    <parameter  name="Matches Output Path" type="Directory" defaultValue="globalSFM/matches" visible="true" pin="out"/>
+	  <parameter  name="BRISK Treshhold" type="Int" defaultValue="5" minValue="1" maxValue="100" stepSize="1" visible="true"/>
+	  <parameter  name="BRISK Octaves" type="Int" defaultValue="0" minValue="0" maxValue="8" stepSize="1" visible="true"/>
+    <parameter  name="focal length (pixel)" type="Int" defaultValue="3000" minValue="0" maxValue="10000" stepSize="1" visible="true"/>
+  </parameters>
+</nodetype>

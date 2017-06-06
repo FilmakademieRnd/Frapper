@@ -1,0 +1,168 @@
+fragment_program Bloom/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Bloom/BlurHFP cg
+{
+    source Bloom.cg
+    entry_point blurH_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Bloom/BlurVFP cg
+{
+    source Bloom.cg
+    entry_point blurV_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Bloom/BloomFP cg
+{
+    source Bloom.cg
+    entry_point bloom_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Bloom/BrightFP cg
+{
+    source Bloom.cg
+    entry_point bright_ps
+    profiles ps_3_0 fp40
+}
+
+
+// scene pass
+material Bloom/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Bloom/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+//Blur: Horizontal Gaussian pass
+material Bloom/BlurH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Bloom/BlurHFP
+			{
+				param_named BlurWidth float 1.0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+//Blur: Vertical Gaussian pass
+material Bloom/BlurV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Bloom/BlurVFP
+			{
+				param_named BlurWidth float 1.0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+//Final Bloom pass: Blends the blurred with the sharp image
+material Bloom/BloomBlend
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Bloom/BloomFP
+			{
+				param_named OriginalImageWeight float 1.0
+				param_named BlurWeight float 0.65
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+    }
+}
+
+//High-pass Bright filter
+//First pass
+material Bloom/BrightPass
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Bloom/BrightFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+  				filtering none
+			}
+        }
+    }
+}

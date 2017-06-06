@@ -1,0 +1,6 @@
+project(ImageProcessing)
+set( VS_PROJECT_FOLDER "Nodes/ImageProcessing" )
+add_subdirectory( MulticamRectify )
+add_subdirectory( CameraIntrinsicCalibrator )
+add_subdirectory( PatchMatch )
+add_subdirectory( DepthFuse )

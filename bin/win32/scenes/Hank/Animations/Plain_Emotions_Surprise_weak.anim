@@ -1,0 +1,18 @@
+anim BrowU_CAU1_2
+{
+	//Time   /    Value
+	0	0
+	1	26.1735
+}
+anim JawO_CAU2627
+{
+	//Time   /    Value
+	0	0
+	1	32.6786
+}
+anim JawUp_CAU17
+{
+	//Time   /    Value
+	0	0
+	1	26.9388
+}

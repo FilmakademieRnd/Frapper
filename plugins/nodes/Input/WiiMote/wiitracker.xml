@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         wiitracker.xml
+  Description:  Contains the XML description of WiiTracker nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Wiimote" category="Input" color="250,100,50" plugin="wiitracker.dll">
+  <parameters>
+    <parameter name="run" type="Bool" defaultValue="false"/>
+    <parameters name="Wiimote 0">
+      <parameter name="wm0_motionSensing" type="Bool" defaultValue="false"/>
+      <parameter name="wm0_buttonA" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonB" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonUp" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonDown" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonLeft" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonRight" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonMinus" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonPlus" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonOne" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonTwo" type="Bool" pin="out"/>
+      <parameter name="wm0_buttonHome" type="Bool" pin="out"/>
+      <parameter name="wm0_roll" type="Float" pin="out"/>
+      <parameter name="wm0_pitch" type="Float" pin="out"/>
+      <parameter name="wm0_rollLeft" type="Float" pin="out"/>
+      <parameter name="wm0_rollRight" type="Float" pin="out"/>  
+      <parameter name="wm0_pitchFront" type="Float" pin="out"/>
+      <parameter name="wm0_pitchBack" type="Float" pin="out"/>
+      <parameter name="wm0_nunJoyLeft" type="Float" pin="out"/>
+      <parameter name="wm0_nunJoyRight" type="Float" pin="out"/>
+      <parameter name="wm0_nunButtonC" type="Bool" pin="out"/>
+      <parameter name="wm0_nunButtonZ" type="Bool" pin="out"/>
+      <parameter name="wm0_irDotDist" type="Float" pin="out"/>
+      <parameter name="wm0_irXPos" type="Float" pin="out"/>
+      <parameter name="wm0_irYPos" type="Float" pin="out"/>
+    </parameters>
+    <parameters name="Wiimote 1">
+      <parameter name="wm1_motionSensing" type="Bool" defaultValue="false"/>
+      <parameter name="wm1_buttonA" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonB" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonUp" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonDown" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonLeft" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonRight" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonMinus" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonPlus" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonOne" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonTwo" type="Bool" pin="out"/>
+      <parameter name="wm1_buttonHome" type="Bool" pin="out"/>
+      <parameter name="wm1_roll" type="Float" pin="out"/>
+      <parameter name="wm1_pitch" type="Float" pin="out"/>
+      <parameter name="wm1_rollLeft" type="Float" pin="out"/>
+      <parameter name="wm1_rollRight" type="Float" pin="out"/>
+      <parameter name="wm1_pitchFront" type="Float" pin="out"/>
+      <parameter name="wm1_pitchBack" type="Float" pin="out"/>
+      <parameter name="wm1_nunJoyLeft" type="Float" pin="out"/>
+      <parameter name="wm1_nunJoyRight" type="Float" pin="out"/>
+      <parameter name="wm1_nunButtonC" type="Bool" pin="out"/>
+      <parameter name="wm1_nunButtonZ" type="Bool" pin="out"/>
+      <parameter name="wm1_irDotDist" type="Float" pin="out"/>
+      <parameter name="wm1_irXPos" type="Float" pin="out"/>
+      <parameter name="wm1_irYPos" type="Float" pin="out"/>
+    </parameters>
+    <parameters name="Wiimote 2">
+      <parameter name="wm2_motionSensing" type="Bool" defaultValue="false"/>
+      <parameter name="wm2_buttonA" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonB" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonUp" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonDown" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonLeft" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonRight" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonMinus" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonPlus" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonOne" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonTwo" type="Bool" pin="out"/>
+      <parameter name="wm2_buttonHome" type="Bool" pin="out"/>
+      <parameter name="wm2_roll" type="Float" pin="out"/>
+      <parameter name="wm2_pitch" type="Float" pin="out"/>
+      <parameter name="wm2_rollLeft" type="Float" pin="out"/>
+      <parameter name="wm2_rollRight" type="Float" pin="out"/>
+      <parameter name="wm2_pitchFront" type="Float" pin="out"/>
+      <parameter name="wm2_pitchBack" type="Float" pin="out"/>
+      <parameter name="wm2_nunJoyLeft" type="Float" pin="out"/>
+      <parameter name="wm2_nunJoyRight" type="Float" pin="out"/>
+      <parameter name="wm2_nunButtonC" type="Bool" pin="out"/>
+      <parameter name="wm2_nunButtonZ" type="Bool" pin="out"/>
+      <parameter name="wm2_irDotDist" type="Float" pin="out"/>
+      <parameter name="wm2_irXPos" type="Float" pin="out"/>
+      <parameter name="wm2_irYPos" type="Float" pin="out"/>
+    </parameters>
+    <parameters name="Wiimote 3">
+      <parameter name="wm3_motionSensing" type="Bool" defaultValue="false"/>
+      <parameter name="wm3_buttonA" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonB" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonUp" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonDown" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonLeft" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonRight" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonMinus" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonPlus" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonOne" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonTwo" type="Bool" pin="out"/>
+      <parameter name="wm3_buttonHome" type="Bool" pin="out"/>
+      <parameter name="wm3_roll" type="Float" pin="out"/>
+      <parameter name="wm3_pitch" type="Float" pin="out"/>
+      <parameter name="wm3_rollLeft" type="Float" pin="out"/>
+      <parameter name="wm3_rollRight" type="Float" pin="out"/>
+      <parameter name="wm3_pitchFront" type="Float" pin="out"/>
+      <parameter name="wm3_pitchBack" type="Float" pin="out"/>
+      <parameter name="wm3_nunJoyLeft" type="Float" pin="out"/>
+      <parameter name="wm3_nunJoyRight" type="Float" pin="out"/>
+      <parameter name="wm3_nunButtonC" type="Bool" pin="out"/>
+      <parameter name="wm3_nunButtonZ" type="Bool" pin="out"/>
+      <parameter name="wm3_irDotDist" type="Float" pin="out"/>
+      <parameter name="wm3_irXPos" type="Float" pin="out"/>
+      <parameter name="wm3_irYPos" type="Float" pin="out"/>
+    </parameters>
+  </parameters>
+</nodetype>

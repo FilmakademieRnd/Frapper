@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         shadowmaprender.xml
+  Description:  Contains the XML description of SimpleRenderer nodes.
+  Author:       Simon Spielmann <sspielma@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="ShadowMapRenderer" category="Rendering" color="173, 255, 173" plugin="shadowmaprender.dll">
+  <parameters>
+    <parameters name="Light Definition">
+      <parameter name="Light Description File" type="Filename" filter="Light Description Files (*.txt)"/>
+      <parameter name="Light Scale Pos" type="Float" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="100" defaultValue="30" stepSize="1"/>
+      <parameter name="lightPower" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.01" maxValue="1" defaultValue="0.1" stepSize="0.01"/>
+      <parameter name="Number of Lights" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="16" defaultValue="4" stepSize="1"/>
+    </parameters>
+    <parameters name="Shadow Parameters">
+      <parameter name="vsmEpsilon" type="Float" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="2" defaultValue="0.0001" stepSize="0.0001"/>
+      <parameter name="sampleRadius" type="Float" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="20" defaultValue="2" stepSize="1"/>
+      <parameter name="blurSize" type="Float" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="10" defaultValue="1" stepSize=".1"/>
+      <parameter name="scaleBias" type="Float" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue="0" stepSize="0.001"/>
+    </parameters>
+  </parameters>
+</nodetype>

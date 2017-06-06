@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         animatablemesh.xml
+  Description:  Contains the XML description of AnimatableMesh nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="AnimatableMesh" category="Geometry" color="120,70,150" plugin="animatablemesh.dll">
+  <parameters>
+    <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
+    <parameter name="Clean empty Skeleton Animation tracks on load" type="Bool" defaultValue="true"/>
+    <parameter name="Number of Vertices" type="TextInfo"/>
+    <parameter name="Number of Triangles" type="TextInfo"/>
+    <parameter name="useSaC" type="Bool" defaultValue="false"/>
+    <parameter name="Combine Object IDs for Namespace" type="String" defaultValue="" enabled="true" />
+    <parameter name="Use Spline Interpolation" type="Bool" defaultValue="false"/>
+    <parameter name="mult" type="Float" defaultValue="1.0" maxValue="100000.0"/>
+    <parameter name="autoPose" type="Bool" defaultValue="true"/>    
+	<parameter name="Global Material Parameter Update" type="Bool" defaultValue="false"/>
+  </parameters>
+</nodetype>

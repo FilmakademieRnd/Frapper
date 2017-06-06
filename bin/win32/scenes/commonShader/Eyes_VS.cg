@@ -1,0 +1,72 @@
+// Rotate Point
+float3 rotatePoint (float rotationX, float rotationY, float3 point) {
+	// create rotation matrix
+	float3x3 rotationXMatrix = float3x3(float3(1.0, 0.0, 0.0), float3(0.0, cos(rotationX), -sin(rotationX)), float3(0.0, sin(rotationX), cos(rotationX)));
+	float3x3 rotationYMatrix = float3x3(float3(cos(rotationY), 0.0, sin(rotationY)), float3(0.0, 1.0, 0.0), float3(-sin(rotationY), 0.0, cos(rotationY)));
+	float3x3 rotation = mul(rotationXMatrix, rotationYMatrix);
+	
+	return mul(rotation, point);	
+}
+
+// structures to pipe Data
+struct a2v {
+	float4 pos       : POSITION;
+    float3 normal    : NORMAL;
+	float3 tangent   : TANGENT;
+    float2 texcoord  : TEXCOORD0;
+	float4 blendIdx	: BLENDINDICES;
+	float4 blendWgt	: BLENDWEIGHT;
+};
+
+struct v2f {
+	float4 hpos : POSITION; // view_space
+	float3 eye : TEXCOORD0;
+	//float2 texcoord : TEXCOORD1;
+	
+	float3 normal : TEXCOORD1; // view_space
+	float3 tangent : TEXCOORD2;
+	float3 binormal : TEXCOORD3;
+	
+	float3 modelViewDir: TEXCOORD4; // model_space
+	float3 modelNormal: TEXCOORD5;
+	float3 modelPos: TEXCOORD6;
+};
+
+// Calculates once per Vertex
+v2f Eyes_AD_VS(
+	a2v IN,
+    const uniform float4x4 modelview_matrix,
+	const uniform float4x4 inverse_modelview_matrix,
+	uniform float3 eyePosition,
+	uniform float3 initPosition,
+	uniform float3 initRotation,
+	uniform float3x4 worldMatrix3x4Array[1],
+	uniform float4x4 viewProjectionMatrix,
+	uniform float4x4 viewMatrix)
+{
+	v2f OUT;
+	//OUT.texcoord = IN.texcoord;
+	float4	BRDF_blendPos = float4(mul(worldMatrix3x4Array[IN.blendIdx[0]], IN.pos).xyz, 1.0) * IN.blendWgt[0];
+	OUT.eye = mul((float3x3)viewMatrix, normalize(BRDF_blendPos.xyz - eyePosition) * 10.0);
+	
+	float3	BRDF_normal = mul((float3x3)worldMatrix3x4Array[IN.blendIdx[0]], IN.normal) * IN.blendWgt[0];
+	float3	BRDF_tangent = mul((float3x3)worldMatrix3x4Array[IN.blendIdx[0]], IN.tangent) * IN.blendWgt[0];
+	OUT.modelNormal = BRDF_normal;
+	
+	OUT.hpos = mul(viewProjectionMatrix, BRDF_blendPos);
+	OUT.normal = mul((float3x3)viewMatrix, BRDF_normal); // BRDF
+	OUT.tangent = mul((float3x3)viewMatrix, BRDF_tangent); // BRDF	
+	
+	OUT.binormal = cross(OUT.normal, OUT.tangent);
+	
+	// vertex position in object space
+	float4 pos = float4(IN.pos.x,IN.pos.y,IN.pos.z,1.0);
+
+	OUT.modelViewDir = IN.pos.xyz-mul((float3x3)inverse_modelview_matrix, -float3(modelview_matrix[0].w,modelview_matrix[1].w,modelview_matrix[2].w));
+	OUT.modelPos = IN.pos.xyz - initPosition;
+	
+	OUT.modelNormal = rotatePoint(-initRotation.x, -initRotation.y, OUT.modelNormal);
+	OUT.modelPos = rotatePoint(-initRotation.x, -initRotation.y, OUT.modelPos);
+	
+	return OUT;
+}

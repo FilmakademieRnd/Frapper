@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Index2Index.xml
+  Description:  Contains the XML description of Index2Index nodes.
+  Author:       Diana Arellano <diana.arellano@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Index2Index" category="Utility" color="255, 192, 171" plugin="index2index.dll">
+  <parameters>
+    <parameter name="Number of Parameters"        type="Int" defaultValue="22" minValue="1" maxValue="50" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Clean Outputs after 500 ms"  type="Bool" defaultValue="false" />
+    <parameter name="Index Output"                type="Float"  selfEvaluating="true" defaultValue="0.0" minValue="0.0" maxValue="1000.0" pin="out" />
+    <parameter name="Label Output"                type="String" defaultValue=" " pin="out"/>
+    <parameter name="desc"                        type="TextInfo" defaultValue="Maps the input parameter to the value and name in the output groups" />
+    <parameter name="Threshold"                   type ="Float" defaultValue="98.0" minValue="-100.0" maxValue="100.0" inputMethod="SliderPlusSpinBox" description="specifies a value above which the mapping will be performed"/>
+    <parameters name="Outputs"> </parameters>
+  </parameters>
+</nodetype>

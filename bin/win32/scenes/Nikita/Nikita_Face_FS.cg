@@ -1,0 +1,167 @@
+// Expand a range-compressed vector
+float3 expand(float3 v)
+{
+	return (v - 0.5) * 2;
+}
+
+void Nikita_Face_FS_TS(   
+				//in 
+			    float2 uv			: TEXCOORD0,				
+				float3 light_vector : TEXCOORD1,
+			    float3 half_angle   : TEXCOORD2,							
+			    //out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float4 lightDiffuse,
+				uniform float4 ambientLight,
+				uniform float4 specularLight,
+				uniform float specular_power,
+				uniform float bumpiness,
+				// textures
+				uniform sampler2D	base_map		: register(s0),
+				uniform sampler2D	bump_map		: register(s1),
+				uniform sampler2D	specular_map	: register(s2))
+{
+
+  float3 base = tex2D( base_map, uv );
+  float3 bump = tex2D( bump_map, uv );
+  float specularLevel = tex2D(specular_map, uv).b;
+
+  //normalise
+  float3 normalized_light_vector = normalize( light_vector );
+  float3 normalized_half_angle = normalize( half_angle );
+   
+  // "Smooth out" the bump based on the bumpiness parameter.
+  // This is simply a linear interpolation between a "flat"
+  // normal and a "bumped" normal.  Note that this "flat"
+  // normal is based on the texture space coordinate basis.
+  float3 smooth = { 0.5f, 0.5f, 1.0f };
+  bump = lerp( smooth, bump, bumpiness );
+  bump = normalize( ( bump * 2.0f ) - 1.0f );  
+  
+
+  // These dot products are used for the lighting model
+  // equations.  The surface normal dotted with the light
+  // vector is denoted by n_dot_l.  The normal vector
+  // dotted with the half angle vector is denoted by n_dot_h.
+  float n_dot_l = dot( bump, normalized_light_vector );
+  float n_dot_h = dot( bump, normalized_half_angle );
+
+  // Calculate the resulting pixel color,
+  // based on our lighting model.
+  // Ambient + Diffuse + Specular
+  result.rgb =
+     ( base * ambientLight) +
+     ( base * lightDiffuse * max( 0.0f, n_dot_l ) ) +
+     ( specularLight * specularLevel * pow( max( 0.0f, n_dot_h ), specular_power ) );
+
+  //result.rgb = normalize(iTangent) * 0.5 + float3(0.5, 0.5, 0.5);
+  result.a = 1.0f; //** Set the alpha component manually
+
+  // try lit function
+  //float4 Lit = lit(n_dot_l,n_dot_h, 127);
+  //result.xyz = base * lightDiffuse * Lit.y + specularLight * specularLevel * Lit.z +  base * ambientLight;
+			
+}
+
+void Nikita_Face_FS(   //in 
+			    float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,				
+			    //out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	exposure,
+				uniform float4	fvAmbient,
+				uniform float4  fvSpecular,
+				uniform float4	fvDiffuse,				
+				uniform float	RimLightPower,	
+				uniform float4	RimLightColor,	
+				uniform float	bloodFactor,	
+				uniform float	bloodPower,		
+				uniform float	Occlusion,						
+				uniform float4	SSSColor,		
+				uniform float	SSSPower,		
+				uniform float	SSSFactor,		
+				uniform float	SwitchBump,
+				uniform float	poreSpec,		
+				uniform float	lipSpec,		
+				uniform float	RimLightFactor,
+				uniform float	hairShadow,
+				uniform float	SpecPower,
+				// textures
+				uniform sampler2D	baseMap		: register(s0),
+				uniform sampler2D	bumpMap		: register(s1),
+				uniform sampler2D	SSSMap		: register(s2),
+				uniform sampler2D	specularMap	: register(s3),				
+				uniform samplerCUBE DiffuseCube	: register(s4),
+				uniform samplerCUBE SpecCube	: register(s5))
+				//uniform sampler2D	baseMap		: register(s8),
+				//uniform sampler2D	bumpMap		: register(s9),
+				//uniform sampler2D	SSSMap		: register(s10),
+				//uniform sampler2D	specularMap	: register(s11),				
+				//uniform samplerCUBE DiffuseCube	: register(s12),
+				//uniform samplerCUBE SpecCube	: register(s13))
+{	
+	// texture sampler	
+	float4 SpecularRimBumpfactor = tex2D(specularMap, iTexCoord);
+	float4 bloodLayer = tex2D(SSSMap, iTexCoord);
+	float3 normalMap = tex2D(bumpMap, iTexCoord); 
+	float4 baseColor      = tex2D( baseMap, iTexCoord );
+	// extract Occlusion Map
+	float Occ = baseColor.a;
+	   
+	//bend normal	
+	float3 extendedSample = expand(normalMap);	
+	float3 Normal         = normalize( iNormal + (iTangent * extendedSample.x) + (iBinormal * extendedSample.y));
+	Normal.z *= -1;
+
+	// view direction, reflect vector, NdotV
+	float3 viewDir = normalize( iView );
+	float3 Reflect = reflect(viewDir, Normal);
+	float  fNDotV  = dot(iNormal, viewDir); 
+
+	// cubemap sampler
+	float DiffCubeValue = texCUBE(DiffuseCube, Normal) * exposure;
+	float SpecCubeValue = texCUBE(SpecCube, Reflect) * exposure; 
+      
+	// ambient, diffuse & specular
+	float4 Ambient   = fvAmbient * baseColor; 	
+	float4 Diffuse   = fvDiffuse * DiffCubeValue * baseColor; 	
+    float4 Specular  = fvSpecular * SpecCubeValue * (SpecularRimBumpfactor.r + poreSpec * SpecularRimBumpfactor.a);
+    Specular += (bloodLayer.a * lipSpec) * SpecCubeValue;	
+
+	// calculate SSS
+	float SSS = saturate(pow(1-fNDotV, SSSPower) * DiffCubeValue);
+	float4 SSSLight = SSS * SSSColor * SSSFactor;	
+
+    // calculate Rim Light    	
+	float RimLightStrength = saturate(saturate(pow(1-fNDotV, RimLightPower)) * DiffCubeValue);		
+	float4 RimLight = RimLightStrength * RimLightColor * SpecularRimBumpfactor.g * RimLightFactor;	
+	//RimLight =  float4(0.0, 0.0, 0.0, 0.0);
+
+    // calculate blood influence
+    float bloodStrength = saturate(pow(1-fNDotV, bloodPower) * DiffCubeValue);
+   
+	float4 blood = bloodLayer * (1-bloodStrength) * bloodFactor;
+
+    float4 comp = (0,0,0,0);
+    comp += Ambient;   
+    comp += Diffuse;      
+    comp += Specular * SpecPower;   
+    comp += blood;      
+    comp += RimLight;     
+    comp += SSSLight;   
+    float4 UnOccluded = saturate(comp);
+    float4 FinalColor = UnOccluded;
+    float4 shadowColor = float4 (0.15, 0.01, 0.0, 1.0);   
+    float4 Occluded = lerp(shadowColor, UnOccluded * Occ, Occ);
+    FinalColor = lerp(UnOccluded, Occluded, Occlusion);
+	FinalColor = lerp(FinalColor, FinalColor * SpecularRimBumpfactor.b, hairShadow);
+	result = FinalColor;
+
+	//result = SSS;
+		
+}

@@ -1,0 +1,59 @@
+/**************************************************************************************
+**                                                                                   **
+**                                    quad_vs                                   **
+**                                                                                   **
+***************************************************************************************/
+
+void quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+/**************************************************************************************
+**                                                                                   **
+**                                       objectidfilter_ps                           **
+**                                                                                   **
+***************************************************************************************/
+bool isIdEqual(float id1, float id2)
+{
+	if (id1 > (id2 - 0.001) && id1 < (id2 + 0.001))
+		return true;
+	else 
+		return false;
+}
+
+void objectidfilter_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 color    : COLOR,
+			  uniform float objectId,
+			  uniform float objectId1,
+			  uniform float objectId2,
+			  uniform float objectId3,
+			  uniform float objectId4,
+			  uniform sampler2D inputMap0 : TEXUNIT0,
+			  uniform sampler2D inputMap1 : TEXUNIT1)
+{
+	float objectIdFrag  = tex2D(inputMap1, float2(texCoord.x, texCoord.y)).x;
+	
+	objectId1 /= 100.0;
+	objectId2 /= 100.0;
+	objectId3 /= 100.0;
+	objectId4 /= 100.0;
+	
+	if (objectIdFrag > 0.0 && (isIdEqual(objectIdFrag, objectId1) || isIdEqual(objectIdFrag, objectId2) || isIdEqual(objectIdFrag, objectId3) || isIdEqual(objectIdFrag, objectId4)))
+		color = tex2D(inputMap0, float2(texCoord.x, texCoord.y));
+	else
+		color = float4(0.0, 0.0, 0.0, 0.0);
+
+	//color = tex2D(inputMap1, float2(texCoord.x, texCoord.y));
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="PoemAnalyser" category="Utility" color="250,100,50" plugin="poemanalyser.dll">
+  <parameters>
+    <parameters name="Simple">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters to read the analysis of a poem and tagged it accordingly."/>      
+      <parameter name="Filename DAT" type="Filename"/>
+      <parameter name="Filename FOR" type="Filename"/>
+      <parameter name="Poem text" type="Filename" />
+      <parameter name="Author" type="String" visible="true" />
+      <parameter name="Title" type="String" visible="true" />
+    
+      
+      <!--<parameter name="Command" type="Command"/>-->
+    </parameters>
+    
+    <!-- input parameters -->
+    
+    <parameter name="String in" type="String" pin="in" visible="false"/>
+    <parameter name="Filename in" type="Filename" pin="in" visible="false"/>
+
+    
+    <!-- output parameters -->
+    
+    <parameter name="String out" type="String" pin="out" visible="true"/>
+    <parameter name="Filename out" type="Filename" pin="out" visible="false"/>
+    
+  </parameters>
+</nodetype>

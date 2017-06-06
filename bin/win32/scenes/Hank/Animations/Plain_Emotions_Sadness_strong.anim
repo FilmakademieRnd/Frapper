@@ -1,0 +1,24 @@
+anim SadBr_CAU1_4
+{
+	//Time   /    Value
+	-0.04	0
+	0.96	100
+}
+anim LidT_CAU7
+{
+	//Time   /    Value
+	-0.04	0
+	0.96	100
+}
+anim LipTi_CAU23
+{
+	//Time   /    Value
+	-0.04	0
+	0.96	69.7704
+}
+anim CorD_CAU15
+{
+	//Time   /    Value
+	-0.04	0
+	0.96	51.7857
+}

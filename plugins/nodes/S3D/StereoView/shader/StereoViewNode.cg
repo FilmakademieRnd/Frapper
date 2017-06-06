@@ -1,0 +1,23 @@
+
+/**************************************************************************************
+**                                                                                   **
+**                                       InterlacedShader_ps                          **
+**                                                                                   **
+***************************************************************************************/
+
+void InterlacedShader_ps( 
+			in  float2 texCoord : TEXCOORD0,
+			out float4 oColor : COLOR,
+			uniform sampler2D inputMap0 : TEXUNIT0,
+			uniform sampler2D inputMap1 : TEXUNIT1 
+			)
+{
+	int rest = fmod( texCoord.y * 1080, 2); // for full hd!
+	
+	if ( rest == 0 ) {
+		oColor = tex2D( inputMap0, texCoord);
+	} else {
+		oColor = tex2D( inputMap1, texCoord);
+	}
+}
+

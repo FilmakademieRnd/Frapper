@@ -1,0 +1,3 @@
+#IF (WIN32)
+#	add_custom_command(TARGET cWorldView POST_BUILD COMMAND copy \"${cWorldView_BINARY_DIR}/$(ConfigurationName)\\*.dll\" \"${cWorldView_SOURCE_DIR}/../../../bin/win32/plugins\" COMMAND copy \"${cWorldView_SOURCE_DIR}\\*.xml\" \"${cWorldView_SOURCE_DIR}/../../../bin/win32/plugins\")
+#ENDIF(WIN32)

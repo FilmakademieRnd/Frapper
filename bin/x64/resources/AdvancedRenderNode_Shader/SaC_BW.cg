@@ -1,0 +1,126 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/****************************************************************************
+*                   Vertex shader for Vertex-Blurring                       *
+****************************************************************************/
+
+
+void HW_Skinning_VS_82b_4i_5CBS_SaC_BW(
+						 // in
+						 float4 position	: POSITION,
+						 float  iID			: BINORMAL,
+						 /*float3 pose1   	: TEXCOORD1, 
+						 float3 pose2   	: TEXCOORD2,
+						 float3 pose3   	: TEXCOORD3,
+						 float3 pose4   	: TEXCOORD4,
+						 float3 pose5   	: TEXCOORD5,*/					 
+						 float4 blendIdx	: BLENDINDICES,
+						 float4 blendWgt	: BLENDWEIGHT,
+						 // out
+						 out float4 oOldPositions : POSITION,
+						 out float	oID			  : TEXCOORD0,
+						 out float4 oNewPositions : TEXCOORD1,
+						 // params
+						 uniform float3x4 worldMatrix3x4Array[81])
+						 //uniform float4 anim_t,
+						 //uniform float4 anim_t2) 
+{   
+	 oID = iID;
+	
+	/* float4 CBSPosition = float4(	
+		 pose1 * anim_t.x + 
+		 pose2 * anim_t.y +
+		 pose3 * anim_t.z +
+		 pose4 * anim_t.w +
+		 pose5 * anim_t2.x, 
+		 1.0);
+		
+	CBSPosition.xyz = CBSPosition.xyz + position.xyz;*/
+	float4 CBSPosition = float4(position.xyz, 1.0);
+
+	// transform by indexed matrix
+	float4 blendPos = float4(0);	
+	for (int i = 0; i < 4; ++i)
+		blendPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPosition).xyz, 1.0) * blendWgt[i];	
+
+	oOldPositions = position;
+	oNewPositions = blendPos;
+}
+
+
+/****************************************************************************
+*                  Geometry shader for Vertex-Blurring                      *
+****************************************************************************/
+
+TRIANGLE
+POINT_OUT
+void EmitWeightsAsMapGS(AttribArray<float4> oOldPositions : POSITION,	
+						AttribArray<float4> oNewPositions : TEXCOORD1,
+						AttribArray<float>  id 		      : TEXCOORD0)
+{
+	static const float targetResolutionX = 256.0f;
+	static const float targetResolutionY = 256.0f;
+	
+	// original triangle area
+	float3 vEdgeA_OS = oOldPositions[1] - oOldPositions[0];
+	float3 vEdgeB_OS = oOldPositions[2] - oOldPositions[0];
+	float fAreaOS = length( cross( vEdgeA_OS, vEdgeB_OS ) ) * 0.5;
+	// new (skinned) triangle area
+	float3 vEdgeA_WS = oNewPositions[1] - oNewPositions[0];
+	float3 vEdgeB_WS = oNewPositions[2] - oNewPositions[0];
+	float fAreaWS = length( cross( vEdgeA_WS, vEdgeB_WS ) ) * 0.5;
+	// Wrinkle weight is [-1,1]
+	float fWrinkleWeight = clamp( (fAreaOS - fAreaWS) / fAreaOS, -1, 1 );
+	float4 fWrinkleWeightColor = float4(0,0,0,1);
+	
+	// Write out the blendweight. Depends on the target reaolution
+	for (int i = 0; i<3; ++i) {
+	    int vertexID = int(id[i]);
+		
+		// calculate position in screen-space
+		const float x = ((vertexID % int(targetResolutionX)) / (targetResolutionX)) * 2 - 1;
+		const float y = (floor(vertexID / targetResolutionX) / (targetResolutionY)) * 2 - 1;	
+		const float4 newPosition = float4( x + (1.0f/targetResolutionX), y + (1.0f/targetResolutionY), 0.5, 1 );
+
+		// generate pixel-color
+		if (fWrinkleWeight > 0)
+			fWrinkleWeightColor = float4(fWrinkleWeight,0,0,1);
+		else 
+			fWrinkleWeightColor = float4(0,abs(fWrinkleWeight),0,1);
+
+		emitVertex(newPosition : POSITION, fWrinkleWeightColor : COLOR);
+		//emitVertex(newPosition : POSITION, oNewPositions[0]/100.0f : COLOR);
+	}
+}
+
+
+/****************************************************************************
+*             Pixel shader for emitting the weight map                      *
+****************************************************************************/
+
+float4 DrawWeightmapPS(float4 c : COLOR) : COLOR
+{
+	//return float4(1,0,0,1); // for debug
+	return c;
+}

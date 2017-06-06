@@ -1,0 +1,358 @@
+vertex_program LNS/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+fragment_program LNS/Scene glsl
+{
+	source Scene.frag
+}
+
+fragment_program LNS/ETF glsl
+{
+	source ETF.frag
+}
+
+fragment_program LNS/SmoothH glsl
+{
+	source GaussSmoothX.frag
+	
+	default_params
+	{
+		param_named sigma float1 10.0
+	}
+}
+
+fragment_program LNS/SmoothV glsl
+{
+	source GaussSmoothY.frag
+	
+	default_params
+	{
+		param_named sigma float1 10.0
+	}
+}
+
+fragment_program LNS/Gradients glsl
+{
+	source Gradients.frag
+}
+
+fragment_program LNS/GradBlurX glsl
+{
+	source GradBlurX.frag
+	
+	default_params
+	{
+		param_named sigma2 float1 1.0
+	}
+}
+
+fragment_program LNS/GradBlurY glsl
+{
+	source GradBlurY.frag
+	
+	default_params
+	{
+		param_named sigma2 float1 1.0
+	}
+}
+
+fragment_program LNS/Seeding glsl
+{
+	source Seeding.frag
+	
+	default_params
+	{
+		param_named edge_thresh float1 0.1
+		param_named seed_thresh float1 0.95
+	}
+}
+
+fragment_program LNS/Sketching glsl
+{
+	source Sketching.frag
+	
+	default_params
+	{
+		param_named line_length int 100
+		param_named mag_thresh float1 0.01
+	}
+}
+
+material LNS/Scene
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/Scene
+			{
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/ETF
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/ETF
+			{
+				param_named rtScene int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/SmoothH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/SmoothH
+			{
+				param_named rtETF int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/SmoothV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/SmoothV
+			{
+				param_named rtSmoothH int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/Gradients
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/Gradients
+			{
+				param_named rtScene int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/GradBlurX
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/GradBlurX
+			{
+				param_named rtGradients int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/GradBlurY
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/GradBlurY
+			{
+				param_named rtGradBlurX int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/Seeding
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/Seeding
+			{
+				param_named rtGradBlurY int 0
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material LNS/Sketching
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref LNS/Sketching
+			{
+				param_named rtSmoothV int 0
+				param_named rtSeeding int 1
+			}
+
+			vertex_program_ref LNS/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

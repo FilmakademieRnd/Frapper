@@ -1,0 +1,17 @@
+compositor TileCompositor
+{
+    technique
+    {
+        target_output
+        {
+            // Start with clear output
+            input none
+            // Draw a fullscreen quad
+            pass render_quad
+            {
+                // Renders a fullscreen quad with a material
+                material Tile/SelectTile
+            }
+        }
+    }
+}

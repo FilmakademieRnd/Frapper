@@ -1,0 +1,159 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                                    ssao_Quad_vs                                   **
+**                                                                                   **
+***************************************************************************************/
+
+void ssao_Quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+				   out float3 ray       : TEXCOORD1,
+				   out float2 randTexUV	: TEXCOORD2,
+				   uniform float3   farCorner,
+				   uniform float2   textureSize,
+				   uniform float2	randomMapSize,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; würde auch funktionieren
+	
+	// divide by the size of random map
+	float factX = textureSize.x / randomMapSize.x;
+	float factY = textureSize.y / randomMapSize.y;
+	
+	randTexUV = float2(oTexCoord.x * factX, oTexCoord.y * factY);
+		
+	// calculate the correct ray (modify XY parameters based on screen-space quad XY)
+    ray = farCorner * float3(sign(iPosition.xy), 1);
+}
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                      TEX2DLOD                                     **
+**             For ps_3_0, we want to use tex2Dlod because it's faster               **
+***************************************************************************************/
+
+ps_3_0 float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0, 0));
+}
+
+float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2D(map, uv);
+}
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                      ssao_ps                                      **
+**                                                                                   **
+***************************************************************************************/
+
+void ssao_ps( in  float2 texCoord 	: TEXCOORD0,
+		 in  float3 ray   		: TEXCOORD1,
+		 in  float2 randTexUV 	: TEXCOORD2,
+		 out float4 color    	: COLOR,
+		 uniform float farPlane,
+		 uniform float4x4 ptMat,
+		 uniform float radius,
+		 uniform sampler2D inputMap0 : TEXUNIT0,
+		 uniform sampler2D inputMap1 : TEXUNIT1,
+		 uniform sampler2D randMap   : TEXUNIT2)
+{
+	
+	#define MAX_RAND_SAMPLES 14
+
+    static const float3 RAND_SAMPLES[MAX_RAND_SAMPLES] =
+    {
+        float3( 1,  0,  0),
+        float3(-1,  0,  0),
+        float3( 0,  1,  0),
+        float3( 0, -1,  0),
+        float3( 0,  0,  1),
+        float3( 0,  0, -1),
+        normalize(float3( 1,  1,  1)),
+        normalize(float3(-1,  1,  1)),
+        normalize(float3( 1, -1,  1)),
+        normalize(float3( 1,  1, -1)),
+        normalize(float3(-1, -1,  1)),
+        normalize(float3(-1,  1, -1)),
+        normalize(float3( 1, -1, -1)),
+        normalize(float3(-1, -1, -1))
+    };
+	
+	// constant expressin != const int :(
+    #define NUM_BASE_SAMPLES 14
+
+    // random normal lookup from a texture and expand to [-1..1]
+	// randMap = 1024 * 1024
+	// mit .xyz * 2.0 - 1.0 werden die komponenten des Vektors auch einen Wertebereich zwischen -1 und 1 skaliert 
+    const float3 randN = normalize(tex2D(randMap, randTexUV).xyz); // float2(texCoord.x * 24, texCoord.y * 10)).xyz * 2.0 - 1.0;
+    const float depth = TEX2DLOD(inputMap1, texCoord).x;
+	
+    // "ray" will be distorted slightly due to interpolation
+    // it should be normalized here
+    float3 viewPos = ray * depth;
+
+    // by computing Z manually, we lose some accuracy under extreme angles
+    // considering this is just for bias, this loss is acceptable
+    const float3 viewNorm = TEX2DLOD(inputMap0, texCoord).xyz;	
+	
+	// accumulated occlusion factor
+    float occ = 0;
+    for (int i = 0; i < NUM_BASE_SAMPLES; ++i)
+    {
+        // reflected direction to move in for the sphere
+        // (based on random samples and a random texture sample)
+        // bias the random direction away from the normal
+        // this tends to minimize self occlusion
+        float3 randomDir = reflect(RAND_SAMPLES[i], randN) + viewNorm;
+
+        // move new view-space position back into texture space
+        //#define RADIUS 0.2125
+        float4 nuv = mul(ptMat, float4(viewPos.xyz + randomDir * radius, 1));
+        nuv.xy /= nuv.w;
+
+        // compute occlusion based on the (scaled) Z difference
+        float zd = saturate(farPlane * (depth - TEX2DLOD(inputMap1, nuv.xy)));
+        // this is a sample occlusion function, you can always play with
+        // other ones, like 1.0 / (1.0 + zd * zd) and stuff
+        occ += saturate(pow(1.0 - zd, 11) + zd);
+    }
+    occ /= NUM_BASE_SAMPLES;
+	
+	float3 ambient = float3(occ, occ, occ); //float3(randN.x, viewNorm.yz); //float3(texCoord, depth);
+
+	color = float4(ambient, 1);
+}

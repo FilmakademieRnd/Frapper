@@ -1,0 +1,252 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+fragment_program Bloom/BlurHFP_cg cg
+{
+    source Bloom.cg
+    entry_point blurH_ps
+    profiles ps_3_0 fp40
+}
+fragment_program Bloom/BlurHFP_glsl glsl
+{
+	source BlurH_Fp.glsl
+	syntax glsl400
+}
+fragment_program Bloom/BlurHFP unified
+{
+	delegate Bloom/BlurHFP_glsl
+	delegate Bloom/BlurHFP_cg
+}
+
+fragment_program Bloom/BlurVFP_cg cg
+{
+    source Bloom.cg
+    entry_point blurV_ps
+    profiles ps_3_0 fp40
+}
+fragment_program Bloom/BlurVFP_glsl glsl
+{
+	source BlurV_Fp.glsl
+	syntax glsl400
+}
+fragment_program Bloom/BlurVFP unified
+{
+	delegate Bloom/BlurVFP_cg
+	delegate Bloom/BlurVFP_glsl
+}
+
+fragment_program Bloom/BloomFP_cg cg
+{
+    source Bloom.cg
+    entry_point bloom_ps
+    profiles ps_3_0 fp40
+}
+fragment_program Bloom/BloomFP_glsl glsl
+{
+	source Bloom_Fp.glsl
+	syntax glsl400
+}
+fragment_program Bloom/BloomFP unified
+{
+	delegate Bloom/BloomFP_cg
+	delegate Bloom/BloomFP_glsl
+}
+
+fragment_program Bloom/BrightFP_cg cg
+{
+    source Bloom.cg
+    entry_point bright_ps
+    profiles ps_3_0 fp40
+}
+fragment_program Bloom/BrightFP_glsl glsl
+{
+	source Bright_Fp.glsl
+	syntax glsl400
+}
+fragment_program Bloom/BrightFP unified
+{
+	delegate Bloom/BrightFP_cg 
+	delegate Bloom/BrightFP_glsl
+}
+
+
+// scene pass
+material Bloom/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref CompositorTemplate/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+
+//Blur: Horizontal Gaussian pass
+material Bloom/BlurH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref Bloom/BlurHFP
+			{
+				param_named BlurWidthH float 0.5
+				param_named Blur int 0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+//Blur: Vertical Gaussian pass
+material Bloom/BlurV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref Bloom/BlurVFP
+			{
+				param_named BlurWidthV float 0.5
+				param_named Blur int 0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+//Final Bloom pass: Blends the blurred with the sharp image
+material Bloom/BloomBlend
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+
+			fragment_program_ref Bloom/BloomFP
+			{
+				param_named OriginalImageWeight float 1.0
+				param_named BlurWeight float 0.65
+				param_named RT int 0;
+				param_named Blur1 int 1;
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode border
+				tex_border_colour 0.0 0.0 0.0 0.0
+				filtering bilinear
+			}
+		}
+    }
+}
+
+//High-pass Bright filter
+//First pass
+material Bloom/BrightPass
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref CompositorTemplate/QuadVP
+			{
+			}
+			fragment_program_ref Bloom/BrightFP
+			{
+				param_named RT int 0;
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+  				filtering none
+			}
+        }
+    }
+}

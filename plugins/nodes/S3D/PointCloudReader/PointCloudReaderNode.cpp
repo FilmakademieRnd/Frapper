@@ -1,0 +1,198 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+//!
+//! \file "PointCloudReaderNode.cpp"
+//! \brief Implementation file for PointCloudReaderNode class.
+//!
+//! \author     Volker Helzle <sspielma@filmakademie.de>
+//! \version    1.0
+//! \date       30.07.2014 (last updated)
+//!
+
+
+#include "PointCloudReaderNode.h"
+#include <QtCore/QTextStream>
+#include <QDir>
+
+Q_DECLARE_METATYPE(QVector<float>);
+
+//!
+//! Constructor of the PointCloudReaderNode class.
+//!
+//! \param name The name for the new node.
+//! \param parameterRoot A copy of the parameter tree specific for the type of the node.
+//! \param outputImageName The name of the geometry output parameter.
+//!
+PointCloudReaderNode::PointCloudReaderNode ( const QString &name, Frapper::ParameterGroup *parameterRoot ) :
+	Node(name, parameterRoot)
+{
+	setChangeFunction("Point Cloud File", SLOT(pcFileChanged()));
+	setCommandFunction("Point Cloud File", SLOT(triggerReload()));
+
+	m_vertexBufferGroup = new Frapper::ParameterGroup("VertexBufferGroup");
+	m_pointPositionParameter = new Frapper::NumberParameter("pos", Frapper::Parameter::T_Float, 0.0f);
+	m_vertexBufferGroup->addParameter(m_pointPositionParameter);
+	m_pointColorParameter = new Frapper::NumberParameter("col", Frapper::Parameter::T_Float, 0.0f);
+	m_vertexBufferGroup->addParameter(m_pointColorParameter);
+	m_pointColorParameter->setVisible(false);
+	m_pointPositionParameter->setVisible(false);
+	m_ouputVertexBuffer = Frapper::Parameter::createGroupParameter("VertexBuffer", m_vertexBufferGroup);
+	m_ouputVertexBuffer->setPinType(Frapper::Parameter::PT_Output);
+	parameterRoot->addParameter(m_ouputVertexBuffer);
+
+	INC_INSTANCE_COUNTER
+
+	// trigger reload when secene elements are ready to generate parameters based on renaming option
+	connect(this, SIGNAL(loadSceneElementsReady()), SLOT(triggerReload()));	
+}
+
+
+//!
+//! Destructor of the PointCloudReaderNode class.
+//!
+//! Defined virtual to guarantee that the destructor of a derived class
+//! will be called if the instance of the derived class is saved in a
+//! variable of its parent class type.
+//!
+PointCloudReaderNode::~PointCloudReaderNode ()
+{
+	DEC_INSTANCE_COUNTER;
+}
+
+//!
+//! Trigger pc file reload.
+//!
+void PointCloudReaderNode::triggerReload () 
+{	
+	// load point cloud file
+	loadPointCloudFile();
+}
+
+//!
+//! Loads the point cloud from the selected file.
+//!
+//! Is called when the point cloud file has been changed.
+//!
+void PointCloudReaderNode::pcFileChanged ()
+{
+	// load point cloud file
+	loadPointCloudFile();
+}
+
+
+
+//!
+//! Loads animation clip.
+//!
+bool PointCloudReaderNode::loadPointCloudFile ()
+{
+	QString filename = getStringValue("Point Cloud File");
+	if (filename == "") {
+		Frapper::Log::debug(QString("No point cloud file has been specified. (\"%1\")").arg(m_name), "PointCloudReaderNode::loadPointCloudFile");
+		return false;
+	}
+
+		// check if the file exists
+	if (!QFile::exists(filename)) {
+		Frapper::Log::error(QString("Point Cloud File \"%1\" not found.").arg(filename), "PointCloudReaderNode::loadPointCloudFile");
+		return false;
+	}
+
+	// split the absolute filename to path and base filename
+	int lastSlashIndex = filename.lastIndexOf('/');
+	QString path = "";
+	if (lastSlashIndex > -1) {
+		path = filename.mid(0, lastSlashIndex);
+		filename = filename.mid(lastSlashIndex + 1);
+	}
+
+	if (!filename.endsWith(".ply")) {
+		Frapper::Log::error("The given file has to be an PLY file.", "PointCloudReaderNode::loadPointCloudFile");
+		return false;
+	}
+
+	filename = path + "/" + filename;
+
+	// parse point cloud file
+	
+	QVector<float> vertices;
+	QVector<float> colors;
+
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+	QTextStream in (&file);
+	while (!in.atEnd()) {
+		QString line = in.readLine();
+		
+		if ( ! ((line.startsWith("-1.#IND"))
+			 || (line.startsWith("ply"))
+			 || (line.startsWith("format ascii 1.0"))
+			 || (line.startsWith("comment generated by the Global OpenMVG Calibration Engine"))
+			 || (line.startsWith("element vertex"))
+			 || (line.startsWith("property float"))
+			 || (line.startsWith("property uchar"))
+			 || (line.startsWith("property list"))
+			 || (line.startsWith("element face"))
+			 || (line.startsWith("element face"))
+			 || (line.startsWith("property list uchar int vertex_index"))
+			 || (line.startsWith("end_header")))
+			){				
+				QStringList list = line.split(" ",QString::SkipEmptyParts);
+				
+					// X
+					if (getBoolValue("Flip X"))
+						vertices.append( (((list[0].toFloat() * -1)) + getFloatValue("Offset X")) * getFloatValue("Scale")); 					
+					else 
+						vertices.append( (list[0].toFloat() + getFloatValue("Offset X")) * getFloatValue("Scale")); 					
+					// Y
+					if (getBoolValue("Flip Y"))  
+						vertices.append( (((list[1].toFloat() * -1)) + getFloatValue("Offset Y")) * getFloatValue("Scale"));
+					else
+						vertices.append( (list[1].toFloat() + getFloatValue("Offset Y")) * getFloatValue("Scale"));
+					// Z
+					if (getBoolValue("Flip Z"))  
+						vertices.append( ((list[2].toFloat() * -1) + getFloatValue("Offset Z")) * getFloatValue("Scale"));				
+					else 
+						vertices.append( (list[2].toFloat() + getFloatValue("Offset Z")) * getFloatValue("Scale"));				
+
+					// RGB
+					colors.append( list[3].toFloat() / 255.f);
+					colors.append( list[4].toFloat() / 255.f);
+					colors.append( list[5].toFloat() / 255.f);				
+				
+		}
+	}
+
+		m_pointPositionParameter->setSize(vertices.size());
+		m_pointColorParameter->setSize(colors.size());
+
+		m_pointPositionParameter->setValue(QVariant::fromValue(vertices), true);
+		m_pointColorParameter->setValue(QVariant::fromValue(colors), true);
+		m_ouputVertexBuffer->setDirty(true);
+		m_ouputVertexBuffer->propagateDirty();
+
+		Frapper::Log::info(QString("Generated \"%1\" Points").arg(vertices.size()/3)," PointCloudReaderNode::loadPointCloudFile");		
+		return true;
+}

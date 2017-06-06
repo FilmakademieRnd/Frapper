@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         looseandsketchy.xml
+  Description:  Contains the XML description of LooseAndSketchy ndoes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="LooseAndSketchy" category="Compositing" color="185, 30, 75" plugin="looseandsketchy.dll">
+  <parameters>
+    <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Particle Count" type="UnsignedInt" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="500000" defaultValue="50000" stepSize="1"/>
+    <parameter name="Line Count" type="UnsignedInt" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="2000" defaultValue="2000" stepSize="1"/>
+    <parameter name="Line Length" type="UnsignedInt" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="100" defaultValue="40" stepSize="1"/>
+    <parameter name="Min Stroke Length" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.05" stepSize="0.01"/>
+    <parameter name="Min Gradient" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.2" stepSize="0.01"/>
+    <parameter name="Stroke Contour Curvature" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.85" stepSize="0.01"/>
+    <parameter name="Tracking Step" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10.0" defaultValue="2.0" stepSize="0.5"/>
+  </parameters>
+</nodetype>

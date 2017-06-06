@@ -1,0 +1,53 @@
+// Expand a range-compressed vector
+float3 expand(float3 v)
+{
+	return (v - 0.5) * 2;
+}
+
+void ps_main(   //in 
+			    float3 iNormal		: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,
+				float3 iBinormal	: TEXCOORD2,
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float exposure,
+				uniform float4 fvAmbient,
+				uniform float4 fvDiffuse,
+				uniform float4 fvSpecularTeeth,
+				uniform float teethBrightness,
+				uniform float teethOcc,
+				uniform float4 teethColor,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),
+				uniform sampler2D	bumpMapSampler	: register(s1),
+				uniform samplerCUBE DiffuseCube		: register(s2),
+				uniform samplerCUBE SpecCube		: register(s3))
+{
+    float3 nNormal = normalize(iNormal);
+    float3 nTangent = normalize(iTangent);
+    float3 nBinormal = normalize(iBinormal);
+
+    float4 fvBaseColor = tex2D(colorMapSampler, iTexCoord);
+   	
+	float3 bumpSample = expand(tex2D(bumpMapSampler, iTexCoord).xyz);    
+
+	float3 fvNormal = normalize(nNormal + (nTangent * bumpSample.x) + (nBinormal * bumpSample.y));
+	fvNormal.z *= -1;
+
+	float4 DiffCubeValue = texCUBE(DiffuseCube, fvNormal) * exposure;
+	float3 fvView = normalize(iViewDir);
+	float3 Reflect = -reflect(fvView, fvNormal);
+	float4 SpecCubeValue = texCUBE(SpecCube, Reflect) * exposure;  	
+
+	float4 fvTotalAmbient   = fvBaseColor * fvAmbient;
+	float4 fvTotalDiffuse   = fvDiffuse * fvBaseColor * teethColor;  	
+	float4 fvTotalSpecular  = fvSpecularTeeth * SpecCubeValue;
+	float4 unoccluded = saturate( fvTotalAmbient + fvTotalDiffuse + fvTotalSpecular ) * teethBrightness;
+	float4 occluded = lerp(unoccluded, (unoccluded * fvBaseColor.a), teethOcc);   
+
+	result = occluded;
+}
+

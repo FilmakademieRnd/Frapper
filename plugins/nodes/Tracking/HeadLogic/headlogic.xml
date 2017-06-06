@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         headlogic.xml
+  Description:  Contains the XML description of HeadLogic nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="HeadLogic" category="Tracking" color="250,100,50" plugin="headlogic.dll">
+  <parameters>
+    <parameter name="sleepingDelay" type="Int" defaultValue="2000" maxValue = "10000" minValue = "0" multiplicity="1"/>
+    <parameter name="sleepingStep" type="Float" defaultValue="0.04" multiplicity="1"/>
+    <parameter name="trackX" type="Float" defaultValue="0.0" multiplicity="1" pin="in"/>
+    <parameter name="trackY" type="Float" defaultValue="0.0" multiplicity="1" pin="in"/>
+    <parameter name="mouthOpenIn" type="Float" defaultValue="0.0" multiplicity="1" pin="in"/>
+    <parameter name="smileIn" type="Float" defaultValue="0.0" multiplicity="1" pin="in"/>
+    <parameter name="angerIn" type="Float" defaultValue="0.0" multiplicity="1" pin="in"/>
+    <parameter name="noFaceDetected" type="UnsignedInt" defaultValue="0" minValue="0" maxValue="1" multiplicity="1" pin="in"/>
+    <parameter name="gender" type="Bool" defaultValue="false" multiplicity="1" pin="in"/>
+    <parameter name="isStaring" type="Bool" defaultValue="false" multiplicity="1" pin="in"/>
+    <parameter name="left" type="Float" defaultValue="0.0" multiplicity="1" pin="out"/>
+    <parameter name="right" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="up" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="down" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="mouthOpenOut" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="smileOut" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="angerOut" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="playSleeping" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="playStaring" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="sleepingWeight" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="weightOtherClips" type="Float" defaultValue="1.0" pin="out"/>
+    <parameter name="clampX" type="Float" defaultValue="0.65"/>
+    <parameter name="clampY" type="Float" defaultValue="0.65"/>
+    <parameter name="multX" type="Float" defaultValue="0.2"/>
+    <parameter name="multY" type="Float" defaultValue="0.2"/>
+    <parameter name="flipX" type="Bool" defaultValue="false"/>
+    <parameter name="flipY" type="Bool" defaultValue="false"/>
+    <!--<parameter name="ready" type="Bool" defaultValue="false" pin="out"/>-->
+  </parameters>
+</nodetype>

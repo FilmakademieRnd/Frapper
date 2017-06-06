@@ -1,0 +1,214 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program ShadowMapRender/base_vs_cg cg
+{
+    source shadow.cg
+    profiles vs_1_1 arbvp1
+    entry_point base_vs
+}
+
+vertex_program ShadowMapRender/lightZ_vs_cg cg
+{
+    source shadow.cg
+    profiles vs_2_0 arbvp1 vp20
+    entry_point lightZ_vs
+}
+
+vertex_program ShadowMapRender/shadow_vs_cg cg
+{
+    source shadow.cg
+	profiles vs_2_0 arbvp1 vp20
+    entry_point shadow_vs
+
+	default_params
+	{
+		param_named_auto wMat world_matrix
+	}
+}
+
+fragment_program ShadowMapRender/lightZ_fs_cg cg
+{
+    source shadow.cg
+    profiles ps_2_0 arbfp1 fp20
+    entry_point lightZ_fs
+}
+
+fragment_program ShadowMapRender/shadow_fs_cg cg
+{
+    source shadow.cg
+    profiles ps_3_0 fp40
+    entry_point shadow_fs
+}
+
+vertex_program ShadowMapRender/base_vs_glsl glsl
+{
+    source shadowBaseVp.glsl
+	syntax glsl400
+}
+
+vertex_program ShadowMapRender/lightZ_vs_glsl glsl
+{
+    source shadowLightZVp.glsl
+	syntax glsl400
+}
+
+vertex_program ShadowMapRender/shadow_vs_glsl glsl
+{
+    source shadowVp.glsl
+	syntax glsl400
+}
+
+fragment_program ShadowMapRender/lightZ_fs_glsl glsl
+{
+    source shadowLightZFp.glsl
+	syntax glsl400
+}
+
+fragment_program ShadowMapRender/shadow_fs_glsl glsl
+{
+    source shadowFP.glsl
+	syntax glsl400
+}
+
+vertex_program ShadowMapRender/base_vs unified
+{
+    delegate ShadowMapRender/base_vs_glsl
+    delegate ShadowMapRender/base_vs_cg
+}
+
+vertex_program ShadowMapRender/lightZ_vs unified
+{
+    delegate ShadowMapRender/lightZ_vs_glsl
+    delegate ShadowMapRender/lightZ_vs_cg
+}
+
+vertex_program ShadowMapRender/shadow_vs unified
+{
+    delegate ShadowMapRender/shadow_vs_glsl
+    delegate ShadowMapRender/shadow_vs_cg
+}
+
+fragment_program ShadowMapRender/lightZ_fs unified
+{
+    delegate ShadowMapRender/lightZ_fs_glsl
+    delegate ShadowMapRender/lightZ_fs_cg
+}
+
+fragment_program ShadowMapRender/shadow_fs unified
+{
+    delegate ShadowMapRender/shadow_fs_glsl
+    delegate ShadowMapRender/shadow_fs_cg
+}
+
+
+material ShadowMapRender/Base
+{
+	technique
+	{
+	    pass
+	    {
+	        vertex_program_ref ShadowMapRender/base_vs_glsl
+	        {
+				param_named_auto wvpMat worldviewproj_matrix
+	        }
+	    }
+	}
+}
+
+// this is the technique for the scheme "LightZ"
+material ShadowMapRender/LightZ
+{
+	technique
+	{
+	    pass
+	    {
+	    	transparent_sorting off
+	        vertex_program_ref ShadowMapRender/lightZ_vs_glsl
+	        {
+	        	param_named_auto wvpMat worldviewproj_matrix
+				param_named_auto depthRange scene_depth_range
+	        }
+
+	        fragment_program_ref ShadowMapRender/lightZ_fs_glsl
+	        {
+	        }
+	    }
+	}
+}
+
+// this is the technique for the scheme "Shadow" 
+material ShadowMapRender/Shadow
+{
+	technique
+	{
+		scheme Shadow
+		pass
+	    {
+			transparent_sorting off
+            vertex_program_ref ShadowMapRender/base_vs_glsl
+            {
+				param_named_auto wvpMat worldviewproj_matrix
+            }
+	    }
+
+	    pass
+	    {
+			transparent_sorting off
+			max_lights 16
+			scene_blend add
+            iteration once_per_light
+
+            vertex_program_ref ShadowMapRender/shadow_vs_glsl
+	        {
+				param_named_auto wvpMat worldviewproj_matrix
+				param_named_auto tvpMat texture_viewproj_matrix 0
+				param_named_auto spotDir light_direction_object_space 0
+				param_named_auto depthRange shadow_scene_depth_range 0
+	        }
+
+	        fragment_program_ref ShadowMapRender/shadow_fs_glsl
+	        {
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2.0
+				param_named blurSize float 1.0
+				param_named lightPower float 1.0
+				param_named shadowMap int 0
+	        }
+
+			texture_unit shadowMap
+			{
+				content_type shadow
+                filtering anisotropic
+                max_anisotropy 4
+                tex_address_mode border
+                tex_border_colour 1.0 1.0 1.0 1.0
+			}
+		}
+	}
+}

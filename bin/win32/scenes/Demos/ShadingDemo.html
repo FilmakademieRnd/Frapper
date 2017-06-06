@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title></title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<h2>Shading demo Scene</h2>
+<br>
+<br>
+<strong>Introduction</strong></p>
+<p>This demo scene demonstrates the shading and compositing capabilities of Frappper. You can view each
+node's result by activating its view flag. You can pan, rotate, zoom the view using ALT + MMB, ALT + RMB,
+ALT + LMB. Please feel encouraged to play with all parameters in the Parameter panel to see a change in
+behavior. </p><br>
+<br>
+<strong>Structure</strong>
+<br>
+<br>
+<em>AnimatableMesh</em>
+<p>AnimatableMesh nodes can load Ogre .mesh and .skeleton files. This scene contains two meshes: a low poly 
+car mesh and a high poly dragon mesh. </p>
+<br><br>
+<em>Transform</em>
+<p>Transform nodes allow to transform any input geometry. They can also be used to merge geometry. </p>
+<br><br>
+<em>Camera</em>
+<p>Camera nodes are used to render certain geometry using the AdvancedRender node. </p>
+<br><br>
+<em>AdvancedRender</em>
+<p>The AdvancedRender node allows to render to an off screen render target. It outputs a color target, 
+normal target, depth target and view target, which can be incorporated to do deferred shading further down
+the pipeline. Geometry, cameras and lights can be connected as inputs. </p>
+<br><br>
+<em>SimpleBlend</em>
+<p>SimpleBlend nodes can be used to blend two input targets. Available blend modes are: add, mul, and A over B.
+The three blend nodes right after the AdvancedRender node are used to display the normal, depth and view targets.</p>
+<br><br>
+<em>SurfaceCurvature and Lightwarping</em>
+<p>These two nodes implement a lightwarping algorithm which has been presented at SIGGRAPH 2009. For further information
+please visit: <a href="http://iparla.labri.fr/publications/2009/VPBGS09/">Lightwarping</a></p>
+<br><br>
+<em>AmbientOcclusion and GeometryBlur</em>
+<p>These two nodes implement a screen space ambient occlusion approach.</p>
+<br><br>
+
+<p>
+  </span>For further information about Fraper please visit the <a
+ href="http://wiki.animationsinstitut.de/doku.php?id=frapper:documentation:documentation">online
+    documentation</a>.<br>
+  <span style="">
+  <o:p></o:p>
+</span></p>
+</body>
+</html>

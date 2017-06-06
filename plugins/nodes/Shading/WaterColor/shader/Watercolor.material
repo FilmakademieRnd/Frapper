@@ -1,0 +1,162 @@
+fragment_program Watercolor/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program Watercolor/WatercolorFP cg
+{
+    source Watercolor.cg
+    entry_point Watercolor_ps
+    profiles ps_2_x arbfp1
+}
+
+vertex_program AquarellCombination40 glsl { source AquarellCombination40.vert.glsl }
+fragment_program AquarellCombination40 glsl { source AquarellCombination40.frag.glsl}
+
+vertex_program AquarellID40 glsl { source AquarellID40.vert.glsl }
+fragment_program AquarellID40 glsl { source AquarellID40.frag.glsl }
+
+vertex_program AquarellRes40 glsl { source AquarellRes40.vert.glsl }
+fragment_program AquarellRes40 glsl { source AquarellRes40.frag.glsl }
+
+vertex_program AquarellTexture40 glsl { source AquarellID40.vert.glsl }
+fragment_program AquarellTexture40 glsl { source AquarellID40.frag.glsl }
+
+vertex_program Object40 glsl { source AquarellID40.vert.glsl }
+fragment_program Object40 glsl { source AquarellID40.frag.glsl }
+
+// scene pass
+material Watercolor/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Watercolor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// scene pass
+material Watercolor/BlurPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Watercolor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// scene pass
+material Watercolor/DepthPass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Watercolor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+// scene pass
+material Watercolor/TexturePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Watercolor/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+material Watercolor/WatercolorMaterial
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref Watercolor/WatercolorFP
+			{
+			}
+			
+			texture_unit  // scene
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit  // blur
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit  // depth
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

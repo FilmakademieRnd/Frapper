@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         PainterNode.xml
+  Description:  Contains the XML description of Painter nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Painter" category="Images" color="173, 255, 173" plugin="painternode.dll">
+  <parameters>
+    <parameter name="Input Image" type="Image" pin="in"/>
+    <parameter name="Update Mask" type="Command"/>
+    <parameter name="Reset Mask" type="Command"/>
+    <parameter name="Update on frame change" type="Bool" defaultValue="false" />
+  </parameters>
+</nodetype>

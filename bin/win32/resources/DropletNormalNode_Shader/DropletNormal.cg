@@ -1,0 +1,67 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+ **                                                                                   **
+ **                                    Quad_vs                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_vs(	in float4 iPosition : POSITION,
+				in float2 texCoord : TEXCOORD0,
+				out float4 oPosition : POSITION,
+				out float2 oTexCoord : TEXCOORD0,
+				uniform float4x4 worldViewProj)
+{
+  oPosition = mul(worldViewProj, iPosition);
+  oTexCoord = texCoord;
+}
+
+/**************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_ps( in  float2 texCoord : TEXCOORD0,
+	      out float4 color    : COLOR,
+	       uniform float     saturation,
+	       uniform float     redBalance,
+	       uniform float     greenBalance,
+	       uniform float     blueBalance,
+		   uniform float     offset,
+	       uniform sampler2D scene     : TEXUNIT0,
+		   uniform sampler2D lookUpTable     : TEXUNIT1) // prerendered scene (nx,ny,nz,1.0)
+
+{
+	float4 tearCurrent = tex2D(scene, texCoord);
+	float val = tex2D(scene, texCoord);
+	float valU1 = tex2D(scene, texCoord + float2(1.0 / 1024.0, 0.0));
+	float valU2 = tex2D(scene, texCoord - float2(1.0 / 1024.0, 0.0));
+	float valV1 = tex2D(scene, texCoord + float2(0.0, 1.0 / 1024.0));
+	float valV2 = tex2D(scene, texCoord - float2(0.0, 1.0 / 1024.0));
+	
+	float3 normal = normalize(float3(((val - valU1) - (val - valU2)) * 0.5, 0.1, ((val - valV1) - (val - valV2)) * 0.5));
+	
+	color = float4(normal, val);
+}

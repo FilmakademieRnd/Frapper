@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         SMIEyeTracker.xml
+  Description:  Contains the XML description of SpeechInput nodes.
+  Author:       Diana Arellano <diana.arellano@filmakademie.de>
+  Copyright:    (c) 2011 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="SMIEyeTracker" category="Input" color="250,100,50" plugin="smieyetracker.dll">
+  <parameters>    
+    <parameter name="Start Device (with Calibration)" 	    type="Bool"   defaultValue="false" selfEvaluating="true" pin="in" />
+    <parameter name="Start Device (without Calibration)" 	  type="Bool"   defaultValue="false" selfEvaluating="true" pin="in" />
+    <parameter name="Record Data"                           type="Bool"   defaultValue="false" selfEvaluating="true" pin="in" description="Records gaze data "/>
+    <parameter name="Recorded Data File (path)"             type="String" description="path of the .idf file (in the PC where the eye tracker runs), .xml file, log (.lgf) file (in the PC where Frapper runs). 
+     For Start Device (without Calibration), the path is the one where Experiment Center stores the Result files."   />        
+    <parameter name="Sending Message"                       type="Bool"   defaultValue="false" selfEvaluating="true" pin="in" description="Sends the message to the Eye tracker only if the recording is activated."/>
+    <parameter name="Message"                               type="String" defaultValue=""      selfEvaluating="true" pin="in" />
+    <parameter name="Deactivate Gaze Control"               type="Bool"   defaultValue="false" selfEvaluating="true" pin="in" description="if true, the values of the user gaze are propagated to the connected parameters." />
+
+    <parameters name="Eye tracker parameters">
+      <parameter name="IP Address Stimulus PC"              type="String" defaultValue="" />
+      <parameter name="IP Address Eye tracker"              type="String" defaultValue="" />
+      <parameter name="Calibration Method"                  type="Int"    defaultValue="9"    description="number of points that the user must observe during calibration (0,1,2,5, or 9)" />
+      <parameter name="Calibration Speed"                   type="Int"    defaultValue="0"    description="0: slow, 1: fast" />
+      <parameter name="Display Device"                      type="Int"    defaultValue="0"    description="0: primary device, 1: secondary device" />
+      <parameter name="Display Resolution Width (px)"       type="Int"          defaultValue="1600"  maxValue="3000" description="Resolution width of the screen in pixels" />
+      <parameter name="Display Resolution Height (px)"      type="Int"          defaultValue="1200"  maxValue="3000" description="Resolution height of the screen in pixels" />
+    </parameters>
+
+    <parameters name="Gaze parameters" >
+      <parameter name="Gaze Threshold"          type="Float"  defaultValue="0.0"   inputMethod="SliderPlusSpinBox"  description="Under this threshold the eye gaze values are not considered." />             
+      <parameter name="GazeHLeft"               type="Float"  defaultValue="0.0"   selfEvaluating="true" pin="out" />
+      <parameter name="GazeHRight"              type="Float"  defaultValue="0.0"   selfEvaluating="true" pin="out" />
+      <parameter name="GazeVDown"               type="Float"  defaultValue="0.0"   selfEvaluating="true" pin="out" />
+      <parameter name="GazeVUp"                 type="Float"  defaultValue="0.0"   selfEvaluating="true" pin="out" />
+      <parameter name="Eye Screen Coordinate (TEST) X"  type="Float"  defaultValue="0.0"   maxValue="2000.0"/>
+      <parameter name="Eye Screen Coordinate (TEST) Y"  type="Float"  defaultValue="0.0"   maxValue="2000"/>
+    </parameters>
+
+    <parameters name="AOI coords" selfEvaluating="true" pin="in" multiplicity="*" >
+      <parameters name="Right Eye" >
+        <parameter name="REleftBorder"    type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="RErightBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="REupperBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="RElowerBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="Left Eye" >
+        <parameter name="LEleftBorder"    type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LErightBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LEupperBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LElowerBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="Left Eye Region" >
+        <parameter name="LERleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LERrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LERupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LERlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="Right Eye Region" >
+        <parameter name="RERleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="RERrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="RERupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="RERlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="Noise Wrinkler" >
+        <parameter name="NWleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="NWrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="NWupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="NWlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="Forehead" >
+        <parameter name="FleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="FrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="FupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="FlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="LipsMouth" >
+        <parameter name="LMleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LMrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LMupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="LMlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="MouthRegion" >
+        <parameter name="MRleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="MRrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="MRupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="MRlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+
+      <parameters name="WholeFace" >
+        <parameter name="WFleftBorder"   type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="WFrightBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="WFupperBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+        <parameter name="WFlowerBorder"  type="Float"  defaultValue="0.0" maxValue="1920.0" selfEvaluating="true" pin="in" multiplicity="*"/>
+      </parameters>
+      
+    </parameters>
+  
+  </parameters>
+</nodetype>

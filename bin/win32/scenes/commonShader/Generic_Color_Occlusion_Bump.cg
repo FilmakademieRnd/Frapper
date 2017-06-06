@@ -1,0 +1,299 @@
+// Expand a range-compressed vector
+float3 expand(float3 v) { 	return (v - 0.5) * 2; }
+// Ashikmin BRDF model
+float2 ASNganBRDF(
+			in float3 n,
+			in float3 v,
+			in float3 l,
+			in float3 diffuse,
+			in float exponent,
+			in float fresnel) 
+{
+   static const float INV_PI = 0.3183098861;
+   static const float PI_23  = 72.256631032;
+   static const float PI_8   = 25.132741228;
+
+   const float  r = (diffuse.x+diffuse.y+diffuse.z)*0.333333;
+
+   const float3 h = normalize(l-v);
+   const float3 vn = float3(v.x/20.0, v.y/20.0, v.z/20.0);
+
+   const float normalization = (exponent+1.0)/PI_8;
+
+   const float VDotH = max(dot(-vn,h),0.0);
+   const float NDotH = max(dot(n,h),0.0);
+   const float NDotV = max(dot(n,-vn),0.0);
+   const float NDotL = max(dot(n,l),0.0);
+
+   return float2(
+	   max((pow(NDotH,exponent)/(VDotH*max(NDotL,NDotV)))*normalization*(fresnel+(1.0-fresnel)*pow(VDotH,5.0)), 0.0),
+	   max(((28.0*r)/PI_23)*(1.0-fresnel)*(1.0-pow(1.0-(NDotL/2.0),5.0))*(1.0-pow(1.0-(NDotV/2.0),5.0)), 0.0) ) * NDotL;
+}
+
+void main_fp_noMaps(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter											
+				uniform float Specular,
+				uniform float Diffuse,
+				uniform float Brightness,
+				uniform float Occlusion,
+				uniform float4 ambientColor,
+				uniform float4 diffuseColor,
+				// textures
+				uniform samplerCUBE DiffuseCube		: register(s0),
+				uniform samplerCUBE SpecCube		: register(s1))
+{	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	float3 bump = normalize( iNormal + (iTangent * NeutralNormal.x) + (iBinormal * NeutralNormal.y));	
+	float3 fvView = normalize(iViewDir);
+	float3 Reflect = reflect(fvView, bump);
+	float4 DiffCubeValue = texCUBE(DiffuseCube, bump) ;	
+	float4 SpecCubeValue = texCUBE(SpecCube, Reflect) ;  	
+
+	float4 totalAmbient   = ambientColor;
+	float4 totalDiffuse   = DiffCubeValue * diffuseColor * Diffuse;  	
+	float4 totalSpecular  = Specular * SpecCubeValue;
+	float4 unoccluded = saturate( totalAmbient + totalDiffuse + totalSpecular ) * Brightness;	
+	result = unoccluded;	
+}
+
+void main_fp_ColOcc(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter								
+				uniform float Specular,
+				uniform float Diffuse,
+				uniform float Brightness,
+				uniform float Occlusion,
+				uniform float4 ambientColor,
+				uniform float4 diffuseColor,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),				
+				uniform samplerCUBE DiffuseCube		: register(s1),
+				uniform samplerCUBE SpecCube		: register(s2))
+{
+	// normal	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	float3 bump = normalize( iNormal + (iTangent * NeutralNormal.x) + (iBinormal * NeutralNormal.y));
+
+    float4 baseColor = tex2D(colorMapSampler, iTexCoord);   		
+	float3 fvView = normalize(iViewDir);
+	float3 Reflect = reflect(fvView, bump);
+	float4 DiffCubeValue = texCUBE(DiffuseCube, bump) ;	
+	float4 SpecCubeValue = texCUBE(SpecCube, Reflect) ;  	
+
+	float4 totalAmbient   = baseColor * ambientColor;
+	float4 totalDiffuse   = DiffCubeValue * diffuseColor * baseColor * Diffuse;  	
+	float4 totalSpecular  = Specular * SpecCubeValue;
+	float4 unoccluded = saturate( totalAmbient + totalDiffuse + totalSpecular ) * Brightness;
+	float4 occluded = lerp(unoccluded, (unoccluded * baseColor.a), Occlusion);   
+
+	//result = float4(iNormal, 1.0);	
+	 result = occluded;	
+}
+
+void main_fp_ColOccRef(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter								
+				uniform float Reflection,
+				uniform float Specular,
+				uniform float Diffuse,
+				uniform float Brightness,
+				uniform float Occlusion,
+				uniform float4 ambientColor,
+				uniform float4 diffuseColor,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),				
+				uniform samplerCUBE DiffuseCube		: register(s1),
+				uniform samplerCUBE SpecCube		: register(s2),
+				uniform samplerCUBE reflectionCube	: register(s3))
+{
+	// normal	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	float3 bump = normalize( iNormal + (iTangent * NeutralNormal.x) + (iBinormal * NeutralNormal.y));
+
+    float4 baseColor = tex2D(colorMapSampler, iTexCoord);   		
+	float3 fvView = normalize(iViewDir);
+	float3 Reflect = reflect(fvView, bump);
+	float4 DiffCubeValue = texCUBE(DiffuseCube, bump) ;	
+	float4 SpecCubeValue = texCUBE(SpecCube, Reflect) ;  		
+	float4 RefCubeValue = texCUBE(reflectionCube, Reflect);
+	
+	float4 totalAmbient   = baseColor * ambientColor;
+	float4 totalDiffuse   = DiffCubeValue * diffuseColor * baseColor * Diffuse;  	
+	float4 totalSpecular  = Specular * SpecCubeValue;
+	float4 unoccluded =  saturate( totalAmbient + totalDiffuse + totalSpecular ) * Brightness;	
+	float4 occluded = lerp(unoccluded, (unoccluded * baseColor.a), Occlusion);   
+
+	// result = RefCubeValue;//float4(RefCubeValue, 1.0);	
+	result = occluded + (RefCubeValue * Reflection);	
+}
+
+void main_fp(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float Bump,								
+				uniform float Specular,
+				uniform float Diffuse,
+				uniform float Brightness,
+				uniform float Occlusion,
+				uniform float4 ambientColor,
+				uniform float4 diffuseColor,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),
+				uniform sampler2D	bumpMapSampler	: register(s1),
+				uniform samplerCUBE DiffuseCube		: register(s2),
+				uniform samplerCUBE SpecCube		: register(s3))
+{
+	// normal
+	float3 bump = tex2D( bumpMapSampler, iTexCoord ).xyz;	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	bump = lerp(NeutralNormal, bump, Bump);
+	bump = expand( bump);   	
+	bump = normalize( iNormal + (iTangent * bump.x) + (iBinormal * bump.y));
+
+    float4 baseColor = tex2D(colorMapSampler, iTexCoord);   		
+	float3 fvView = normalize(iViewDir);
+	float3 Reflect = reflect(fvView, bump);
+	float4 DiffCubeValue = texCUBE(DiffuseCube, bump) ;	
+	float4 SpecCubeValue = texCUBE(SpecCube, Reflect) ;  	
+
+	float4 totalAmbient   = baseColor * ambientColor;
+	float4 totalDiffuse   = DiffCubeValue * diffuseColor * baseColor * Diffuse;  	
+	float4 totalSpecular  = Specular * SpecCubeValue;
+	float4 unoccluded = saturate( totalAmbient + totalDiffuse + totalSpecular ) * Brightness;
+	float4 occluded = lerp(unoccluded, (unoccluded * baseColor.a), Occlusion);   
+
+	//result = float4(iNormal, 1.0);	
+	 result = occluded;	
+}
+
+void main_generic_brdf_fp(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+			    float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,				
+				float3 iView		: TEXCOORD4,
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,  
+				uniform float 		Bump,								
+				uniform float 		Specular,
+				uniform float 		Diffuse,
+				uniform float 		Brightness,
+				uniform float 		Occlusion,
+				uniform float4 		ambientColor,
+				uniform float4 		diffuseColor,
+				uniform float3 		ShadowColor,
+				uniform float4 		fvAmbient,
+				uniform float		specPower,
+				uniform float		diffPower,
+				uniform float		specNPow,
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0),
+				uniform sampler2D	bumpMapSampler	: register(s1),
+				// uniform samplerCUBE DiffuseCube		: register(s2),
+				// uniform samplerCUBE SpecCube		: register(s3))
+				uniform sampler1D lightDirs		: TEXUNIT2, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D lightPows		: TEXUNIT3) //array of light colors - rgb intensities (r,g,b)
+{
+
+	// generate Normal
+	static const float3 NeutralNormal = float3(0.5, 0.5, 1.0);	
+     
+	//bend normal
+	const float3 extendedSample   = expand(lerp(NeutralNormal, tex2D(bumpMapSampler, iTexCoord ).xyz, Bump));
+	const float3 fvNormal         = normalize(iNormal + (iTangent * extendedSample.x) + (iBinormal * extendedSample.y));	
+	
+	const float  fNDotV           = normalize(dot(iNormal, iView)); 	
+	
+	// texture lookups
+	const float4 fvBaseColor      = tex2D(colorMapSampler, iTexCoord);
+	
+	float2 brdf;
+	float3 l,p, simpleDiff, H, simpleSpec;
+	float3 brdfSpec = float3(0.0);
+	float3 brdfDiff = float3(0.0);
+	const float s   = 1.0/brdf_nbLights;
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;
+		
+		brdf = ASNganBRDF(fvNormal, iView, l, brdf_diffuse, brdf_exponent, brdf_fresnel);
+		brdfSpec += p * brdf.x;
+		brdfDiff += p * brdf.y;
+				
+		// H = normalize(l + -iView);
+		// simpleDiff += saturate(max(dot(fvNormal, l), 0.0)) * p;
+		// simpleSpec += pow(saturate(dot(fvNormal, H)), specNPow) * p;		
+	
+	}	
+	float3 comp = brdf_specular * brdfSpec *specPower;  // specular
+    comp	+= brdf_diffuse * brdfDiff * fvBaseColor.xyz *diffPower ;  // diffuse
+	comp	/= brdf_envsize;  // brdf scaling
+	comp	+= fvAmbient * fvBaseColor.xyz;	// ambient	
+	
+	// simpleDiff *= diffPower;
+	// simpleSpec *= specPower;
+	// comp = simpleDiff + simpleSpec;
+	// comp /= brdf_envsize;
+	
+	float3 UnOccluded = saturate(comp);
+	float3 Occluded = lerp(ShadowColor, UnOccluded * fvBaseColor.a, fvBaseColor.a);
+	float3 finalColor = lerp(UnOccluded, Occluded, Occlusion);
+	result = float4(finalColor, 1.0);
+	// result = float4(comp, 0.0);
+}
+
+void simple_fp_texture(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+				//out
+				out float4 result	: COLOR,				
+				// textures
+				uniform sampler2D	colorMapSampler : register(s0))
+{
+	// normal
+    float4 baseColor = tex2D(colorMapSampler, iTexCoord);   			
+	result = float4(baseColor.xyz, 1);	
+}
+
+void simple_fp(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+				//out
+				out float4 result	: COLOR,
+				// params
+				uniform float4 difColor)
+{  	
+	result = difColor;
+}

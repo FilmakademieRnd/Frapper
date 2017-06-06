@@ -1,0 +1,10 @@
+project(Cameras)
+
+if (FRAPPER_BUILD_NODES_CAMERAS OR FRAPPER_BUILD_DEMO)
+  message( STATUS "Adding plugins from directory Cameras")
+  add_subdirectory(Camera)
+  add_subdirectory(FiveViewCamera)
+  add_subdirectory(StereoCamera)
+else()  
+  message( STATUS "Skipping plugins from directory Cameras")
+endif()

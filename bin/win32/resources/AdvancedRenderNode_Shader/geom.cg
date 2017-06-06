@@ -1,0 +1,134 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+void geom_vs(
+    in float4 p : POSITION,
+	in float3 n : NORMAL,
+    out float4 cp : POSITION,
+    out float3 vp : TEXCOORD0, // view-space position
+    out float3 vn : TEXCOORD1,
+    uniform float4x4 wvpMat, 
+	uniform float4x4 wvMat)
+{
+    cp = mul(wvpMat, p);
+    vp = mul(wvMat, p).xyz;
+    vn = normalize(mul(wvMat, float4(n, 0.0))).xyz;
+}
+
+void view_vs(
+    in float4 p : POSITION,
+	out float4 cp : POSITION,
+	out float3 vv : TEXCOORD0, // view vector
+    uniform float4x4 wvpMat, 
+	uniform float4x4 wvMat)
+{
+	float4 wvp = mul(wvMat, p);
+    cp = mul(wvpMat, p);
+	vv = normalize(wvp) * 10.0;
+}
+
+void mrt_vs(
+    in float4 p : POSITION,
+	in float3 n : NORMAL,
+	out float4 cp : POSITION,
+	out float3 vp : TEXCOORD0,
+	out float3 vn : TEXCOORD1,
+	out float3 vv : TEXCOORD2, // view vector
+    uniform float4x4 wvpMat, 
+	uniform float4x4 wvMat)
+{
+    cp = mul(wvpMat, p);
+	vp = mul(wvMat, p).xyz;
+	vn = normalize(mul(wvMat, float4(n, 0.0))).xyz;
+	vv = normalize(vp);
+}
+
+void mrt_hs_vs(
+    in float4 p : POSITION,
+	in float3 n : NORMAL,
+	in float4 blendIdx	: BLENDINDICES,
+	in float4 blendWgt	: BLENDWEIGHT,
+	out float4 cp : POSITION,
+	out float3 vp : TEXCOORD0,
+	out float3 vn : TEXCOORD1,
+	out float3 vv : TEXCOORD2, // view vector
+	uniform float3x4 worldMatrix3x4Array[81],
+    uniform float4x4 vpMat,
+	uniform float4x4 vMat)
+{
+	float4 wPos = float4(0);
+	float3 wNormal = float3(0);
+	for (int i = 0; i < 4; ++i)
+	{		
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], p).xyz, 1.0) * blendWgt[i];		
+		wNormal += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], n) * blendWgt[i];
+	}
+    cp = mul(vpMat, wPos);
+	vp = mul(vMat, wPos).xyz;
+	vn = normalize(mul(vMat, float4(wNormal, 0.0))).xyz;
+	vv = normalize(vp);
+}
+
+void mrt_ps( in float3 vp : TEXCOORD0,
+             in float3 vn : TEXCOORD1,
+			 in float3 vv : TEXCOORD2,
+			 uniform float  far,
+			 uniform float4 objectId,
+		     out float3 oN : COLOR0,
+			 out float oZ : COLOR1,
+			 out float3 oV : COLOR2,
+			 out float oID : COLOR3 )
+{
+    oN	= vn;
+	oZ	= length((1.0f - vp) / far);
+	oV	= vv;
+    oID = objectId.x / 100;
+}
+
+void geom_ps(in float3 vp : TEXCOORD0,
+             in float3 vn : TEXCOORD1, 
+		     out float c : COLOR0)
+{
+    c = vn;
+}
+
+void depth_ps(in float3 vp : TEXCOORD0,
+              uniform float  far,
+		      out float c : COLOR0)
+{
+	c = length((1.0f - vp) / far);
+}
+
+void view_ps(in float3 dp : TEXCOORD0,
+		      out float3 c : COLOR0)
+{
+	c = dp;
+}
+
+void objectid_ps(uniform float4 objectId,
+		     out float3 color : color0)
+{
+	float objid = objectId.x / 100.0;
+    color = float4(objid, objid, objid, 1.0);
+	//color = float4(1.0, 0.0, 0.0, 1.0);
+}

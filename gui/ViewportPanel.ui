@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ViewportPanel</class>
+ <widget class="QWidget" name="ViewportPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>340</width>
+    <height>61</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Viewport</string>
+  </property>
+  <layout class="QVBoxLayout" name="ui_vboxLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+  </layout>
+  <action name="ui_originAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/originIcon</normaloff>:/originIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Origin</string>
+   </property>
+   <property name="toolTip">
+    <string>Origin [O]</string>
+   </property>
+  </action>
+  <action name="ui_wireframeAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/wireframeIcon</normaloff>:/wireframeIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Wireframe [W]</string>
+   </property>
+  </action>
+  <action name="ui_previousViewAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/backwardIcon</normaloff>:/backwardIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Previous View</string>
+   </property>
+  </action>
+  <action name="ui_nextViewAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/forwardIcon</normaloff>:/forwardIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Next View</string>
+   </property>
+  </action>
+  <action name="ui_homeAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/homeIcon</normaloff>:/homeIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Home</string>
+   </property>
+   <property name="toolTip">
+    <string>Home [H]</string>
+   </property>
+  </action>
+  <action name="ui_backfaceCullingAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/backfaceCullingIcon</normaloff>:/backfaceCullingIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Backface Culling</string>
+   </property>
+   <property name="toolTip">
+    <string>Backface Culling [B]</string>
+   </property>
+  </action>
+  <action name="ui_gridAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/gridIcon</normaloff>:/gridIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Grid</string>
+   </property>
+   <property name="toolTip">
+    <string>Grid [G]</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_fullscreenAction">
+   <property name="checkable">
+     <bool>true</bool>
+   </property>
+   <property name="icon">
+     <iconset resource="../resources/gui.qrc">
+       <normaloff>:/stereoIcon</normaloff>:/stereoIcon
+     </iconset>
+   </property>
+   <property name="text">
+     <string>Stereoscopic View</string>
+   </property>
+   <property name="toolTip">
+     <string>Fullscreen View [F]</string>
+   </property>
+   <property name="shortcutContext">
+     <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_stereoAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/stereoIcon</normaloff>:/stereoIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Stereoscopic View</string>
+   </property>
+   <property name="toolTip">
+    <string>Stereoscopic View [S]</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_stereoDialogAction">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/stereoConfigIcon</normaloff>:/stereoConfigIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Stereoscopic View Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Stereoscopic View Settings</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_overlayOnlyAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/stereoIcon</normaloff>:/stereoIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Show Overlay Only</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Overlay Only</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_centerPointAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/centerPointIcon</normaloff>:/centerPointIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Center Point</string>
+   </property>
+   <property name="toolTip">
+    <string>Center Point [C]</string>
+   </property>
+  </action>
+  <action name="ui_orientationIndicatorAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/orientationIndicatorIcon</normaloff>:/orientationIndicatorIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Orientation Indicator</string>
+   </property>
+   <property name="toolTip">
+    <string>Orientation Indicator [I]</string>
+   </property>
+  </action>
+  <action name="ui_stagesMenuAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/stage1Icon</normaloff>:/stage1Icon</iconset>
+   </property>
+   <property name="text">
+    <string>Stage</string>
+   </property>
+   <property name="iconText">
+    <string>Stage</string>
+   </property>
+   <property name="toolTip">
+    <string>Stages Menu</string>
+   </property>
+   <property name="statusTip">
+    <string>Indicates which stage is displayed in the panel</string>
+   </property>
+  </action>
+  <action name="ui_addCameraAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/addCameraIcon</normaloff>:/addCameraIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Add Camera</string>
+   </property>
+  </action>
+  <action name="ui_removeCameraAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/removeCameraIcon</normaloff>:/removeCameraIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Remove Camera</string>
+   </property>
+  </action>
+  <action name="ui_linkViewAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/cameraLinkIcon</normaloff>:/cameraLinkIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Link View to Camera</string>
+   </property>
+  </action>
+  <action name="ui_saveViewAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/saveCameraIcon</normaloff>:/saveCameraIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Save View to Camera</string>
+   </property>
+  </action>
+  <action name="ui_selectCameraAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/selectCameraIcon</normaloff>:/selectCameraIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Select Camera Node</string>
+   </property>
+  </action>
+  <action name="ui_screnCapture">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/colorSwatchIcon</normaloff>:/colorSwatchIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Screen Capture</string>
+   </property>
+   <property name="toolTip">
+    <string>Screen Capture</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

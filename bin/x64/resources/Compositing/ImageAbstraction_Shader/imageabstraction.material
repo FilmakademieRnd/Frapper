@@ -1,0 +1,240 @@
+vertex_program ImageAbstraction/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+fragment_program ImageAbstraction/Scene glsl
+{
+	source Scene.frag
+}
+
+fragment_program ImageAbstraction/StructureTensor glsl
+{
+	source StructureTensor.frag
+}
+
+fragment_program ImageAbstraction/GaussSmoothX glsl
+{
+	source GaussSmoothX.frag
+}
+
+fragment_program ImageAbstraction/GaussSmoothY glsl
+{
+	source GaussSmoothY.frag
+}
+
+fragment_program ImageAbstraction/Anisotropy glsl
+{
+	source Anisotropy.frag
+}
+
+fragment_program ImageAbstraction/AnisotropicKuwahara glsl
+{
+	source AnisotropicKuwahara.frag
+	
+	default_params
+	{
+		param_named scene int 0
+		param_named anisotropy int 1
+		param_named kernel int 2
+		
+		param_named radius float1 6.0
+		param_named q float1 8.0
+	}
+}
+
+material ImageAbstraction/Scene
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/Scene
+			{
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material ImageAbstraction/StructureTensor
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/StructureTensor
+			{
+				param_named scene int 0
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material ImageAbstraction/GaussSmoothX
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/GaussSmoothX
+			{
+				param_named structureTensors int 0
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material ImageAbstraction/GaussSmoothY
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/GaussSmoothY
+			{
+				param_named gaussSmoothX int 0
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material ImageAbstraction/Anisotropy
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/Anisotropy
+			{
+				param_named gaussSmoothY int 0
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material ImageAbstraction/AnisotropicKuwahara
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref ImageAbstraction/AnisotropicKuwahara
+			{
+				param_named scene int 0
+				param_named anisotropy int 1
+				param_named kernel 2
+			}
+			
+			vertex_program_ref ImageAbstraction/QuadVertexProgram
+			{
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{	
+				texture kernel.png 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

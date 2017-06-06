@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         image2vertexbuffer.xml
+  Description:  Contains the XML description of s3d ndoe.
+  Author:       Simon Spielmann <sspielm@filmakademie.de>
+  Copyright:    (c) 2012 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="image2VertexBuffer" category="Utility" color="255, 192, 171" plugin="image2vertexbuffer.dll">
+  <parameters>
+    <parameter name="Input Map Color" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Input Map Depth" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Depth Scale" type="Float" minValue="-10000.0" maxValue="10000.0" defaultValue="10.0" inputMethod="SliderPlusSpinBox" stepSize="1.0"/>
+  </parameters>
+</nodetype>
+

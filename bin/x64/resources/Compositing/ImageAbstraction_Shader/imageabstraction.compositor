@@ -1,0 +1,72 @@
+compositor ImageAbstractionCompositor
+{
+    technique
+    {
+		// Temporary textures
+		texture scene target_width target_height PF_FLOAT32_RGBA		
+		texture structureTensors target_width target_height PF_FLOAT32_RGBA
+		texture gaussSmoothX target_width target_height PF_FLOAT32_RGBA
+		texture gaussSmoothY target_width target_height PF_FLOAT32_RGBA
+		texture anisotropy target_width target_height PF_FLOAT32_RGBA
+	
+		target scene
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/Scene
+            }
+        }	
+	
+		target structureTensors
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/StructureTensor
+				input 0 scene
+            }
+        }	
+		
+		target gaussSmoothX
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/GaussSmoothX
+				input 0 structureTensors
+            }
+        }
+
+		target gaussSmoothY
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/GaussSmoothY
+				input 0 gaussSmoothX
+            }
+        }
+		
+		target anisotropy
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/Anisotropy
+				input 0 gaussSmoothY
+            }
+        }
+		
+		target_output
+        {
+            input none
+            pass render_quad
+            {
+                material ImageAbstraction/AnisotropicKuwahara
+				input 0 scene
+				input 1 anisotropy
+            }
+        }
+    }
+}

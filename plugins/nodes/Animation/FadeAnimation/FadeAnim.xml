@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         FadeAnim.xml
+  Description:  Contains the XML description of FadeAnimation nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="FadeAnim" category="Animation" color="40, 40, 40" plugin="fadeAnim.dll">
+  <parameters>
+    <!-- Input Parameter -->
+    <parameter name="Play" type="Bool"  pin="in"  visible="true" defaultValue="false" selfEvaluating="true"/>
+
+    <!-- GUI Parameter -->
+    <parameter name="FadeIn Interval" type="Int"   visible="true" defaultValue="1000"  minValue="10" maxValue="60000"/>
+    <parameter name="FadeOut Interval" type="Int"   visible="true" defaultValue="1000"  minValue="10" maxValue="60000"/>
+    <parameter name="Use FadeInAnimation only" type="Bool" defaultValue="false"/>
+    <parameter name="FadeOut by 0.5" type="Bool" defaultValue="false"/>
+    <parameter name="Hold while playing" type="Bool" defaultValue="false"/>
+
+    <parameter name="Multiply" type="Float" visible="true" defaultValue="100.0" minValue="1.0" maxValue="1000.0" />
+
+    <!-- Output Parameter -->
+    <parameter name="FadeInAnimation" type="Float" pin="out" visible="true" defaultValue="0.0"   minValue="0.0" maxValue="1000.0" />
+    <parameter name="FadeOutAnimation" type="Float" pin="out" visible="true" defaultValue="0.0"   minValue="0.0" maxValue="1000.0" />
+
+  </parameters>
+</nodetype>

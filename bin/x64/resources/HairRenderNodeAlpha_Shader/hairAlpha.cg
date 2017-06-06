@@ -1,0 +1,767 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+//#define LIGHTING
+
+
+////////////////////
+// add. functions //
+////////////////////
+
+half2 btex2D_rg(sampler2D map, float2 uv, half radius, half2 offset, half size) 
+{
+	// this is sometimes too slow and long
+	// (3 * 2 + 1) ^ 2 =  7 ^ 2 = 49 samples
+	/*const half2 o = offset * size;
+	half2 sample = half2(0, 0);
+	for (int x = -radius; x <= radius; x++) {
+		for (int y = -radius; y <= radius; y++) {
+			sample += tex2Dlod(map, float4(uv.x + x * o.x, uv.y + y * o.y, 0 ,0)).ra;
+		}
+	}
+	const half rd = (radius * 2 + 1);
+	return sample / (rd * rd);*/
+
+	// simple 3x3 filter
+	const float2 o = offset * size;
+	float2 c = tex2D(map, uv.xy).rg; // center
+	c += tex2D(map, uv.xy - o.xy).rg; // top left
+	c += tex2D(map, uv.xy + o.xy).rg; // bottom right
+	c += tex2D(map, float2(uv.x - o.x, uv.y)).rg; // left
+	c += tex2D(map, float2(uv.x + o.x, uv.y)).rg; // right
+	c += tex2D(map, float2(uv.x, uv.y + o.y)).rg; // bottom
+	c += tex2D(map, float2(uv.x, uv.y - o.y)).rg; // top
+	c += tex2D(map, float2(uv.x - o.x, uv.y + o.y)).rg; // bottom left
+	c += tex2D(map, float2(uv.x + o.x, uv.y - o.y)).rg; // top right
+	return c / 9;
+}
+
+half shadow(sampler2D shadowMap, half4 shadowMapPos, half radius, float vsmEpsilon, half2 offset, half size) 
+{
+	const half2 suv = shadowMapPos.xy / shadowMapPos.w;
+
+	// sharp texture read
+	//float2 moments = tex2D(shadowMap, suv).rg;
+
+	// blurred texture read
+	const half2 moments = btex2D_rg(shadowMap, suv, radius, offset, size);
+
+	const half litFactor = (shadowMapPos.z <= moments.x ? 1 : 0);
+
+	// standard variance shadow mapping code
+	//static const float vsmEpsilon = 0.0001;
+	const half variance = min(max(moments.y - (moments.x * moments.x), 0.0) + vsmEpsilon, 1.0);
+	const half m_d = moments.x - shadowMapPos.z;
+	const half p = variance / (variance + m_d * m_d);
+
+	return smoothstep(0.4, 1, max(litFactor, p));
+}
+
+////////////////////
+// vertex shaders //
+////////////////////
+
+void base_vs(
+			 in float4 iPos : POSITION,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4x4 wvpMat)
+{
+	oPos = mul(wvpMat, iPos);
+	oCol = .7;
+}
+
+void baseHS_vs(
+			 in float4 iPos : POSITION,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[20])
+{
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 4; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);
+	oCol = .3;
+}
+
+void baseLashHS_vs(
+			 in float4 iPos : POSITION,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[5])
+{
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 2; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);
+	oCol = .3;
+}
+
+void basePoseHS_vs(
+			 in float4 iPos : POSITION,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 in float3 pose1 : TEXCOORD1, 
+			 in float3 pose2 : TEXCOORD2,
+			 in float3 pose3 : TEXCOORD3,
+			 in float3 pose4 : TEXCOORD4,
+			 in float3 pose5 : TEXCOORD5,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4 anim_t,
+			 uniform float4 anim_t2,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[81])
+{
+	float4 CBSPos = float4(	
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		, 1.0);
+	
+	CBSPos.xyz = CBSPos.xyz + iPos.xyz;
+
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 4; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);
+	oCol = .6;
+}
+
+void baseAssHS_vs(
+			 in float4 iPos : POSITION,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float brightness,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[1])
+{
+	float4 wPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];
+	oPos = mul(vpMat, wPos);
+	oCol = brightness;
+}
+
+void baseHair_vs(
+			 in float4 iPos : POSITION,
+			 in float3 iTan  : TANGENT,
+			 in float2 iUV : TEXCOORD0,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4x4 wvpMat,
+			 uniform float hairRootWidth,
+			 uniform float hairTipWidth,
+			 uniform float3 viewDir)
+{
+	oPos = mul(wvpMat, iPos);
+    float3 wvpTan = -mul(wvpMat, float4(iTan, 0)).xyz;
+   
+    float3 perp = normalize(cross(wvpTan, viewDir));
+    float width = lerp(hairRootWidth, hairTipWidth, iUV.x);    
+    oPos.xyz = oPos.xyz + perp * width * iUV.y;
+	oCol = .3;
+}
+
+void baseHairHS_vs(
+			 in float4 iPos : POSITION,
+			 in float3 iTan  : TANGENT,
+			 in float2 iUV : TEXCOORD0,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oCol : COLOR0,
+			 uniform float4x4 vpMat,
+			 uniform float3x4 worldMatrix3x4Array[1],
+			 uniform float hairRootWidth,
+			 uniform float hairTipWidth,
+			 uniform float3 viewDir)
+{
+	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];   
+	float3 blendTan = -mul(worldMatrix3x4Array[blendIdx[0]], float4(iTan, 0.0)) * blendWgt[0];
+
+	oPos = mul(vpMat, blendPos);
+    float3 wvpTan = mul(vpMat, float4(blendTan, 0)).xyz;
+   
+    float3 perp = normalize(cross(wvpTan, viewDir));
+    float width = lerp(hairRootWidth, hairTipWidth, iUV.x);    
+    oPos.xyz = oPos.xyz + perp * width * iUV.y;
+	oCol = .3;
+}
+
+void lightZ_vs(
+			   in float4 iPos : POSITION,
+			   out float4 oPos : POSITION,
+			   out float oDepth : TEXCOORD0,
+			   uniform float4x4 wvpMat,
+			   uniform float4 depthRange)
+{
+	oPos = mul(wvpMat, iPos);
+	oDepth = (oPos.z - depthRange.x) * depthRange.w;
+}
+
+void lightZHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float oDepth : TEXCOORD0,
+			   uniform float4x4 vpMat,
+			   uniform float3x4 worldMatrix3x4Array[20],
+			   uniform float4 depthRange)
+{
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 4; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);
+	oDepth = (oPos.z - depthRange.x) * depthRange.w;
+}
+
+void lightZLashHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float oDepth : TEXCOORD0,
+			   uniform float4x4 vpMat,
+			   uniform float3x4 worldMatrix3x4Array[5],
+			   uniform float4 depthRange)
+{
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 2; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);
+	oDepth = (oPos.z - depthRange.x) * depthRange.w;
+}
+
+void lightZPoseHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   in float3 pose1 : TEXCOORD1, 
+			   in float3 pose2 : TEXCOORD2,
+			   in float3 pose3 : TEXCOORD3,
+			   in float3 pose4 : TEXCOORD4,
+			   in float3 pose5 : TEXCOORD5,
+			   out float4 oPos : POSITION,
+			   out float oDepth : TEXCOORD0,
+			   uniform float4x4 vpMat,
+			   uniform float3x4 worldMatrix3x4Array[81],
+			   uniform float4 anim_t,
+			   uniform float4 anim_t2,
+			   uniform float4 depthRange)
+{
+	float4 CBSPos = float4(	
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		, 1.0);
+	
+	CBSPos.xyz = CBSPos.xyz + iPos.xyz;
+
+	float4 wPos = float4(0.0);
+	for (int i = 0; i < 4; ++i)
+		wPos += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+	oPos = mul(vpMat, wPos);		
+	oDepth = (oPos.z - depthRange.x) * depthRange.w;
+}
+
+void lightZAssHS_vs(
+			 in float4 iPos : POSITION,
+			 in float4 blendIdx : BLENDINDICES,
+			 in float4 blendWgt : BLENDWEIGHT,
+			 out float4 oPos : POSITION,
+			 out float oDepth : TEXCOORD0,
+			 uniform float4x4 vpMat,
+			 uniform float4 depthRange,
+			 uniform float3x4 worldMatrix3x4Array[1])
+{
+	float4 wPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];
+	oPos = mul(vpMat, wPos);
+	oDepth = (oPos.z - depthRange.x) * depthRange.w;
+}
+
+void lightZHair_vs(  			
+			in float4 iPos : POSITION0,
+			in float3 iTan  : TANGENT,
+			in float2 iUV : TEXCOORD0,
+			out float4 oPos	: POSITION0,
+			out float oDep : TEXCOORD0,
+			uniform float hairRootWidth,
+			uniform float hairTipWidth,
+			uniform float3 viewDir,
+			uniform float4 depthRange,
+			uniform float4x4 wvpMat)
+			
+{
+	oPos = mul(wvpMat, iPos);
+	float3 wvpTan = -mul(wvpMat, float4(iTan, 0)).xyz;
+   
+	float3 perp = normalize(cross(wvpTan, viewDir));
+	float width = lerp(hairRootWidth, hairTipWidth, iUV.x);    
+	oPos.xyz = oPos.xyz + perp * width * iUV.y;
+	oDep = (oPos.z - depthRange.x) * depthRange.w ;
+}
+
+void lightZHairHS_vs(  			
+			in float4 iPos : POSITION0,
+			in float3 iTan  : TANGENT,
+			in float2 iUV : TEXCOORD0,
+			in float4 blendIdx : BLENDINDICES,
+			in float4 blendWgt : BLENDWEIGHT,
+			out float4 oPos	: POSITION0,
+			out float oDep : TEXCOORD0,
+			uniform float hairRootWidth,
+			uniform float hairTipWidth,
+			uniform float3 viewDir,
+			uniform float4 depthRange,
+			uniform float4x4 vpMat,
+			uniform float3x4 worldMatrix3x4Array[1])
+			
+{
+	float4 blendPos = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];   
+	float3 blendTan = -mul(worldMatrix3x4Array[blendIdx[0]], float4(iTan, 0.0)) * blendWgt[0];
+
+	oPos = mul(vpMat, blendPos);
+    float3 wvpTan = mul(vpMat, float4(blendTan, 0)).xyz;
+   
+	float3 perp = normalize(cross(wvpTan, viewDir));
+	float width = lerp(hairRootWidth, hairTipWidth, iUV.x);    
+	oPos.xyz = oPos.xyz + perp * width * iUV.y;
+	oDep = (oPos.z - depthRange.x) * depthRange.w ;
+}
+
+void shadow_vs(
+			   in float4 iPos : POSITION,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 wvpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float4 spotDir,
+			   uniform float4 depthRange)
+{
+	oWP = mul(wMat, iPos);
+	oPos = mul(wvpMat, iPos);
+
+#ifdef LIGHTING
+	oN = mul(wMat, float4(iN, 0)).xyz;
+#endif
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, oWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+void shadowHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 vpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float3x4 worldMatrix3x4Array[20],
+			   uniform float4 spotDir,
+			   uniform float4 depthRange)
+{
+	float4 tWP = .0;
+#ifdef LIGHTING
+	float3 tN = .0;
+#endif
+	int i;
+	for (i = 0; i < 4; ++i)
+	{		
+		tWP += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+#ifdef LIGHTING
+		tN += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iN) * blendWgt[i];
+#endif
+	}
+
+	oWP = tWP;
+	oPos = mul(vpMat, tWP);
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, tWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+void shadowLashHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 vpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float3x4 worldMatrix3x4Array[5],
+			   uniform float4 spotDir,
+			   uniform float4 depthRange)
+{
+	float4 tWP = .0;
+#ifdef LIGHTING
+	float3 tN = .0;
+#endif
+	int i;
+	for (i = 0; i < 2; ++i)
+	{		
+		tWP += float4(mul(worldMatrix3x4Array[blendIdx[i]], iPos).xyz, 1.0) * blendWgt[i];
+#ifdef LIGHTING
+		tN += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iN) * blendWgt[i];
+#endif
+	}
+
+	oWP = tWP;
+	oPos = mul(vpMat, tWP);
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, tWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+
+void shadowPoseHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   in float3 pose1 : TEXCOORD1, 
+			   in float3 pose2 : TEXCOORD2,
+			   in float3 pose3 : TEXCOORD3,
+			   in float3 pose4 : TEXCOORD4,
+			   in float3 pose5 : TEXCOORD5,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 vpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float3x4 worldMatrix3x4Array[81],
+			   uniform float4 spotDir,
+			   uniform float4 anim_t,
+			   uniform float4 anim_t2,
+			   uniform float4 depthRange)
+{
+	float4 CBSPos = float4(	
+		pose1 * anim_t.x + 
+		pose2 * anim_t.y +
+		pose3 * anim_t.z +
+		pose4 * anim_t.w +
+		pose5 * anim_t2.x 
+		, 1.0);
+	
+	CBSPos.xyz = CBSPos.xyz + iPos.xyz;
+
+	float4 tWP = .0;
+#ifdef LIGHTING
+	float3 tN = .0;
+#endif
+	for (int i = 0; i < 4; ++i)
+	{		
+		tWP += float4(mul(worldMatrix3x4Array[blendIdx[i]], CBSPos).xyz, 1.0) * blendWgt[i];
+#ifdef LIGHTING
+		tN += mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iN) * blendWgt[i];
+#endif
+	}
+
+	oWP = tWP;
+	oPos = mul(vpMat, tWP);
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, tWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+void shadowAssHS_vs(
+			   in float4 iPos : POSITION,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 vpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float3x4 worldMatrix3x4Array[1],
+			   uniform float4 spotDir,
+			   uniform float4 depthRange)
+{		
+	float4 tWP = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];
+#ifdef LIGHTING
+	float3 tN = mul((float3x3)worldMatrix3x4Array[blendIdx[i]], iN) * blendWgt[i];
+#endif
+
+	oWP = tWP;
+	oPos = mul(vpMat, tWP);
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, tWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+
+void shadowHair_vs(
+			   in float4 iPos : POSITION,
+			   in float3 iTan  : TANGENT,
+			   in float2 iUV : TEXCOORD0,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float4x4 wMat,
+			   uniform float4x4 wvpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float4 spotDir,
+			   uniform float4 depthRange,
+			   uniform float hairRootWidth,
+			   uniform float hairTipWidth,
+			   uniform float3 viewDir)
+{
+    oWP = mul(wMat, iPos);
+	oPos = mul(wvpMat, iPos);
+	
+	float3 wTan = -mul(wMat, float4(iTan, 0)).xyz;
+    float3 wvpTan = -mul(wvpMat, float4(iTan, 0)).xyz;
+
+    float3 wPerp = normalize(cross(wTan, viewDir));
+    float3 perp = normalize(cross(wvpTan, viewDir));
+    
+	float widthTimesY = lerp(hairRootWidth, hairTipWidth, iUV.x) * iUV.y;
+	oWP.xyz = oWP.xyz + wPerp * widthTimesY;
+    oPos.xyz = oPos.xyz + perp * widthTimesY;
+
+#ifdef LIGHTING
+	oN = mul(wvpMat, float4(iN, 0)).xyz;
+#endif
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, oWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+void shadowHairHS_vs(
+			   in float4 iPos : POSITION,
+			   in float3 iTan  : TANGENT,
+			   in float2 iUV : TEXCOORD0,
+			   in float4 blendIdx : BLENDINDICES,
+			   in float4 blendWgt : BLENDWEIGHT,
+			   out float4 oPos : POSITION,
+			   out float4 oWP : TEXCOORD0,
+			   out float3 oSDir : TEXCOORD1,
+			   out float4 oLP : TEXCOORD2,
+#ifdef LIGHTING
+			   out float3 oN : TEXCOORD3,
+			   in float3 iN : NORMAL,
+#endif
+			   uniform float3x4 worldMatrix3x4Array[1],
+			   uniform float4x4 wMat,
+			   uniform float4x4 vpMat,
+			   uniform float4x4 tvpMat,
+			   uniform float4 spotDir,
+			   uniform float4 depthRange,
+			   uniform float hairRootWidth,
+			   uniform float hairTipWidth,
+			   uniform float3 viewDir)
+{
+	oWP = float4(mul(worldMatrix3x4Array[blendIdx[0]], iPos).xyz, 1.0) * blendWgt[0];   
+	float3 wTan = -mul(worldMatrix3x4Array[blendIdx[0]], float4(iTan, 0.0)) * blendWgt[0];
+    
+	oPos = mul(vpMat, oWP);
+    float3 wvpTan = mul(vpMat, float4(wTan, 0)).xyz;
+
+    float3 wPerp = normalize(cross(wTan, viewDir));
+    float3 perp = normalize(cross(wvpTan, viewDir));
+    
+	float widthTimesY = lerp(hairRootWidth, hairTipWidth, iUV.x) * iUV.y;
+	oWP.xyz = oWP.xyz + wPerp * widthTimesY;
+    oPos.xyz = oPos.xyz + perp * widthTimesY;
+
+#ifdef LIGHTING
+	float3 wN = mul(worldMatrix3x4Array[blendIdx[0]], float4(iN, 0.0)) * blendWgt[0]; 
+	oN = mul(vpMat, float4(wN, 0)).xyz;
+#endif
+
+	oSDir = mul(wMat, spotDir).xyz;
+
+	oLP = mul(tvpMat, oWP);
+	oLP.z = (oLP.z - depthRange.x) * depthRange.w;
+}
+
+
+//////////////////////
+// geometry shaders //
+//////////////////////
+
+
+//TRIANGLE
+//TRIANGLE_OUT
+//void hair_gs(AttribArray<float4> position : POSITION)
+//{
+//	for(int i=0; i<position.length; i++) {
+//		emitVertex(float4(position[i].xyz, 1) : POSITION, float4(.5,.5,.5,1) : COLOR0);
+//	}
+//}
+
+
+//////////////////////
+// fragment shaders //
+//////////////////////
+
+
+void lightZ_fs(
+			   in float iDepth : TEXCOORD0,
+			   out half4 oCol : COLOR0)
+{
+	oCol.ra = half2(iDepth, iDepth * iDepth);
+}
+
+void  shadow_fs(
+				in float4 iWP : TEXCOORD0,
+				in float3 iSDir : TEXCOORD1,		
+				in float4 iLP : TEXCOORD2,
+#ifdef LIGHTING
+				in float3 iN : TEXCOORD3,
+#endif
+				out half oCol : COLOR,
+				uniform float3 lightDif0,
+				uniform float4 lightPos0,
+				uniform float4 lightAtt0,
+				uniform float4 invSMSize,
+				uniform float4 spotlightParams,
+				uniform float vsmEpsilon,
+				uniform float sampleRadius,
+				uniform float blurSize,
+				uniform float lightPower,
+				uniform sampler2D shadowMap : TEXUNIT0)
+{
+
+	// direction
+	half3 ld0 = normalize(lightPos0.xyz - (lightPos0.w * iWP.xyz));
+
+	// attenuation
+	half ila = length(lightPos0.xyz - iWP.xyz) / (lightAtt0.r);
+	half la = 1.0 - ila * ila;  // quadratic falloff
+
+	// calculate the spotlight effect
+	half spot = dot(ld0, normalize(-iSDir)); // angle between spotlight dir and actual dir
+	spot = saturate((spot - spotlightParams.y) / (spotlightParams.x - spotlightParams.y));
+
+#ifdef LIGHTING			
+	half LdotN0 = max(dot(ld0, normalize(iN)), 0).x;
+	half light = la * spot * LdotN0;
+
+	if (light == 0) {
+		oCol = 0;
+	}
+	else {
+		oCol =
+			lightDif0.x * 
+			light *
+			lightPower *
+			shadow(
+			// pass in the shadow map
+			shadowMap,
+			// the calculated shadow position in the shadow map
+			iLP,
+			// radius to blur 
+			sampleRadius,
+			// vsm epilon
+			vsmEpsilon,
+			// inverse shadow map size so we know how much to move when blurring
+			invSMSize.xy,
+			// multiplier for blurring
+			blurSize);
+	}
+#else
+	half light = la * spot;	
+
+	oCol =
+			lightDif0.x * 
+			light *
+			lightPower *
+			shadow(
+			// pass in the shadow map
+			shadowMap,
+			// the calculated shadow position in the shadow map
+			iLP,
+			// radius to blur 
+			sampleRadius,
+			// vsm epilon
+			vsmEpsilon,
+			// inverse shadow map size so we know how much to move when blurring
+			invSMSize.xy,
+			// multiplier for blurring
+			blurSize);
+#endif
+}

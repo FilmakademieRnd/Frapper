@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         clouddisplay.xml
+  Description:  Contains the XML description of CloudDisplay nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="CloudDisplay" category="Images" color="250,100,50" plugin="clouddisplay.dll">
+  <parameters>
+	  <parameter name="XML File" 	      type="Filename" filter="XML Files (*.xml)"/>
+    <!--<parameter name="WordsIn" 	      type="String" defaultValue="" selfEvaluating="true" pin="in"/>-->
+    <parameter name="Start Animation" type="Bool" defaultValue="false" selfEvaluating="true" pin="in"/>
+    <parameter name="Grammar"         type="String" defaultValue="" selfEvaluating="true" pin="out"/>
+<!--
+    <parameter name="Image Width"   type="Int" defaultValue="768" minValue="320" maxValue="6144" selfEvaluating="true"/>
+    <parameter name="Image Height"  type="Int" defaultValue="1280" minValue="240" maxValue="6144" selfEvaluating="true"/>
+    -->
+    <parameter name="Image Width"   type="Int" defaultValue="640" minValue="320" maxValue="6144" selfEvaluating="true"/>
+    <parameter name="Image Height"  type="Int" defaultValue="640" minValue="240" maxValue="6144" selfEvaluating="true"/>
+    
+    <parameter name="ImageX"        type="Int" defaultValue="1" minValue="-6144" maxValue="6144" selfEvaluating="true"/>
+    <parameter name="ImageY"        type="Int" defaultValue="1" minValue="-6144" maxValue="6144" selfEvaluating="true"/>
+
+    <parameter name="Color" type="Color"/>
+    
+    <parameter name="Font Size"     type="Float" defaultValue="4.0" selfEvaluating="true"/>   
+  </parameters>
+</nodetype>

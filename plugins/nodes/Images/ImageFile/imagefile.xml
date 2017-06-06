@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ImageFile.xml
+  Description:  Contains the XML description of ImageFile nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="ImageFile" category="Images" color="173, 255, 173" plugin="imagefile.dll">
+  <parameters>
+    <parameter name="Image File" type="Filename" filter="Image Files (*.bmp *.png *.jpg *.exr)"/>
+    <parameter name="Missing Frame Color" type="Color" defaultValue="0, 0, 0"/>
+    <parameter name="Image Dimensions" type="TextInfo" />
+    <parameter name="Scale in %" type="Int" minValue="1" maxValue="300" defaultValue="100" inputMethod="SliderPlusSpinBox" stepSize="1" unit=""/>
+    <parameter name="Reset Image Size" type="Command" />
+    <parameters name="Image Sequence" enabled="false">      
+      <parameter name="Sequence Length" type="TextInfo" />
+      <parameter name="Use Image Sequence" type="Bool" defaultValue="false" />
+      <parameter name="Start Frame" type="Int" minValue="-5000" maxValue="5000"/>
+      <parameter name="End Frame" type="Int" minValue="-5000" maxValue="5000"/>
+      <parameter name="Start Frame Offset" type="Int" minValue="-5000" maxValue="5000"/>
+      </parameters>       
+  </parameters>
+</nodetype>

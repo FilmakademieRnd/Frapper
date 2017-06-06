@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         PatchMatchNode.xml
+  Description:  Contains the XML description of OpenCvFeatureNode.
+  Author:       Jonas Trottnow <jonas.trottnow@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="PatchMatchNode" category="ImageProcessing" color="171, 192, 255" plugin="PatchMatch.dll">
+  <parameters>
+    <parameter  name="Calculate!" type="Command" />
+    <parameters name="basic">
+      <parameter  name="patchSize" type="Int" defaultValue="35" minValue="3" maxValue="99" stepSize="2" visible="true" inputMethod="SliderPlusSpinBox"/>
+      <parameter  name="interationsCount" type="Int" defaultValue="3" minValue="1" maxValue="100" stepSize="1" visible="true" inputMethod="SliderPlusSpinBox"/>
+      <parameter  name="maxDisparity" type="Int" defaultValue="70" minValue="1" maxValue="2000" stepSize="1" visible="true" inputMethod="SliderPlusSpinBox"/>
+      <parameter  name="balanceAlpha" type="Float" defaultValue="0.9" minValue="0" maxValue="1" visible="true"/>
+      <parameter  name="colorHistEqualization" type="Bool" defaultValue="false" visible="true"/>
+      <parameter  name="grayHistEqualization" type="Bool" defaultValue="false" visible="true"/>
+      <parameter  name="maxDifferenceLeftRight" type="Int" defaultValue="2" minValue="0" maxValue="10" stepSize="1" visible="true" inputMethod="SliderPlusSpinBox"/>
+    </parameters>
+    <parameters name="advanced">
+      <parameter  name="edgeGamma" type="Float" defaultValue="10.0" minValue="1" maxValue="100" visible="true"/>
+      <parameter  name="tauColor" type="Float" defaultValue="0.9" minValue="0" maxValue="1" visible="true"/>
+      <parameter  name="tauGradient" type="Float" defaultValue="0.9" minValue="0" maxValue="1" visible="true"/>
+    </parameters>
+    <parameter name="Camera package" type="Generic" pin="in" visible="false"/>
+    <parameter	name="principal camera"	type="String"	pin="in" visible="false"/>
+    <parameter	name="satellite camera"	type="String"	pin="in" visible="false"/>
+    <parameter name="depthmap + confidence field" type="Generic" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

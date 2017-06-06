@@ -1,0 +1,32 @@
+void vs_main(  			
+			//in
+			float4 iPosition : POSITION0,
+			float3 iNormal   : NORMAL0,			
+			float2 iTexCoord : TEXCOORD0,
+			//out
+			out float4 oPosition	: POSITION0,
+			out float2 oTexCoord	: TEXCOORD3,			
+			out float3 oNormal		: TEXCOORD0,
+			out float3 oReflect		: TEXCOORD7,			
+			//parameter
+			uniform float4x4 worldViewProj,
+			uniform float4x4 view_matrix)
+			
+{
+
+	oPosition = mul(worldViewProj, iPosition);
+	oTexCoord = iTexCoord;
+       
+	// Compute position in view space:
+	float3 Pview = mul( view_matrix, iPosition ); 
+
+	// Transform the input normal to view space:
+	oNormal = normalize( mul( view_matrix,  float4(iNormal, 0) ) );   
+ 
+	// Compute the view direction in view space:
+	float3 tmpView = normalize( Pview );
+   	oReflect = -reflect(tmpView, oNormal);
+   
+}
+
+

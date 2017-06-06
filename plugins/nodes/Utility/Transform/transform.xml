@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         transform.xml
+  Description:  Contains the XML description of Transform nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Transform" category="Utility" color="255, 192, 171" plugin="transform.dll">
+  <parameters>
+    <parameters name="Transformation">
+      <parameter name="Translate" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" stepSize="0.05" pin="in"/>
+      <parameter name="Rotate" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-360" maxValue="360" stepSize="0.01" pin="in"/>
+      <parameter name="Scale" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-10" maxValue="10" stepSize="0.01" defaultValue="1, 1, 1" pin="in"/>
+     </parameters>
+    <parameter name="Geometry to Transform" type="Geometry" multiplicity="*" pin="in"/>
+    <parameter name="Light to Transform" type="Light" multiplicity="*" pin="in"/>
+    <parameter name="Camera to Transform" type="Camera" multiplicity="*" pin="in"/>
+    <parameter name="Transformed Geometry" type="Geometry" pin="out"/>
+    <parameter name="Transformed Light" type="Light" pin="out"/>
+    <parameter name="Transformed Camera" type="Camera" pin="out"/>
+	  <parameter name="Reset" type="Command" />
+  </parameters>
+</nodetype>

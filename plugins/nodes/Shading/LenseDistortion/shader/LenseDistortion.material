@@ -1,0 +1,63 @@
+fragment_program LenseDistortion/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_2_0 arbfp1
+}
+
+fragment_program LenseDistortion/LenseDistortionFP cg
+{
+    source LenseDistortion.cg
+    entry_point distortion_ps
+    profiles ps_2_0 arbfp1
+}
+
+// scene pass
+material LenseDistortion/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref LenseDistortion/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode border
+				filtering bilinear
+			}
+		}
+	}
+}
+
+// final LenseDistortion pass
+material LenseDistortion/LenseDistortion
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref LenseDistortion/LenseDistortionFP
+			{
+				param_named distortionFactor float 1.0
+			}
+
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode border
+				filtering bilinear
+			}
+		}
+    }
+}

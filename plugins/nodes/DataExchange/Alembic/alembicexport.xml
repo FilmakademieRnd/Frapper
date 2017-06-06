@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         alembicexport.xml
+  Description:  Contains the XML description of AlembicExport nodes.
+  Author:       Simon Spielmann <sspielma@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="AlembicExport" category="Export" color="255, 200, 0" plugin="alembicexport.dll">
+  <parameters>
+    <parameter name="VertexBuffer" type="Group" pin="in" />
+    <parameter name="Alembic File" type="Filename" filter="Alembic Files (*.abc)"/>
+    <parameter name="Framerate" type="UnsignedInt" defaultValue="24" minValue="1" maxValue="120"/>
+    <parameter name="Export" type="Command"/>
+  </parameters>
+</nodetype>

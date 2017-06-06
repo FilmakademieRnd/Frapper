@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         aqtimagesaver.xml
+  Description:  Contains the XML description of ImageSaver nodes.
+  Author:       Christopher Lutz <clutz@animationsnippets.com>
+  Copyright:    (c) 2010 Christopher Lutz
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="ImageSaverCV" category="Export" color="255, 200, 0" plugin="imagesavercv.dll">
+  <parameters>
+  </parameters>
+</nodetype>
+
+

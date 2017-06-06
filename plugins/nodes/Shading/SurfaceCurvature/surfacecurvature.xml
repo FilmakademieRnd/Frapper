@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         surfacecurvature.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="SurfaceCurvature" category="Shading" color="7, 45, 87" plugin="surfacecurvature.dll">
+  <parameters>
+    <parameter name="Resource Group Name" type="String" defaultValue="SurfaceCurvatureNode"/>
+    <parameter name="Reload" type="Command"/>
+    <parameter name="Magnitude" type="Float" minValue="0.01" maxValue="100.0" defaultValue="10.0" inputMethod="SliderPlusSpinBox" stepSize="0.1" unit=""/>
+    <parameter name="Show Color" type="Bool"/>
+    <parameter name="Input Map Normal" type="Image" pin="in" selfEvaluating="false"/> 
+    </parameters>
+</nodetype>
+
+

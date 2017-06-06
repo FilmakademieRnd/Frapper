@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         pointcloudreader.xml
+  Description:  Contains the XML description of s3d ndoe.
+  Author:       Volker Helzle <sspielm@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="PointCloudReader" category="S3D" color="255, 255, 255" plugin="pointcloudreader.dll">
+  <parameters>
+    <parameter name="Point Cloud File" type="Filename" filter="Point Cloud Files (*.ply)"/>
+    <parameter name="Flip X" type="Bool" defaultValue="false"/>
+    <parameter name="Flip Y" type="Bool" defaultValue="true"/>
+    <parameter name="Flip Z" type="Bool" defaultValue="true"/>
+    <parameter name="Offset X" type="Float" defaultValue="0.0" minValue="-500.0" maxValue="500.0"/>
+    <parameter name="Offset Y" type="Float" defaultValue="0.0" minValue="-500.0" maxValue="500.0"/>
+    <parameter name="Offset Z" type="Float" defaultValue="0.0" minValue="-500.0" maxValue="500.0"/>
+    <parameter name="Scale" type="Float" defaultValue="1.0" minValue="0.0" maxValue="50.0"/>
+  </parameters>
+</nodetype>
+

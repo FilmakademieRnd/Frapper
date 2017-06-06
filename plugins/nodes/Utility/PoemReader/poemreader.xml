@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         poemreader.xml
+  Description:  Contains the XML description of PoemReader nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="poemreader" category="Utility" color="250,100,50" plugin="poemreader.dll">
+  <parameters>
+	  <parameter name="XML File" 	      type="Filename" filter="XML Files (*.xml)"/>
+    <parameter name="WordIn" 	        type="String" defaultValue="" selfEvaluating="true" pin="in"/>
+    <parameter name="TagIn" 	        type="String" defaultValue="" selfEvaluating="true" pin="in"/>    
+    <parameter name="Grammar"         type="String" defaultValue="" selfEvaluating="true" pin="out"/>
+    <parameter name="Poem Selected"   type="String" defaultValue="" selfEvaluating="true" pin="out"/>
+    <parameter name="Nr. Words to recognize"  type="Int" defaultValue="2" selfEvaluating="true" pin="out"/>
+    
+    <parameter name="Alpha"           type="Float" defaultValue="100.0" selfEvaluating="true" pin="out"/>
+    
+    <parameter name="Animation State" type="Bool" defaultValue="false" selfEvaluating="true" pin="in"/>
+    <parameter name="Ready"           type="Bool" defaultValue="true" selfEvaluating="true" pin="out"/>
+    <parameter name="Is not Poem"     type="Bool" defaultValue="false" selfEvaluating="true" pin="out" />
+
+    <parameter name="Stop Poem" type="Command"/>
+  </parameters>
+   
+</nodetype>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         addVectors.xml
+  Description:  Contains the XML description of VectorMath nodes.
+  Author:       Felix Bucella <filmakademie@bucella.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="VectorMath" category="Utility" color="255, 192, 171" plugin="VectorMath.dll">
+  <parameters>
+
+  </parameters>
+</nodetype>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         watercolor.xml
+  Description:  Contains the XML description of Watercolor nodes.
+  Author:       Michael Bußler<@filmakademie.de>
+  Copyright:    (c) 2011 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="CelShading" category="Shading" color="7, 45, 87" plugin="ShadingTemplate.dll">
+  <parameters>
+    <parameter name="Shader Name" type="String" defaultValue="CelShadingShader"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/CelShading_Shader"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Image" type="Image" pin="in" selfEvaluating="false"/>
+      <parameter name="Normal Map" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>
+    <parameters name="Input Textures">
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+    </parameters>
+  </parameters>
+</nodetype>
+
+

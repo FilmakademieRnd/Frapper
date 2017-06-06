@@ -1,0 +1,21 @@
+/////////////////
+// Tile shader //
+/////////////////
+
+void tileselect_ps(in float2 texCoord		: TEXCOORD0,
+                   out float4 oColor		: COLOR0,
+                   uniform sampler2D tiles	: TEXUNIT0,
+                   uniform float ImageIndex,
+                   uniform float TilesX,
+                   uniform float TilesY )
+{
+	float off_x = mod( ImageIndex, TilesX );
+	float off_y = floor( ImageIndex / TilesX );
+
+	float2 tileCoord;
+	tileCoord.x = (off_x * 1.0/TilesX) + (texCoord.x / TilesX);
+	tileCoord.y = (off_y * 1.0/TilesY) + (texCoord.y / TilesY);
+
+	oColor = tex2D( tiles, tileCoord);
+	//oColor = float4( tileCoord.x, tileCoord.y, 0.0, 1.0 );
+}

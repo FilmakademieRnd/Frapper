@@ -1,0 +1,11 @@
+material Material
+{
+	technique
+	{
+		pass
+		{
+			shading gouraud
+			diffuse 0.5 0.5 0.5 1
+		}
+	}
+}

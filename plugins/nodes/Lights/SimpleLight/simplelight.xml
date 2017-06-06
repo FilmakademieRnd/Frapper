@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         light.xml
+  Description:  Contains the XML description of Light nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>, Simon Spielmann <simon.spielmann@filmakademie.de>
+  Copyright:    (c) 2015 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="SimpleLight" category="Lights" color="255, 255, 109" plugin="simplelight.dll">
+  <parameters>
+    <parameter name="Light Type" type="Enumeration" defaultValue="Point Light">
+      <literal name="Point Light"/>
+      <literal name="Directional Light"/>
+	  <literal name="Spot Light"/>
+    </parameter>
+    <parameter name="Power" type="Float" defaultValue="1.0" minValue="0.0" maxValue="10.0" inputMethod="SliderPlusSpinBox" stepSize="0.01"/>
+    <parameter name="Diffuse Color" type="Color" defaultValue="1.0, 1.0, 1.0"/>
+	  <parameter name="Specular Color" type="Color" defaultValue="1.0, 1.0, 1.0"/>
+
+    <parameters name="Attenuation">
+      <parameter name="Range"     type="Float" defaultValue="100"  minValue="0.0" maxValue="100.0" inputMethod="SliderPlusSpinBox" stepSize="0.001"/>
+      <parameter name="Constant"  type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" inputMethod="SliderPlusSpinBox" stepSize="0.001"/>
+      <parameter name="Linear"    type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" inputMethod="SliderPlusSpinBox" stepSize="0.001"/>
+      <parameter name="Quadratic" type="Float" defaultValue="0.001" minValue="0.0" maxValue="1.0" inputMethod="SliderPlusSpinBox" stepSize="0.001"/>
+    </parameters>
+    
+    <parameter name="Casts Shadows" type="Bool" defaultValue="true" minValue="0.0" maxValue="1.0"/>
+    <parameter name="Inner Angle" type="Float" defaultValue="0.0"   minValue="0.0" maxValue="180.0" />
+    <parameter name="Outer Angle" type="Float" defaultValue="100.0" minValue="0.0" maxValue="180.0"/>
+    <parameter name="Light" type="Light" pin="out"/>
+  </parameters>
+</nodetype>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         NetworkAnim.xml
+  Description:  Contains the XML description of SpeechInput nodes.
+  Author:       Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="NetworkAnim" category="Network" color="50,100,10" plugin="networkanim.dll">
+  <parameters>
+    <parameter name="run" type="Bool" defaultValue="False"/>
+	  <parameter name="port" type="UnsignedInt" defaultValue="45454" maxValue="65535"/>
+	  <parameter name="interval" type="UnsignedInt" defaultValue="10" maxValue="10000"/>
+    <parameters name="Animations">
+      <parameter name="AngerC" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="AngerO" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="B_JawThO_BAU29" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="B_JawTh_BAU29" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="BrowU_CAU1_2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="BrowU_LAU1_2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="BrowU_RAU1_2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="C_Kiss_CAU18" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="ChkU_CAU6" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="CorD_CAU15" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="D_LipFn_DAU22" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="D_LipP_DAU24" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="D_LipSk_DAU28" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="D_LipTi_DAU23" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Dimpl_CAU14" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="DisgC" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="DisgO" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="EyeSq_CAU743" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="F_JawThO_FAU29" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="F_JawTh_FAU29" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Fear" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="FlatterNormal_CAU34" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Frown_CAU4" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="GazeHLeft" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="GazeHRight" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="GazeVDown" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="GazeVUp" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadDown_AU54" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadThrustBackward_CAU58" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadThrustForward_CAU57" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadTiltLeft_AU55" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadTiltRight_AU56" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadTurnLeft_AU51" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadTurnRight_AU52" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="HeadUp_AU53" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="IBrowU_CAU1" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="JawO_CAU2627" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="JawUp_CAU17" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="JoyC" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="JoyO" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LLipD_CAU16" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Blink_AU45" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_ChkU_LAU6" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_CorD_LAU15" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Dimpl_LAU14" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_EyeSq_LAU743" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Frown_LAU4" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_JawSdO_LAU30" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_JawSd_LAU30" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_LLipD_LAU16" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_LidT_LAU7" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_LipSt_LAU20" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_LipsU_LAU10" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_NosF_LAU11" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_NosW_LAU9" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_OBrowU_LAU2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_OSmil_LAU1225" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Smile_LAU12" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Smirk_LAU13" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_Tong_LAU36" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="L_ULipU_LAU1025" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LeftLowerLidClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LeftLowerLidOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LeftUpperLidClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LeftUpperLidOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LidT_CAU7" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipFn_CAU22" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipP_CAU24" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipSk_CAU28" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipSt_CAU20" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipTi_CAU23" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="LipsU_CAU10" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="NosF_CAU11" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="NosW_CAU9" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="OSmil_CAU1225" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_E" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_F" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_I" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_M" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_O" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Phonem_P" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Puff_CAU34" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Blink_AU45" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_ChkU_RAU6" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_CorD_RAU15" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Dimpl_RAU14" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_EyeSq_RAU743" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Frown_RAU4" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_JawSdO_RAU30" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_JawSd_RAU30" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_LLipD_RAU16" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_LidT_RAU7" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_LipSt_RAU20" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_LipsU_RAU10" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_NosF_RAU11" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_NosW_RAU9" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_OBrowU_RAU2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_OSmil_RAU1225" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Smile_RAU12" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Smirk_RAU13" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_Tong_RAU36" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="R_ULipU_RAU1025" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="RightLowerLidClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="RightLowerLidOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="RightUpperLidClose" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="RightUpperLidOpen" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="SadBr_CAU1_4" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="SadC" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="SadO" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Shrug" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Smile_CAU12" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Smirk_CAU13" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Suck_CAU35" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Surp" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="Tong_CAU36" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="ULipU_CAU1025" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="U_Bite_UAU32" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="U_LipFn_UAU22" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="U_LipP_UAU24" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="U_LipSk_UAU28" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="U_LipTi_UAU23" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="X1_CMthD" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="X2_CAUX2" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="X4C_JawCrcl" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+      <parameter name="X4O_JawCrcl" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" pin="out"/>
+    </parameters>
+  </parameters>
+</nodetype>

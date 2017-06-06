@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ImageCalibratorNode.xml
+  Description:  Contains the XML description of OpenCvFeatureNode.
+  Author:       Jonas Trottnow <jonas.trottnow@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="MulticamRectify" category="ImageProcessing" color="171, 192, 255" plugin="MulticamRectify.dll">
+  <parameters>
+    <parameter  name="Calibrate!" type="Command" />
+    <parameter  name="Chessboard Rows" type="Int" defaultValue="8" minValue="3" maxValue="20" stepSize="1" visible="true"/>
+    <parameter  name="Chessboard Columns" type="Int" defaultValue="12" minValue="3" maxValue="20" stepSize="1" visible="true"/>
+    <parameter  name="target width" type="Int" defaultValue="1920" minValue="100" maxValue="8000" stepSize="1" visible="true"/>
+    <parameter  name="target height" type="Int" defaultValue="1080" minValue="100" maxValue="8000" stepSize="1" visible="true"/>
+    <parameter	name="Camera Intrinsic principal"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Grids principal"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Intrinsic 2"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Grids 2"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Intrinsic 3"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Grids 3"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Intrinsic 4"	type="String"	pin="in" visible="false"/>
+    <parameter	name="Camera Grids 4"	type="String"	pin="in" visible="false"/>
+    <parameter name="Camera 1->2 package" type="Generic" pin="out" visible="false"/>
+    <parameter name="Camera 1->3 package" type="Generic" pin="out" visible="false"/>
+    <parameter name="Camera 1->4 package" type="Generic" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

@@ -1,0 +1,144 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                               geometryBlur_Quad_vs                                **
+**                                                                                   **
+***************************************************************************************/
+
+void geometryBlur_Quad_vs( in  float4 iPosition : POSITION,
+				         //in  float2 iTexCoord : TEXCOORD0,
+						   out float4 oPosition : POSITION,
+						   out float2 oTexCoord : TEXCOORD0,
+						   uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+/**************************************************************************************
+**                                                                                   **
+**                                      TEX2DLOD                                     **
+**             For ps_3_0, we want to use tex2Dlod because it's faster               **
+***************************************************************************************/
+
+ps_3_0 float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0.0, 0.0));
+}
+
+float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2D(map, uv);
+}
+
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                geometryBlurX_ps                                   **
+**                                                                                   **
+***************************************************************************************/
+
+#define NUM_BLUR_SAMPLES 8
+
+float4 geometryBlurX_ps (	in float2 uv : TEXCOORD0,
+							uniform float4 invTexSize,
+							uniform sampler2D mapToBlur : TEXUNIT0,
+							uniform sampler2D normalMap : TEXUNIT1,
+							uniform float blurringSize,
+							uniform float blurringAngle) : COLOR0
+{	
+	const float4 occ = TEX2DLOD(mapToBlur, uv);	
+    const float2 o = float2(invTexSize.x, 0.0);
+	const float3 geom = TEX2DLOD(normalMap, uv).xyz;
+    float3 sum = occ.xyz * (blurringSize + 1.0);
+    float denom = blurringSize + 1.0;
+
+	float coef;
+	float2 nuv;
+	float3 nGeom; 
+    
+	for (float i = 1.0; i <= blurringSize; ++i)
+    {
+        nuv = uv + o * i;
+        nGeom = TEX2DLOD(normalMap, nuv).xyz;
+        coef = (blurringSize + 1.0 - i) * (float) (dot(geom, nGeom) > blurringAngle);
+        sum += TEX2DLOD(mapToBlur, nuv).xyz * coef;
+        denom += coef;
+
+		nuv = uv + o * (-i);
+        nGeom = TEX2DLOD(normalMap, nuv).xyz;
+        coef = (blurringSize + 1.0 - i) * (float) (dot(geom, nGeom) > blurringAngle);
+        sum += TEX2DLOD(mapToBlur, nuv).xyz * coef;
+        denom += coef;
+    }
+	return float4(sum / denom, occ.w);
+}
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                  ssaoBlurY_ps                                     **
+**                                                                                   **
+***************************************************************************************/
+
+float4 geometryBlurY_ps (	in float2 uv : TEXCOORD0,
+						uniform float4 invTexSize,
+						uniform sampler2D MapBlurX : TEXUNIT0,
+						uniform sampler2D normalMap : TEXUNIT1,
+						uniform float blurringSize,
+						uniform float blurringAngle) : COLOR0
+{
+    const float2 o = float2(0.0, invTexSize.y);
+	const float3 geom = TEX2DLOD(normalMap, uv).xyz;
+    float3 sum = TEX2DLOD(MapBlurX, uv).xyz * (blurringSize + 1.0);
+    float denom = blurringSize + 1.0;
+
+	float coef;
+	float2 nuv;
+	float3 nGeom; 
+
+    for (float i = 1.0; i <= blurringSize; ++i)
+    {
+        nuv = uv + o * i;
+        nGeom = TEX2DLOD(normalMap, nuv).xyz;
+        coef = (blurringSize + 1.0 - i) * (float) (dot(geom, nGeom) > blurringAngle);
+        sum += TEX2DLOD(MapBlurX, nuv).xyz * coef;
+        denom += coef;
+   
+        nuv = uv + o * (-i);
+        nGeom = TEX2DLOD(normalMap, nuv);
+        coef = (blurringSize + 1.0 - i) * (float) (dot(geom, nGeom) > blurringAngle);
+        sum += TEX2DLOD(MapBlurX, nuv).xyz * coef;
+        denom += coef;
+    }
+    return float4(sum / denom, tex2D(MapBlurX, uv).w);
+}

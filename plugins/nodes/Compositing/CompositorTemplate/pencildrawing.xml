@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         pencildrawing.xml
+  Description:  Implementation of the pencil drawing rithm: "Combining Sketch and Tone for Pencil Drawing Production" - Lu et al. 2012
+  Author:       Marc Spicker <marc.spicker@uni-konstanz.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="PencilDrawing" category="Compositing" color="185, 30, 75" plugin="compositortemplate.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="PencilDrawingCompositor"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="PencilDrawingShader"/>    
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>	
+	  <parameters name="Shader Parameters Pass 0">
+		  <parameter name="Monochrome" type="Int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue="0" stepSize="1"/>
+		  <parameter name="KernelRatio" type="Float" inputMethod="SliderPlusSpinBox" minValue="1.0" maxValue="500.0" defaultValue="200.0" stepSize="1.0" description="Maximum side (width or height) of the image divided by this factor results in the kernel width"/>
+		  <parameter name="W1" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="100.0" defaultValue="11.0" stepSize="1.0" description="Weight of Tone Model 1"/>
+		  <parameter name="W2" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="100.0" defaultValue="37.0" stepSize="1.0" description="Weight of Tone Model 2"/>
+		  <parameter name="W3" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="100.0" defaultValue="52.0" stepSize="1.0" description="Weight of Tone Model 3"/>
+    </parameters>
+    <parameters name="Predefined Values">
+      <parameter name="Preset" type="Enumeration" defaultValue="No Preset"  description="values are 'Monochrome x KernelRatio x W1 x W2 x W3' ">
+        <literal name="No Preset" />
+        <literal name="Low Abstraction"     value="0 x 325 x 11 x 37 x 52" />
+        <literal name="Medium Abstraction"  value="0 x 200 x 11 x 37 x 52" />
+        <literal name="High Abstraction"    value="0 x 120 x 11 x 37 x 52" />
+      </parameter>
+      <parameter name="Preset Index" type="Float" defaultValue="0.0" pin="in" selfEvaluating="true" />
+    </parameters>
+    
+  </parameters>
+</nodetype>

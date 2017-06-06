@@ -1,0 +1,102 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+///**************************************************************************************
+//**                                                                                   **
+//**                                    quad_vs                                   **
+//**                                                                                   **
+//***************************************************************************************/
+//
+//void quad_vs( in  float4 iPosition : POSITION,
+//				   //in  float2 iTexCoord : TEXCOORD0,
+//                   out float4 oPosition : POSITION,
+//				   out float2 oTexCoord : TEXCOORD0,
+//			       uniform float4x4 worldViewProj)
+//{
+//    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+//    oPosition = mul(worldViewProj, iPosition);
+//
+//    // The input positions adjusted by texel offsets, so clean up inaccuracies
+//    iPosition.xy = sign(iPosition.xy);
+//	
+//    // Convert to image-space
+//    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+//}
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_vs                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void quad_vs(	in float4 iPosition : POSITION,
+				in float2 iTexCoord : TEXCOORD0,
+				out float4 oPosition : POSITION,
+				out float2 oTexCoord : TEXCOORD0,
+				uniform float3x3 transformMatrix,
+				uniform float4x4 worldViewProj)
+{  
+  // The input positions adjusted by texel offsets, so clean up inaccuracies
+  oPosition = mul(worldViewProj, iPosition);
+  oTexCoord = mul(transformMatrix, float3(iTexCoord, 1.0)).xy;
+}
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    Quad_ps                                        **
+ **                                                                                   **
+ ***************************************************************************************/
+
+
+void scene_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D scene : TEXUNIT0)
+{
+	oColor = tex2D(scene, texCoord);
+}
+
+void quad_ps( in  float2 texCoord : TEXCOORD0,
+	      out float4 color    : COLOR,
+	       uniform float     param0,
+	       uniform float     param1,
+	       uniform float     param2,
+	       uniform float     param3,
+	       uniform float     param4,
+	       uniform sampler2D scene     : TEXUNIT0, // prerendered scene (nx,ny,nz,1.0)
+	       uniform sampler2D normal    : TEXUNIT1, // normal map in camera space (nx,ny,nz,1.0)
+	       uniform sampler2D depth     : TEXUNIT2) // view map (vx,vy,vz) in camera space computed with (vertex-camPosition)
+
+
+{
+   float3 n = tex2D(depth, texCoord).xyz;
+
+   if(n.x == 0.0 && n.y == 0.0 && n.z == 0.0) {
+     // nothing to do... 
+     color = float4(0.0);
+   }
+
+   else {
+	   // ...
+	   color = float4(param0, 0.0, 0.0, 1.0);
+   }
+}

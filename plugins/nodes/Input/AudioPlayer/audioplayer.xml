@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         audioplayer.xml
+  Description:  Contains the XML description of AudipPlayer nodes.
+  Author:       Simon Spielmann <sspielma@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="AudioPlayer" category="Input" color="250,100,50" plugin="audioplayer.dll">
+  <parameters>
+    <parameter name="Audio File" type="Filename" filter="Audio Files (*.mo3 *.xm *.mod *.s3m *.it *.mtm *.umx *.mp3 *.mp2 *.mp1 *.ogg *.wav *.aif)"/>
+    <parameters name="Player Control">
+      <parameter name="Time" type="TextInfo"/>
+      <parameter name="Loop" type="Bool" defaultValue="false"/>
+      <parameter name="Play" type="Command"/>
+      <parameter name="Stop" type="Command"/>
+      <parameter name="Play Track" type="Bool" defaultValue="false" pin="in" selfEvaluating="true"/>
+      <parameter name="Stop Track" type="Bool" defaultValue="false" pin="in" selfEvaluating="true"/>
+      <parameter name="Volume" type="Float" defaultValue="1.0" pin="in" selfEvaluating="true"  />
+    </parameters>
+    <parameters name="Spectrum Control">
+      <parameter name="S1 Upper Bound" type="Int" defaultValue="31" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="S1 Lower Bound" type="Int" defaultValue="0" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="Spec1" type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" pin="out"/>
+     
+      <parameter name="S2 Upper Bound" type="Int" defaultValue="63" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="S2 Lower Bound" type="Int" defaultValue="32" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="Spec2" type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" pin="out"/>
+      
+      <parameter name="S3 Upper Bound" type="Int" defaultValue="95" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="S3 Lower Bound" type="Int" defaultValue="64" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="Spec3" type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" pin="out"/>
+      
+      <parameter name="S4 Upper Bound" type="Int" defaultValue="127" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="S4 Lower Bound" type="Int" defaultValue="96" minValue="0" maxValue="127" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="Spec4" type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" pin="out"/>
+    </parameters>
+  </parameters>
+</nodetype>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         OpenMvgGlobalSfM.xml
+  Description:  Contains the XML description of OpenCvFeatureNode.
+  Author:       Jonas Trottnow <jtrottno@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "..\..\..\nodetype.dtd">
+<nodetype name="OpenMvgGlobalSfM" category="S3D" color="171, 192, 255" plugin="OpenMvgGlobalSfM.dll">
+  <parameters>
+    <parameter  name="Calculate!" type="Command" />
+    <parameter  name="exe Location" type="Directory" visible="true" pin="in"/>
+    <parameter  name="Image Location" type="Directory" defaultValue="img_FULL" visible="true" pin="in"/>
+    <parameter  name="Matches Path" type="Directory" defaultValue="globalSFM/matches" visible="true" pin="in"/>
+	  <parameter  name="Output Path" type="Directory" defaultValue="globalSFM" visible="true" pin="out"/>
+  </parameters>
+</nodetype>

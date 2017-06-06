@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         animatablemesh.xml
+  Description:  Contains the XML description of AnimatableMesh nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="ParticleSystem" category="Geometry" color="120,70,150" plugin="particlesystem.dll">
+  <parameters>
+    <parameters name="Particle System">
+      <parameter name="Enabled" type="Bool" defaultValue="true"/>
+      <parameter name="Speak" type="Bool" defaultValue="false" selfEvaluating="true" pin="in" />
+      <parameter name="Number Of Particles" type="Int" minValue="0" maxValue="5000" defaultValue="2000"/>
+      <parameter name="Min Particle Size" type="Float" minValue="0.0" maxValue="3.00" defaultValue="0.160" stepSize="0.01" inputMethod="SliderPlusSpinBox"/>
+      <parameter name="Max Particle Size" type="Float" minValue="0.0" maxValue="3.00" defaultValue="0.280" stepSize="0.01" inputMethod="SliderPlusSpinBox"/>
+
+      <parameters name="Mesh">
+        <parameter name="Mesh Affector Enabled" type="Bool" defaultValue="true"/>
+        <parameter name="Mesh Force" type="Float" minValue="-50.0" maxValue="300.0" defaultValue="130.0" stepSize="0.1" inputMethod="SliderPlusSpinBox" selfEvaluating="true" pin="in" />
+      </parameters>
+      <parameters name="Inter Particle">
+        <parameter name="Inter Particle Affector Enabled" type="Bool" defaultValue="true"/>
+        <parameter name="Inter Particle Force" type="Float" minValue="-50.0" maxValue="50.0" defaultValue="0.2" stepSize="0.05" inputMethod="SliderPlusSpinBox" selfEvaluating="true" pin="in" />
+      </parameters>
+      <parameters name="Mouth Affector">
+        <parameter name="Mouth Affector Enabled" type="Bool" defaultValue="true"/>
+        <parameter name="Mouth Force" type="Float" minValue="-20.0" maxValue="200.0" defaultValue="50.0" stepSize="0.01" inputMethod="SliderPlusSpinBox" selfEvaluating="true" pin="in" />
+      </parameters>
+      <parameters name="Mouth Emitter">
+        <parameter name="Mouth Emitter Enabled" type="Bool" defaultValue="false"/>
+        <parameter name="Initial Particle Speed" type="Float" minValue="0.0" maxValue="20.00" defaultValue="10.00" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+      </parameters>
+      <parameters name="Eye Affectors">
+        <parameter name="Right Eye Enabled" type="Bool" defaultValue="true"/>
+        <parameter name="Right Eye Force" type="Float" minValue="0.0" maxValue="20.00" defaultValue="9.00" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+        <parameter name="Left Eye Enabled" type="Bool" defaultValue="true"/>
+        <parameter name="Left Eye Force" type="Float" minValue="0.0" maxValue="20.00" defaultValue="9.00" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+      </parameters>
+      <parameters name="Axis Affectors">
+        <parameter name="Axis Right Eye Enabled" type="Bool" defaultValue="false"/>
+        <parameter name="Axis Right Eye Force" type="Float" minValue="0.0" maxValue="20.00" defaultValue="7.60" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+        <parameter name="Axis Left Eye Enabled" type="Bool" defaultValue="false"/>
+        <parameter name="Axis Left Eye Force" type="Float" minValue="0.0" maxValue="20.00" defaultValue="7.60" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+        <parameter name="Axis Mouth Strength" type="Float" minValue="0.0" maxValue="20.00" defaultValue="2.00" stepSize="0.1" inputMethod="SliderPlusSpinBox"/>
+      </parameters>
+    </parameters>
+  </parameters>
+</nodetype>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         camera.xml
+  Description:  Contains the XML description of Camera nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Camera" category="Cameras" color="109, 158, 255" plugin="camera.dll">
+  <parameters>
+    <parameters name="Transformation">
+      <parameter name="Position" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="0.25" pin="in" selfEvaluating="true"/>
+      <parameter name="Orientation" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-360" maxValue="360" defaultValue="0, 0, 0" pin="in" selfEvaluating="true"/>
+      <parameter name="OrientationQ" type="Float" size="4" minValue="-1" maxValue="1" defaultValue="0, 0, 0, 0" pin="in" selfEvaluating="true"/>
+      <parameter name="useRadians" type="Bool" defaultValue="false"/>
+    </parameters>
+    <parameters name="Render Resolution">
+      <parameter name="Preset" type="Enumeration" defaultValue="HDTV 720">
+        <literal name="Custom"/>
+        <literal name="Canvas"/>
+        <separator/>
+        <literal name="HDTV 720" value="1280 x 720"/>
+        <literal name="HDV 1080 (1.33)" value="1440 x 1080"/>
+        <literal name="HDTV 1080" value="1920 x 1080"/>
+        <separator/>
+        <literal name="NTSC D1 (0.9)" value="720 x 486"/>
+        <literal name="NTSC D1" value="720 x 540"/>
+        <literal name="PAL D1/DV (1.07)" value="720 x 576"/>
+        <literal name="PAL D1/DV" value="768 x 576"/>
+        <literal name="PAL D1/DV Widescreen" value="1024 x 576"/>
+        <separator/>
+        <literal name="2K Academy" value="1828 x 1332"/>
+        <literal name="2K Scope" value="1828 x 1556"/>
+        <literal name="2K Full Aperture" value="2048 x 1556"/>
+        <literal name="2K Vista" value="3072 x 2048"/>
+        <separator/>
+        <literal name="4K Academy" value="3656 x 2664"/>
+        <literal name="4K Scope" value="3656 x 3112"/>
+        <literal name="4K Full Aperture" value="4096 x 3112"/>
+        <literal name="4K Vista" value="6144 x 4096"/>
+        <separator/>
+        <literal name="QVGA" value="320 x 240"/>
+        <literal name="VGA" value="640 x 480"/>
+        <literal name="SVGA" value="800 x 600"/>
+        <literal name="XGA" value="1024 x 768"/>
+        <literal name="SXGA" value="1280 x 1024"/>
+        <literal name="UXGA" value="1600 x 1200"/>
+        <literal name="QXGA" value="2048 x 1536"/>
+        <separator/>
+        <literal name="iPhone" value="320 x 480"/>
+      </parameter>
+      <parameter name="Keep Aspect Ratio" type="Bool" defaultValue="true"/>
+      <parameter name="Render Width" type="UnsignedInt" defaultValue="1280" minValue="320" maxValue="6144"/>
+      <parameter name="Render Height" type="UnsignedInt" defaultValue="720" minValue="240" maxValue="6144"/>
+      <parameter name="Aspect Ratio" type="TextInfo"/>
+    </parameters>
+    <parameters name="Frustum">
+		<parameter name="Focal Length" type="Float" defaultValue="50.0" pin="out"/>
+		<parameter name="Field of View" type="Float" defaultValue="40.0" minValue="0" maxValue="179,99" pin="out"/>
+		<parameter name="Horizontal Aperture" type="Float" defaultValue="20.0" pin="out"/>
+		<parameter name="Near Clipping Plane" type="Float" defaultValue="0.1" minValue="0.001" maxValue="100.0" stepSize="0.01" pin="out"/>
+		<parameter name="Far Clipping Plane" type="Float" defaultValue="300.0" minValue="1.0" maxValue="1000.0" stepSize="0.1" pin="out"/>
+		<parameter name="Screen Space Projection Matix(4x4)" type="Float" size="16" defaultValue="1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0" visible="false" pin="out" />
+		<parameter name="World Matix(4x4)" type="Float" size="16" defaultValue="1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0" visible="false" pin="out" />
+		<parameter name="Far Corner" type="Float" size="3" minValue="0.0" maxValue="1000.0" defaultValue="115.26, 64.84, 0.0" visible="false" pin="out"/>
+	</parameters>
+	<parameters name="Orbit">
+    <parameter name="lookAtEnabled"  type="Bool"  defaultValue="false"/>
+    <parameter name="Radius"         type="Float" minValue="1"    maxValue="1000" defaultValue="1" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Azimuth angle"  type="Float" minValue="-180" maxValue="180" defaultValue="60" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Zenith angle"   type="Float" minValue="-180" maxValue="180" defaultValue="45" inputMethod="SliderPlusSpinBox"/>
+    <parameter name="Target Position"    type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-1000" maxValue="1000" defaultValue="0, 0, 0" stepSize="0.25" pin="in" selfEvaluating="true"/>
+    <parameter name="Target Orientation" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-1000" maxValue="1000" defaultValue="0, 0, 0" stepSize="0.25" pin="in" selfEvaluating="true"/>
+  </parameters>
+  </parameters>
+</nodetype>

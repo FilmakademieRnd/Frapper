@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema xmlns="http://tempuri.org/nodetype" elementFormDefault="qualified" targetNamespace="http://tempuri.org/nodetype" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="nodetype">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="parameter" />
+        <xs:element ref="parameters" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="category" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Animation" />
+            <xs:enumeration value="Cameras" />
+            <xs:enumeration value="Character" />
+            <xs:enumeration value="Compositing" />
+            <xs:enumeration value="Geometry" />
+            <xs:enumeration value="Images" />
+            <xs:enumeration value="Input" />
+            <xs:enumeration value="Lights" />
+            <xs:enumeration value="Network" />
+            <xs:enumeration value="Rendering" />
+            <xs:enumeration value="Shading" />
+            <xs:enumeration value="Tracking" />
+            <xs:enumeration value="Utility" />
+            <xs:enumeration value="S3D" />
+            <xs:enumeration value="Solver" />
+            <xs:enumeration value="rtSolver" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="color" type="xs:string" use="required" />
+      <xs:attribute name="plugin" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="literal" />
+        <xs:element ref="separator" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Bool" />
+            <xs:enumeration value="Int" />
+            <xs:enumeration value="UnsignedInt" />
+            <xs:enumeration value="Float" />
+            <xs:enumeration value="String" />
+            <xs:enumeration value="Filename" />
+            <xs:enumeration value="Color" />
+            <xs:enumeration value="Enumeration" />
+            <xs:enumeration value="TextInfo" />
+            <xs:enumeration value="Command" />
+            <xs:enumeration value="Geometry" />
+            <xs:enumeration value="Light" />
+            <xs:enumeration value="Camera" />
+            <xs:enumeration value="Image" />
+            <xs:enumeration value="Group" />
+            <xs:enumeration value="PlugIn" />
+            <xs:enumeration value="Generic" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="size">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="false" />
+            <xs:enumeration value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="multiplicity" type="xs:string" />
+      <xs:attribute name="defaultValue" type="xs:string" />
+      <xs:attribute name="visible">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="false" />
+            <xs:enumeration value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="enabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="false" />
+            <xs:enumeration value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="readOnly">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="false" />
+            <xs:enumeration value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="selfEvaluating">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="false" />
+            <xs:enumeration value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="affects" type="xs:string" />
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="unit" type="xs:string" />
+      <xs:attribute name="pin">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="in" />
+            <xs:enumeration value="out" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="inputMethod">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="SpinBox" />
+            <xs:enumeration value="SliderPlusSpinBox" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="minValue" type="xs:string" />
+      <xs:attribute name="maxValue" type="xs:string" />
+      <xs:attribute name="stepSize" type="xs:string" />
+      <xs:attribute name="filter" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="literal">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameters">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="parameter" />
+        <xs:element ref="parameters" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="enabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="separator">
+    <xs:complexType />
+  </xs:element>
+</xs:schema>

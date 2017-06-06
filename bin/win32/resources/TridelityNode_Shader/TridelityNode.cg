@@ -1,0 +1,92 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/**************************************************************************************
+**                                                                                   **
+**                                       TridelityShader_ps                          **
+**                                                                                   **
+***************************************************************************************/
+
+void TridelityShader_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 oColor : COLOR,
+ 			  uniform int screen_type,
+			  uniform sampler2D inputMap0 : TEXUNIT0,
+			  uniform sampler2D inputMap1 : TEXUNIT1,
+			  uniform sampler2D inputMap2 : TEXUNIT2,
+			  uniform sampler2D inputMap3 : TEXUNIT3,
+			  uniform sampler2D inputMap4 : TEXUNIT4,
+			  uniform sampler2D lookupTex : TEXUNIT5 )
+{
+	float4 output = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	// Determine the view for the idx sub-pixel
+	int idx = tex2D( lookupTex, texCoord).x;
+
+	if( screen_type == 0 ) {
+		if (idx == 0 ) {
+			output.r = tex2D( inputMap0, texCoord).r;
+			output.g = tex2D( inputMap4, texCoord).g;
+			output.b = tex2D( inputMap3, texCoord).b;
+		} else if (idx == 1) {
+			output.r = tex2D( inputMap1, texCoord).r;
+			output.g = tex2D( inputMap0, texCoord).g;
+			output.b = tex2D( inputMap4, texCoord).b;
+		} else if (idx == 2) {
+			output.r = tex2D( inputMap2, texCoord).r;
+			output.g = tex2D( inputMap1, texCoord).g;
+			output.b = tex2D( inputMap0, texCoord).b;
+		} else if (idx == 3) {
+			output.r = tex2D( inputMap3, texCoord).r;
+			output.g = tex2D( inputMap2, texCoord).g;
+			output.b = tex2D( inputMap1, texCoord).b;
+		} else if (idx == 4) {
+			output.r = tex2D( inputMap4, texCoord).r;
+			output.g = tex2D( inputMap3, texCoord).g;
+			output.b = tex2D( inputMap2, texCoord).b;
+		}
+	} else /* if( screen_type == 1 ) */ {
+		if (idx == 0 ) {
+			output.r = tex2D( inputMap0, texCoord).r;
+			output.g = tex2D( inputMap1, texCoord).g;
+			output.b = tex2D( inputMap2, texCoord).b;
+		} else if (idx == 4) {
+			output.r = tex2D( inputMap1, texCoord).r;
+			output.g = tex2D( inputMap2, texCoord).g;
+			output.b = tex2D( inputMap3, texCoord).b;
+		} else if (idx == 3) {
+			output.r = tex2D( inputMap2, texCoord).r;
+			output.g = tex2D( inputMap3, texCoord).g;
+			output.b = tex2D( inputMap4, texCoord).b;
+		} else if (idx == 2) {
+			output.r = tex2D( inputMap3, texCoord).r;
+			output.g = tex2D( inputMap4, texCoord).g;
+			output.b = tex2D( inputMap0, texCoord).b;
+		} else if (idx == 1) {
+			output.r = tex2D( inputMap4, texCoord).r;
+			output.g = tex2D( inputMap0, texCoord).g;
+			output.b = tex2D( inputMap1, texCoord).b;
+		}
+	}
+	oColor = float4( output.rgb, 1.0f );
+}
+

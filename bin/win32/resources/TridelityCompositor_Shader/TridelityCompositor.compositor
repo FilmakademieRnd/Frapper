@@ -1,0 +1,164 @@
+compositor TridelityCompositorMV
+{
+	technique
+    {
+		texture rt_view0 target_width target_height PF_A8R8G8B8
+		texture rt_view1 target_width target_height PF_A8R8G8B8
+		texture rt_view2 target_width target_height PF_A8R8G8B8
+		texture rt_view3 target_width target_height PF_A8R8G8B8
+		texture rt_view4 target_width target_height PF_A8R8G8B8
+
+		target rt_view0
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass0
+			}
+		}
+
+		target rt_view1
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass1
+			}
+		}
+
+		target rt_view2
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass2
+			}
+		}
+
+		target rt_view3
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass3
+			}
+		}
+
+		target rt_view4
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass4
+			}
+		}
+
+        target_output
+        {
+            input none
+            pass render_quad
+            {
+				identifier 0
+				material TridelityCompositor/TridelityCompositorMVMaterial
+				input 0 rt_view0
+            	input 1 rt_view1
+            	input 2 rt_view2
+				input 3 rt_view3
+				input 4 rt_view4
+            }
+        }
+    }
+}
+
+compositor TridelityCompositorML
+{
+	technique
+    {
+		texture rt_view0 target_width target_height PF_A8R8G8B8
+		texture rt_view1 target_width target_height PF_A8R8G8B8
+		texture rt_view2 target_width target_height PF_A8R8G8B8
+		texture rt_view3 target_width target_height PF_A8R8G8B8
+		texture rt_view4 target_width target_height PF_A8R8G8B8
+
+		target rt_view0
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass0
+			}
+		}
+
+		target rt_view1
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass1
+			}
+		}
+
+		target rt_view2
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass2
+			}
+		}
+
+		target rt_view3
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass3
+			}
+		}
+
+		target rt_view4
+		{
+			// original scene
+			input none
+			pass render_quad
+			{
+				// Renders a fullscreen quad with a material
+				material TridelityCompositor/ScenePass4
+			}
+		}
+
+        target_output
+        {
+            input none
+            pass render_quad
+            {
+				identifier 0
+				material TridelityCompositor/TridelityCompositorMLMaterial
+				input 0 rt_view0
+            	input 1 rt_view1
+            	input 2 rt_view2
+				input 3 rt_view3
+				input 4 rt_view4
+            }
+        }
+    }
+}
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         universalGraph.xml
+  Description:  Contains the XML description of ParameterPanel Plugin Panel.
+  Author:       Sebastian Bach <s.bach@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Wuerttemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the paneltype.dtd file.
+-->
+
+  <!DOCTYPE widgetype SYSTEM "widgettype.dtd">
+  <widgettype name="universalGraph" plugin="universalGraph.dll" call="T_universalGraph">
+</widgettype>

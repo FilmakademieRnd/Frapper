@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+	<asset>
+		<contributor>
+			<authoring_tool>Filmakademie Application Framework</authoring_tool>
+		</contributor>
+		<created>2011-11-22T11:09:22Z</created>
+		<modified>2011-11-22T11:09:22Z</modified>
+		<unit meter="0.01"/>
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="advancedRenderer">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AdvancedRenderer" position="-32 -136" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="simpleBlend">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="SimpleBlend" position="162 -164" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Output Pixel Format" value="1" state="true"/>
+								<frapper_parameter name="Operator" value="1" state="true"/>
+								<frapper_parameter name="Linear Blend Factor" value="56" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="hairRendererAlpha">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="HairRendererAlpha" position="-29 -10" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Light Definition"/>
+								<frapper_parameter name="Light Description File" value="scenes/Lightwarping/City_1.txt" state="true"/>
+								<frapper_parameter name="Light Scale Pos" value="71.1" state="true"/>
+								<frapper_parameter name="lightPower" value="0.21" state="true"/>
+								<frapper_parameter name="Number of Lights" value="5" state="true"/>
+								<frapper_group name="Shadow Parameters"/>
+								<frapper_parameter name="vsmEpsilon" value="0.4516" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="camera">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Camera" position="-179 67" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Transformation"/>
+								<frapper_group name="Render Resolution"/>
+								<frapper_parameter name="Keep Aspect Ratio" value="false" state="true"/>
+								<frapper_parameter name="Render Width" value="500" state="true"/>
+								<frapper_parameter name="Render Height" value="800" state="true"/>
+								<frapper_group name="Frustum"/>
+								<frapper_group name="Orbit"/>
+								<frapper_parameter name="Target Point" value="0.589492 18.7368 -8.3974" state="true"/>
+								<frapper_parameter name="Radius" value="50.111686706543" state="true"/>
+								<frapper_parameter name="Azimuth angle" value="84.3059692382812" state="true"/>
+								<frapper_parameter name="Zenith angle" value="91.2322845458984" state="true"/>
+								<frapper_group name="LookAt Constraint"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="bloom">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Bloom" position="400 -70" stageIndex="1" isViewed="1">
+							<frapper_parameters>
+								<frapper_group name="Input Maps"/>
+								<frapper_group name="Shader Parameters Pass 0"/>
+								<frapper_parameter name="BlurWeight" value="0.089" state="true"/>
+								<frapper_parameter name="BlurWidth" value="0.55" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="hairSingleScatterRender">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="HairSingleScatterRender" position="-32 -233" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Shader Parameters"/>
+								<frapper_parameter name="hairRootWidth" value="0.07" state="true"/>
+								<frapper_parameter name="hairTipWidth" value="0.005" state="true"/>
+								<frapper_group name="Light Definition"/>
+								<frapper_parameter name="Light Description File" value="scenes/Lightwarping/City_1.txt" state="true"/>
+								<frapper_parameter name="Light Scale Pos" value="26.6" state="true"/>
+								<frapper_parameter name="Number of Lights" value="4" state="true"/>
+								<frapper_group name="Shadow Parameters"/>
+								<frapper_parameter name="sampleRadius" value="2" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="skin">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Skin" position="288 -67" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_group name="Input Maps"/>
+								<frapper_group name="Shader Parameters Pass 0"/>
+								<frapper_parameter name="sssWidth" value="2.3" state="true"/>
+								<frapper_parameter name="correction" value="114" state="true"/>
+								<frapper_group name="Cache"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animatableMesh2">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="-372 -113" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Nikita/Nikita.mesh" state="true"/>
+								<frapper_parameter name="Light Description File" value="scenes/Lightwarping/City_2.txt" state="true"/>
+								<frapper_parameter name="manual" value="true" state="true"/>
+								<frapper_parameter name="autoPose" value="false" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Skeletal Animation Weights"/>
+								<frapper_group name="Pose Animations"/>
+								<frapper_group name="Pose Animation Weights"/>
+								<frapper_group name="Bone Parameter"/>
+								<frapper_group name="Material Parameter"/>
+								<frapper_group name="Nikita_Brows"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Nikita_Hair_FS"/>
+								<frapper_group name="VP: Nikita_Hair_VS_HW3b"/>
+								<frapper_group name="Nikita_Face_Wrinkles"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Nikita_Face_IBL_SaC_FS_VB_BRDF"/>
+								<frapper_parameter name="RimLightFactor@Nikita_Face_Wrinkles" value="3.2" state="true"/>
+								<frapper_parameter name="RimLightPower@Nikita_Face_Wrinkles" value="0.03" state="true"/>
+								<frapper_parameter name="SaCColor@Nikita_Face_Wrinkles" value="0" state="true"/>
+								<frapper_parameter name="brdf_envsize@Nikita_Face_Wrinkles" value="200" state="true"/>
+								<frapper_parameter name="brdf_exponent@Nikita_Face_Wrinkles" value="1.4" state="true"/>
+								<frapper_parameter name="brdf_lightscale@Nikita_Face_Wrinkles" value="9" state="true"/>
+								<frapper_parameter name="specPower@Nikita_Face_Wrinkles" value="0.38" state="true"/>
+								<frapper_group name="VP: HW_Skinning_VS_82b_4i_5CBS_SaC_VB"/>
+								<frapper_group name="Nikita_Lashes"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="FP: ppLightFP_noTex"/>
+								<frapper_group name="VP: ppLightVP_HW5b"/>
+								<frapper_group name="Nikita_Tongue"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_FS_BRDF"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="Nikita_Jaw"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_FS_BRDF"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Nikita_Pullover"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_FS_BRDF"/>
+								<frapper_group name="VP: HW_Skinning_VS_13b_4i"/>
+								<frapper_group name="Nikita_Jacke"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_FS_BRDF"/>
+								<frapper_group name="VP: HW_Skinning_VS_13b_4i"/>
+								<frapper_group name="Nikita_Shirt"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_FS_BRDF"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="RightEye"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Eyes_AD_FS"/>
+								<frapper_parameter name="brdf_envsize@RightEye" value="22000" state="true"/>
+								<frapper_parameter name="brdf_exponent@RightEye" value="2.8" state="true"/>
+								<frapper_parameter name="brdf_fresnel@RightEye" value="0.15" state="true"/>
+								<frapper_parameter name="brdf_fresnelCornea@RightEye" value="0.15" state="true"/>
+								<frapper_parameter name="diffPower@RightEye" value="1" state="true"/>
+								<frapper_parameter name="gazeDirection@RightEye" value="#7f7f7f" state="true"/>
+								<frapper_parameter name="occlusionMoveY@RightEye" value="3.87398e-05" state="true"/>
+								<frapper_parameter name="occlusionStretchY@RightEye" value="1.1001" state="true"/>
+								<frapper_group name="VP: Eyes_AD_VS"/>
+								<frapper_group name="LeftEye"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Eyes_AD_FS"/>
+								<frapper_parameter name="brdf_envsize@LeftEye" value="22000" state="true"/>
+								<frapper_parameter name="diffPower@LeftEye" value="1" state="true"/>
+								<frapper_parameter name="gazeDirection@LeftEye" value="#7f7f7f" state="true"/>
+								<frapper_parameter name="occlusionMoveY@LeftEye" value="0.00999233" state="true"/>
+								<frapper_parameter name="occlusionStretchY@LeftEye" value="1.17498" state="true"/>
+								<frapper_group name="VP: Eyes_AD_VS"/>
+								<frapper_group name="Nikita_MainHair"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Nikita_Hair_FS_AD"/>
+								<frapper_group name="VP: Nikita_Hair_VS_HW1b"/>
+								<frapper_group name="Object Id Parameter"/>
+								<frapper_parameter name="HairStripShapeDeformed" value="15" state="true"/>
+								<frapper_parameter name="subdTessShape43" value="10" state="true"/>
+								<frapper_parameter name="Left_EyeShape" value="14" state="true"/>
+								<frapper_parameter name="LowerTeethMeshShape" value="8" state="true"/>
+								<frapper_parameter name="JackeShape" value="11" state="true"/>
+								<frapper_parameter name="LeftBrowShape" value="1" state="true"/>
+								<frapper_parameter name="RightUpperLashesShape" value="5" state="true"/>
+								<frapper_parameter name="LeftUpperLashesShape" value="3" state="true"/>
+								<frapper_parameter name="UpperTeethShape" value="9" state="true"/>
+								<frapper_parameter name="LeftLowerLashesShape" value="4" state="true"/>
+								<frapper_parameter name="Right_EyeShape" value="13" state="true"/>
+								<frapper_parameter name="BaseMeshShape" value="2" state="true"/>
+								<frapper_parameter name="RightLowerLashesShape" value="6" state="true"/>
+								<frapper_parameter name="TongueShape" value="7" state="true"/>
+								<frapper_parameter name="subdTessShape42" value="12" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="transform">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Transform" position="-203 -206" stageIndex="1" isViewed="0">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<extra>
+				<technique profile="frapper">
+					<frapper_connection sourceNode="animatableMesh2" sourceParameter="Mesh" targetNode="advancedRenderer" targetParameter="Geometry to Render"/>
+					<frapper_connection sourceNode="animatableMesh2" sourceParameter="Mesh" targetNode="transform" targetParameter="Geometry to Transform"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Camera" targetNode="hairRendererAlpha" targetParameter="Camera"/>
+					<frapper_connection sourceNode="hairSingleScatterRender" sourceParameter="Image" targetNode="simpleBlend" targetParameter="Input Map One"/>
+					<frapper_connection sourceNode="animatableMesh2" sourceParameter="Mesh" targetNode="hairRendererAlpha" targetParameter="Geometry to Render"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Camera" targetNode="advancedRenderer" targetParameter="Camera"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Object Id Map" targetNode="skin" targetParameter="Input Map IDs"/>
+					<frapper_connection sourceNode="camera" sourceParameter="Camera" targetNode="hairSingleScatterRender" targetParameter="Camera"/>
+					<frapper_connection sourceNode="simpleBlend" sourceParameter="Image" targetNode="skin" targetParameter="Input Map Scene"/>
+					<frapper_connection sourceNode="skin" sourceParameter="Image" targetNode="bloom" targetParameter="Input Map Scene"/>
+					<frapper_connection sourceNode="hairRendererAlpha" sourceParameter="Image" targetNode="simpleBlend" targetParameter="Input Map Two"/>
+					<frapper_connection sourceNode="transform" sourceParameter="Transformed Geometry" targetNode="hairSingleScatterRender" targetParameter="Geometry to Render"/>
+					<frapper_connection sourceNode="advancedRenderer" sourceParameter="Depth Map" targetNode="skin" targetParameter="Input Map Depth"/>
+				</technique>
+			</extra>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode"/>
+		<extra>
+			<technique profile="frapper">
+				<timeline frame="1" frameIn="1" frameOut="450" frameRangeIn="1" frameRangeOut="450" fps="20"/>
+			</technique>
+		</extra>
+	</scene>
+</COLLADA>

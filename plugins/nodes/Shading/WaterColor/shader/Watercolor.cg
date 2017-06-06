@@ -1,0 +1,42 @@
+/**************************************************************************************
+**                                                                                   **
+**                                    quad_vs										 **
+**                                                                                   **
+***************************************************************************************/
+
+void quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+/**************************************************************************************
+**                                                                                   **
+**                                       watercolor_ps                               **
+**                                                                                   **
+***************************************************************************************/
+
+void Watercolor_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 oColor : COLOR,
+			  uniform float focalPlane,
+			  uniform float radius,
+			  uniform sampler2D inputMap0 : TEXUNIT0,
+			  uniform sampler2D inputMap1 : TEXUNIT1,
+			  uniform sampler2D inputMap2 : TEXUNIT2)
+{
+	const float4 fragColor = tex2D(inputMap0, texCoord);
+	const float4 fragBlur = tex2D(inputMap1, texCoord);
+	const float fragDepth = tex2D(inputMap2, texCoord).r;
+	const float offFocus = clamp(abs(fragDepth - focalPlane) / radius, 0.0, 1.0);
+	oColor = lerp(fragColor, fragBlur, offFocus);
+}

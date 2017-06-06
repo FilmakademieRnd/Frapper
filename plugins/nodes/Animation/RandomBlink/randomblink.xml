@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         randomblink.xml
+  Description:  Contains the XML description of RandomBlink nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="RandomBlink" category="Animation" color="250,100,50" plugin="randomblink.dll">
+  <parameters>   
+    <parameter name="stepsize" type="Float" defaultValue="20"/>
+    <parameter name="freq" type="Int" defaultValue="200" minValue="1" maxValue="100000"/>
+    <parameter name="amplitude" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" stepSize="0.1" defaultValue="1.0"/>
+    <parameter name="amplitudeRandomFactor" type="Float" defaultValue="0.0" minValue="0.0" maxValue="1.0" stepSize="0.1"/>
+	  <parameter name="weight" type="Float" defaultValue="1.0" minValue="0.0" maxValue="1.0" multiplicity="1" pin="in"/>
+	  <parameter name="progress" type="Float" defaultValue="0.0" minValue="0.0" maxValue="100.0" pin="out"/>
+    <parameter name="fire" type="Bool" pin="out" visible="false" defaultValue="false"/>
+  </parameters>	
+</nodetype>

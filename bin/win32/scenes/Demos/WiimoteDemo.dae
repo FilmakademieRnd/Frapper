@@ -1,0 +1,1033 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+	<asset>
+		<contributor>
+			<authoring_tool>Filmakademie Application Framework</authoring_tool>
+		</contributor>
+		<created>2011-11-22T11:33:15Z</created>
+		<modified>2011-11-22T11:33:15Z</modified>
+		<unit meter="0.01"/>
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="wiimote">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Wiimote" position="-196.018 217.344">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="hank">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="465.966 228.778" stageIndex="1" isViewed="1">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Hank/Hank.mesh" state="true"/>
+								<frapper_parameter name="useSaC" value="false" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Skeletal Animation Weights"/>
+								<frapper_group name="Pose Animations"/>
+								<frapper_group name="Pose Animation Weights"/>
+								<frapper_group name="Bone Parameter"/>
+								<frapper_group name="Material Parameter"/>
+								<frapper_group name="Hank_Eyes"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Eyes_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_EyesGlass"/>
+								<frapper_group name="Pass: Hank_EyesGlass_Pass"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hank_EyesGlass_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_JawU"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_generic"/>
+								<frapper_group name="Hank_JawL"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="Hank_Brows"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i_Brows"/>
+								<frapper_group name="Hank_Whiskers"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_3b_3i_Whiskers"/>
+								<frapper_group name="Hank_Hair"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Hair_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_1b_1i_Hair"/>
+								<frapper_group name="Hank_Lashes"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="VP: HW_Skinning_VS_5b_3i_Lashes"/>
+								<frapper_group name="Hank_Face"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Face_IBL_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_82b_4i_5CBS"/>
+								<frapper_group name="Hank_Shirt"/>
+								<frapper_group name="Pass: 0"/>
+								<frapper_group name="Reload Textures:"/>
+								<frapper_group name="FP: Generic_ColOccBmp_FS"/>
+								<frapper_group name="VP: HW_Skinning_VS_10b_4i"/>
+								<frapper_group name="Object Id Parameter"/>
+								<frapper_parameter name="BrowsShape" value="7" state="true"/>
+								<frapper_parameter name="LULid1Shape" value="14" state="true"/>
+								<frapper_parameter name="R_Eye_GlasShape" value="1" state="true"/>
+								<frapper_parameter name="TopHair2Shape" value="11" state="true"/>
+								<frapper_parameter name="L_Eye_GlasShape" value="3" state="true"/>
+								<frapper_parameter name="TopHair3Shape" value="10" state="true"/>
+								<frapper_parameter name="UnterkieferShape" value="6" state="true"/>
+								<frapper_parameter name="Whisker_RShape" value="9" state="true"/>
+								<frapper_parameter name="Hank_HRShape" value="17" state="true"/>
+								<frapper_parameter name="RULid1Shape" value="16" state="true"/>
+								<frapper_parameter name="Shirt_HR_mesh" value="18" state="true"/>
+								<frapper_parameter name="LLLid1Shape" value="13" state="true"/>
+								<frapper_parameter name="OberkieferShape" value="4" state="true"/>
+								<frapper_parameter name="TopHair1Shape" value="12" state="true"/>
+								<frapper_parameter name="Whisker_LShape" value="8" state="true"/>
+								<frapper_parameter name="RLidShape" value="15" state="true"/>
+								<frapper_parameter name="L_EyeShape" value="2" state="true"/>
+								<frapper_parameter name="TongueShape" value="5" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode1">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 200">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Anger_Strong_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="7" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode2">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 300">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Anger_Weak_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="7.3" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode3">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 400">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Joy_Weak_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="8" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode4">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 500">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Surprise_Strong_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="7.4" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode5">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 600">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Sadness_Strong_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="7" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode6">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 700">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Sadness_Weak_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="8" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="animationClipNode7">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 800">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Fear_Weak_V1.anim" state="true"/>
+								<frapper_parameter name="length" value="7.4" state="true"/>
+								<frapper_parameter name="start" value="0" state="true"/>
+								<frapper_group name="Skeletal Animations"/>
+								<frapper_group name="Bone Animations"/>
+								<frapper_group name="Camera Animations"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<extra>
+				<technique profile="frapper">
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="joint_LowerJaw" targetNode="hank" targetParameter="joint_LowerJaw"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="joint_UpperJaw" targetNode="hank" targetParameter="joint_UpperJaw"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonOne" targetNode="animationClipNode7" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonA" targetNode="animationClipNode1" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonB" targetNode="animationClipNode2" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="joint_UpperJaw" targetNode="hank" targetParameter="joint_UpperJaw"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="GazeVDown" targetNode="hank" targetParameter="GazeVDown"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="GazeVDown" targetNode="hank" targetParameter="GazeVDown"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonDown" targetNode="animationClipNode4" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="LShoulderEnd" targetNode="hank" targetParameter="LShoulderEnd"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="Spine_2" targetNode="hank" targetParameter="Spine_2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="LShoulderEnd" targetNode="hank" targetParameter="LShoulderEnd"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode3" sourceParameter="Spine_2" targetNode="hank" targetParameter="Spine_2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="GazeVDown" targetNode="hank" targetParameter="GazeVDown"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonLeft" targetNode="animationClipNode5" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode7" sourceParameter="joint_UpperJaw" targetNode="hank" targetParameter="joint_UpperJaw"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="RightLowerLidClose" targetNode="hank" targetParameter="RightLowerLidClose"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="RightLowerLidOpen" targetNode="hank" targetParameter="RightLowerLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="RightUpperLidClose" targetNode="hank" targetParameter="RightUpperLidClose"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="RightUpperLidOpen" targetNode="hank" targetParameter="RightUpperLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="LShoulderEnd" targetNode="hank" targetParameter="LShoulderEnd"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode4" sourceParameter="Spine_2" targetNode="hank" targetParameter="Spine_2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="GazeVDown" targetNode="hank" targetParameter="GazeVDown"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Blink_AU45" targetNode="hank" targetParameter="L_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LeftLowerLidClose" targetNode="hank" targetParameter="LeftLowerLidClose"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonRight" targetNode="animationClipNode6" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LeftLowerLidOpen" targetNode="hank" targetParameter="LeftLowerLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LeftUpperLidClose" targetNode="hank" targetParameter="LeftUpperLidClose"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LeftUpperLidOpen" targetNode="hank" targetParameter="LeftUpperLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="BrowU_RAU1_2" targetNode="hank" targetParameter="BrowU_RAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Blink_AU45" targetNode="hank" targetParameter="R_Blink_AU45"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="DisgC" targetNode="hank" targetParameter="DisgC"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="DisgO" targetNode="hank" targetParameter="DisgO"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="C_Kiss_CAU18" targetNode="hank" targetParameter="C_Kiss_CAU18"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="F_JawTh_FAU29" targetNode="hank" targetParameter="F_JawTh_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Fear" targetNode="hank" targetParameter="Fear"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="FlatterNormal_CAU34" targetNode="hank" targetParameter="FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Frown_CAU4" targetNode="hank" targetParameter="Frown_CAU4"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="GazeHLeft" targetNode="hank" targetParameter="GazeHLeft"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="GazeHRight" targetNode="hank" targetParameter="GazeHRight"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="GazeVUp" targetNode="hank" targetParameter="GazeVUp"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="IBrowU_CAU1" targetNode="hank" targetParameter="IBrowU_CAU1"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="JawO_CAU2627" targetNode="hank" targetParameter="JawO_CAU2627"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="JawUp_CAU17" targetNode="hank" targetParameter="JawUp_CAU17"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="ChkU_CAU6" targetNode="hank" targetParameter="ChkU_CAU6"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="JoyC" targetNode="hank" targetParameter="JoyC"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="JoyO" targetNode="hank" targetParameter="JoyO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LLipD_CAU16" targetNode="hank" targetParameter="LLipD_CAU16"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_ChkU_LAU6" targetNode="hank" targetParameter="L_ChkU_LAU6"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_CorD_LAU15" targetNode="hank" targetParameter="L_CorD_LAU15"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_Dimpl_LAU14" targetNode="hank" targetParameter="L_Dimpl_LAU14"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_EyeSq_LAU743" targetNode="hank" targetParameter="L_EyeSq_LAU743"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_Frown_LAU4" targetNode="hank" targetParameter="L_Frown_LAU4"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_JawSdO_LAU30" targetNode="hank" targetParameter="L_JawSdO_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_JawSd_LAU30" targetNode="hank" targetParameter="L_JawSd_LAU30"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="CorD_CAU15" targetNode="hank" targetParameter="CorD_CAU15"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_LLipD_LAU16" targetNode="hank" targetParameter="L_LLipD_LAU16"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_LidT_LAU7" targetNode="hank" targetParameter="L_LidT_LAU7"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_LipSt_LAU20" targetNode="hank" targetParameter="L_LipSt_LAU20"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_LipsU_LAU10" targetNode="hank" targetParameter="L_LipsU_LAU10"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_NosF_LAU11" targetNode="hank" targetParameter="L_NosF_LAU11"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_NosW_LAU9" targetNode="hank" targetParameter="L_NosW_LAU9"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_OBrowU_LAU2" targetNode="hank" targetParameter="L_OBrowU_LAU2"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_OSmil_LAU1225" targetNode="hank" targetParameter="L_OSmil_LAU1225"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_Smile_LAU12" targetNode="hank" targetParameter="L_Smile_LAU12"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_Smirk_LAU13" targetNode="hank" targetParameter="L_Smirk_LAU13"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="D_LipFn_DAU22" targetNode="hank" targetParameter="D_LipFn_DAU22"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_Tong_LAU36" targetNode="hank" targetParameter="L_Tong_LAU36"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="L_ULipU_LAU1025" targetNode="hank" targetParameter="L_ULipU_LAU1025"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LeftLowerLidClose" targetNode="hank" targetParameter="LeftLowerLidClose"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LeftLowerLidOpen" targetNode="hank" targetParameter="LeftLowerLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LeftUpperLidClose" targetNode="hank" targetParameter="LeftUpperLidClose"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LeftUpperLidOpen" targetNode="hank" targetParameter="LeftUpperLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LidT_CAU7" targetNode="hank" targetParameter="LidT_CAU7"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipFn_CAU22" targetNode="hank" targetParameter="LipFn_CAU22"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="D_LipP_DAU24" targetNode="hank" targetParameter="D_LipP_DAU24"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipTi_CAU23" targetNode="hank" targetParameter="LipTi_CAU23"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="LipsU_CAU10" targetNode="hank" targetParameter="LipsU_CAU10"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="NosF_CAU11" targetNode="hank" targetParameter="NosF_CAU11"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="NosW_CAU9" targetNode="hank" targetParameter="NosW_CAU9"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="OSmil_CAU1225" targetNode="hank" targetParameter="OSmil_CAU1225"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_E" targetNode="hank" targetParameter="Phonem_E"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_F" targetNode="hank" targetParameter="Phonem_F"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_I" targetNode="hank" targetParameter="Phonem_I"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_M" targetNode="hank" targetParameter="Phonem_M"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="D_LipSk_DAU28" targetNode="hank" targetParameter="D_LipSk_DAU28"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_O" targetNode="hank" targetParameter="Phonem_O"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Phonem_P" targetNode="hank" targetParameter="Phonem_P"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Puff_CAU34" targetNode="hank" targetParameter="Puff_CAU34"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_ChkU_RAU6" targetNode="hank" targetParameter="R_ChkU_RAU6"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_CorD_RAU15" targetNode="hank" targetParameter="R_CorD_RAU15"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_Dimpl_RAU14" targetNode="hank" targetParameter="R_Dimpl_RAU14"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_EyeSq_RAU743" targetNode="hank" targetParameter="R_EyeSq_RAU743"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_Frown_RAU4" targetNode="hank" targetParameter="R_Frown_RAU4"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_JawSdO_RAU30" targetNode="hank" targetParameter="R_JawSdO_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_JawSd_RAU30" targetNode="hank" targetParameter="R_JawSd_RAU30"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="D_LipTi_DAU23" targetNode="hank" targetParameter="D_LipTi_DAU23"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_LLipD_RAU16" targetNode="hank" targetParameter="R_LLipD_RAU16"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_LidT_RAU7" targetNode="hank" targetParameter="R_LidT_RAU7"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_LipSt_RAU20" targetNode="hank" targetParameter="R_LipSt_RAU20"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_LipsU_RAU10" targetNode="hank" targetParameter="R_LipsU_RAU10"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_NosF_RAU11" targetNode="hank" targetParameter="R_NosF_RAU11"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_NosW_RAU9" targetNode="hank" targetParameter="R_NosW_RAU9"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_OBrowU_RAU2" targetNode="hank" targetParameter="R_OBrowU_RAU2"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_OSmil_RAU1225" targetNode="hank" targetParameter="R_OSmil_RAU1225"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_Smile_RAU12" targetNode="hank" targetParameter="R_Smile_RAU12"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipP_CAU24" targetNode="hank" targetParameter="LipP_CAU24"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_Smirk_RAU13" targetNode="hank" targetParameter="R_Smirk_RAU13"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="Dimpl_CAU14" targetNode="hank" targetParameter="Dimpl_CAU14"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_Tong_RAU36" targetNode="hank" targetParameter="R_Tong_RAU36"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="R_ULipU_RAU1025" targetNode="hank" targetParameter="R_ULipU_RAU1025"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="RightLowerLidClose" targetNode="hank" targetParameter="RightLowerLidClose"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="RightLowerLidOpen" targetNode="hank" targetParameter="RightLowerLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="RightUpperLidClose" targetNode="hank" targetParameter="RightUpperLidClose"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="RightUpperLidOpen" targetNode="hank" targetParameter="RightUpperLidOpen"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="SadBr_CAU1_4" targetNode="hank" targetParameter="SadBr_CAU1_4"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="SadC" targetNode="hank" targetParameter="SadC"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipSk_CAU28" targetNode="hank" targetParameter="LipSk_CAU28"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Collar" targetNode="hank" targetParameter="Collar"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Head" targetNode="hank" targetParameter="Head"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="SadO" targetNode="hank" targetParameter="SadO"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LShoulder" targetNode="hank" targetParameter="LShoulder"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Shrug" targetNode="hank" targetParameter="Shrug"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="LShoulderEnd" targetNode="hank" targetParameter="LShoulderEnd"/>
+					<frapper_connection sourceNode="wiimote" sourceParameter="buttonUp" targetNode="animationClipNode3" targetParameter="play"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="EyeSq_CAU743" targetNode="hank" targetParameter="EyeSq_CAU743"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Smile_CAU12" targetNode="hank" targetParameter="Smile_CAU12"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Smirk_CAU13" targetNode="hank" targetParameter="Smirk_CAU13"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Suck_CAU35" targetNode="hank" targetParameter="Suck_CAU35"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Surp" targetNode="hank" targetParameter="Surp"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="Tong_CAU36" targetNode="hank" targetParameter="Tong_CAU36"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="RShoulder" targetNode="hank" targetParameter="RShoulder"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="ULipU_CAU1025" targetNode="hank" targetParameter="ULipU_CAU1025"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Spine_1" targetNode="hank" targetParameter="Spine_1"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="Spine_2" targetNode="hank" targetParameter="Spine_2"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="LipSt_CAU20" targetNode="hank" targetParameter="LipSt_CAU20"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="joint_LowerJaw" targetNode="hank" targetParameter="joint_LowerJaw"/>
+					<frapper_connection sourceNode="animationClipNode5" sourceParameter="joint_UpperJaw" targetNode="hank" targetParameter="joint_UpperJaw"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="AngerC" targetNode="hank" targetParameter="AngerC"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="U_Bite_UAU32" targetNode="hank" targetParameter="U_Bite_UAU32"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="AngerO" targetNode="hank" targetParameter="AngerO"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="U_LipFn_UAU22" targetNode="hank" targetParameter="U_LipFn_UAU22"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="B_JawThO_BAU29" targetNode="hank" targetParameter="B_JawThO_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="U_LipP_UAU24" targetNode="hank" targetParameter="U_LipP_UAU24"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="B_JawTh_BAU29" targetNode="hank" targetParameter="B_JawTh_BAU29"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="U_LipSk_UAU28" targetNode="hank" targetParameter="U_LipSk_UAU28"/>
+					<frapper_connection sourceNode="animationClipNode1" sourceParameter="F_JawThO_FAU29" targetNode="hank" targetParameter="F_JawThO_FAU29"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="U_LipTi_UAU23" targetNode="hank" targetParameter="U_LipTi_UAU23"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="X1_CMthD" targetNode="hank" targetParameter="X1_CMthD"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="X2_CAUX2" targetNode="hank" targetParameter="X2_CAUX2"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="X4C_JawCrcl" targetNode="hank" targetParameter="X4C_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode2" sourceParameter="X4O_JawCrcl" targetNode="hank" targetParameter="X4O_JawCrcl"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="BrowU_CAU1_2" targetNode="hank" targetParameter="BrowU_CAU1_2"/>
+					<frapper_connection sourceNode="animationClipNode6" sourceParameter="BrowU_LAU1_2" targetNode="hank" targetParameter="BrowU_LAU1_2"/>
+				</technique>
+			</extra>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode"/>
+		<extra>
+			<technique profile="frapper">
+				<timeline frame="1" frameIn="1" frameOut="450" frameRangeIn="1" frameRangeOut="450" fps="25"/>
+			</technique>
+		</extra>
+	</scene>
+</COLLADA>

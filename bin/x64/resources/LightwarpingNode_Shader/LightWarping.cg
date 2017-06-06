@@ -1,0 +1,252 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                    ssao_Quad_vs                                   **
+ **                                                                                   **
+ ***************************************************************************************/
+
+void lw_quad_vs( in float4 iPosition : POSITION,
+				in float2 iTexCoord : TEXCOORD0,
+		   out float4 oPosition : POSITION,
+		   out float2 oTexCoord : TEXCOORD0,
+		   uniform float4x4 worldViewProj)
+{
+  // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+  oPosition = mul(worldViewProj, iPosition);
+  
+  // Convert to image-space
+  oTexCoord = iTexCoord;
+}
+
+
+/***************************************************************************************
+ **                                                                                   **
+ **                                      ssao_ps                                      **
+ **                                                                                   **
+ ***************************************************************************************/
+
+ //// Ashikmin BRDF model
+ float3 ASNganBRDF(in float3 n,in float3 v,in float3 l,
+		   in float exponent,
+		   in float fresnel,
+		   in float3 diffuse,
+		   in float3 specular) {
+   static const float INV_PI = 0.3183098861;
+   static const float PI_23  = 72.256631032;
+   static const float PI_8   = 25.132741228;
+
+   const float  r = (diffuse.x+diffuse.y+diffuse.z)*0.333333;
+
+   const float3 h = normalize(l-v);
+   const float3 vn = float3(v.x/20.0, v.y/20.0, v.z/20.0);
+
+   const float normalization = (exponent+1.0)/PI_8;
+
+   const float VDotH = max(dot(-vn,h),0.0);
+   const float NDotH = max(dot(n,h),0.0);
+   const float NDotV = max(dot(n,-vn),0.0);
+   const float NDotL = max(dot(n,l),0.0);
+
+   const float ks = (pow(NDotH,exponent)/(VDotH*max(NDotL,NDotV)))*normalization*(fresnel+(1.0-fresnel)*pow(VDotH,5.0));
+   const float kd = ((28.0*r)/PI_23)*(1.0-fresnel)*(1.0-pow(1.0-(NDotL/2.0),5.0))*(1.0-pow(1.0-(NDotV/2.0),5.0));
+
+   const float3 diff = diffuse*max(kd, 0.0);
+   const float3 spec = specular*max(ks, 0.0);
+  
+   return (spec+diff)*NDotL; 
+ }
+
+ //// inversion of a 3x3 matrix
+ float3x3 inverse(in float3x3 m) {
+   const float det = (m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) +
+				m[1][0] * (m[2][1] * m[0][2] - m[0][1] * m[2][2]) +
+				m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]));
+  
+   const float idet = 1.0/det;
+
+   return float3x3(idet *(m[1][1] * m[2][2] - m[2][1] * m[1][2]),
+		   -idet*(m[0][1] * m[2][2] - m[2][1] * m[0][2]),
+		   idet *(m[0][1] * m[1][2] - m[1][1] * m[0][2]),
+		   -idet*(m[1][0] * m[2][2] - m[2][0] * m[1][2]),
+		   idet *(m[0][0] * m[2][2] - m[2][0] * m[0][2]),
+		   -idet*(m[0][0] * m[1][2] - m[1][0] * m[0][2]),
+		   idet *(m[1][0] * m[2][1] - m[2][0] * m[1][1]),
+		   -idet*(m[0][0] * m[2][1] - m[2][0] * m[0][1]),
+		   idet *(m[0][0] * m[1][1] - m[1][0] * m[0][1]));
+ }
+
+ float4 warpLight(in float3 W,in float lambdaU,in float lambdaV,in float contrast) {
+
+   // tmp variables
+   const float Wu2 = W.x*W.x;
+   const float Wv2 = W.y*W.y;
+   const float Ww2 = (1.0+W.z)*(1.0+W.z);
+
+   const float lambdaU2 = lambdaU*lambdaU;
+   const float lambdaV2 = lambdaV*lambdaV;
+
+   const float t = 1.0/(1.0+(lambdaU2*Wu2+lambdaV2*Wv2)/(Ww2));
+
+   // warped light
+   const float Wup = (2.0*t*lambdaU*W.x)/(1.0+W.z);
+   const float Wvp = (2.0*t*lambdaV*W.y)/(1.0+W.z);
+   const float Wwp = 2.0*t-1.0;
+
+   // determinant of jacobian
+   const float f = Ww2+Wu2*lambdaU2+Wv2*lambdaV2;
+   const float j = (4.0*lambdaU*lambdaV*Ww2)/(f*f);
+
+   return float4(Wup,Wvp,Wwp,j*pow(lambdaV*lambdaU,-contrast));
+ }
+
+ float4 anisotropicWarping(in float3 l,in float4 d,in float contrast,in bool aniso,in float cmax) {
+   static const float PI_4 = 0.78539816;
+
+   // principal curvatures 
+   const float tmp = sqrt(d.x*d.x+4.0*d.z*d.z-2.0*d.x*d.y+d.y*d.y);
+   float k1  = -0.5*(d.x+d.y+tmp)*max(d.w-0.5,0.0);
+   float k2  = -0.5*(d.x+d.y-tmp)*max(d.w-0.5,0.0);
+
+   if(!aniso) {
+     // isotropic case: mean curvature 
+     float mean = (k1 + k2)/2.0;
+     k1 = k2 = mean;
+   }
+
+   // principal directions
+   const float2 d1 = float2((-(-d.x+d.y+tmp)/(2.0*(d.z+0.0001))),1.0);
+   const float2 d2 = float2(( ( d.x-d.y+tmp)/(2.0*(d.z+0.0001))),1.0);
+
+   // warping factors in stereographic space 
+   const float lambdaU = tan(atan(cmax*k1)/6.0 + PI_4);
+   const float lambdaV = tan(atan(cmax*k2)/6.0 + PI_4);
+
+   const float3 dU      = normalize(float3(d1,0.0));
+   const float3 dV      = normalize(float3(d2,0.0)); 
+   const float3 dW      = float3(0.0,0.0,1.0);
+
+   // projection matrices 
+   const float3x3 camToDesc = float3x3(dU.x,dV.x,dW.x,
+				 dU.y,dV.y,dW.y,
+				 dU.z,dV.z,dW.z);
+
+   const float3x3 descToCam = inverse(camToDesc);
+  
+   // projection of the light in the descriptor space 
+   const float3 lcam  = mul(camToDesc, l);
+  
+   // light warping 
+   const float4 lwarp = warpLight(lcam,1.0/lambdaU,1.0/lambdaV,contrast);
+   // projection of the warped light in camera space 
+   const float3 lwor  = mul(descToCam, lwarp.xyz);
+
+   return float4(lwor,lwarp.w);
+ }
+
+ // iterates over the differents lights to compute the illumination
+ float3 computeLighting(in float3 n,in float3 v,in float4 d,
+		        in sampler1D lightDirs,
+		        in sampler1D lightPows,
+		        in float nbLights,
+		        in float contrast,
+		        in bool aniso,
+		        in bool enable,
+		        in float exponent,
+		        in float fresnel,
+		        in float3 diffuse,
+		        in float3 specular,
+		        in float envsize,
+				in float lightscale,
+		        in float cmax) {
+   float3  l,p;
+   float4  lw;
+   const float  s = 1.0/nbLights;
+   float3 m = float3(0.0);
+
+   for(float i=0.0;i<1.0;i+=s) {
+     l = tex1D(lightDirs, i).xyz/lightscale;
+     p = tex1D(lightPows, i).xyz;
+
+     if(enable) {
+       // modified light ray; lw.w contains the Jacobian value
+		lw  = anisotropicWarping(l,d,contrast,aniso,cmax);
+		m  += (ASNganBRDF(n,v,l.xyz,exponent,fresnel,diffuse,specular)*lw.w)*p;
+     } 
+	 else {
+		m  += ASNganBRDF(n,v,l,exponent,fresnel,diffuse,specular)*p;
+     }
+   }
+  
+   return m/envsize;
+ }
+
+
+void lw_ps( in  float2 texCoord : TEXCOORD0,
+	      out float4 color    : COLOR,
+	       uniform float     nbLights,
+	       uniform float     cmax,      // warping intensity [0;40]
+	       uniform float     exponent,  // BRDF exponent [0;500]
+	       uniform float     fresnel,   // BRDF fresnel  [0;1]
+	       uniform float3    diffuse,   // BRDF diffuse color 
+	       uniform float3    specular,  // BRDF specular color 
+	       uniform float     contrast,  // contrast enhancement parameter [-1;1]
+	       uniform float	 enable,    // enable/disable light warping
+	       uniform float     aniso,     // enable/disable anisotropy for the light warping 
+	       uniform float     lightscale,// number of pixel 256*256*6
+		   uniform float     envsize,   // number of pixel 256*256*6
+	       uniform sampler2D normal    : TEXUNIT0, // normal map in camera space (nx,ny,nz,1.0)
+	       uniform sampler2D view      : TEXUNIT1, // view map (vx,vy,vz) in camera space computed with (vertex-camPosition)
+	       uniform sampler2D curve     : TEXUNIT2, // hessian matrix map (xx,yy,xy,1.0)
+	       uniform sampler1D lightDirs : TEXUNIT3, // array of light directions in camera space (lx,ly,lz)
+	       uniform sampler1D lightPows : TEXUNIT4) //array of light colors - rgb intensities (r,g,b)
+{
+   const float3 n = tex2D(normal, texCoord).xyz;
+
+   if(n.x == 0.0 && n.y == 0.0 && n.z == 0.0) {
+     // nothing to do... 
+     color = float4(0.0);
+   }
+
+   else {
+	 const float3 v = tex2D(view,texCoord);
+     const float4 d = tex2D(curve,texCoord);
+	 const float3 r = computeLighting(n,v,d,
+					lightDirs,
+			        lightPows,
+			        nbLights,
+			        contrast,
+			        (bool) aniso,
+			        (bool) enable,
+			        exponent,
+			        fresnel,
+			        diffuse,
+			        specular,
+			        envsize,
+					lightscale,
+			        cmax);
+    
+     color = float4(r, 1.0);
+   }
+}

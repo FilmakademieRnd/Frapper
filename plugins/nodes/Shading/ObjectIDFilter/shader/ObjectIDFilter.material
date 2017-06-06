@@ -1,0 +1,53 @@
+vertex_program ObjectIDFilter/QuadVP cg
+{
+	source ObjectIDFilter.cg
+	profiles vs_1_1 arbvp1
+	entry_point quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program ObjectIDFilter/ObjectIDFilterFP cg
+{
+    source ObjectIDFilter.cg
+    entry_point ObjectIDFilter_ps
+    // will run on anything with pixel shader 2.b and up
+    profiles ps_2_x arbfp1
+}
+
+
+material ObjectIDFilter/ObjectIDFilterMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref ObjectIDFilter/ObjectIDFilterFP
+			{
+			}
+			
+			vertex_program_ref ObjectIDFilter/QuadVP
+			{
+			}	
+			
+			texture_unit	//(inputMap0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit	//(inputMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

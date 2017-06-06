@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         precomputation.xml
+  Description:  Executes the necessary precomputation steps for a s3d workflow, like feature and optical flow calculation
+  Author:       Stefan Seibert <stefan.seibert@filmakademie.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="PreComputation" category="S3D" color="255, 255, 255" plugin="precomputation.dll">
+  <parameters>
+    <parameter    name="Start Calculation"            type="Command"      description="Starts the calculation of the precomputation steps"/>
+    <parameters   name="Setup">
+     <parameter   name="Overwrite existing Files"      type="Bool"         description="Decide if already existing files should be overwritten"   defaultValue="true" />
+     <parameter   name="Calculate Optical Flow"       type="Bool"         description="Decide if the optical flow should be calculated"   defaultValue="true" />
+     <parameter   name="Calculate Features"           type="Bool"         description="Decide if the features should be calculated"   defaultValue="true" />
+     <parameter   name="Features Output Directory"    type="Directory"    description="The path where the all the feature files are written into"   defaultValue="" />
+     <parameter   name="Flow Output Directory"        type="Directory"    description="The path where the all the flow files are written into"   defaultValue="" />
+     <parameter   name="Wrp Files Working Directory"  type="Directory"    description="The path where all the wrp files are created for calculating them afterwards"   defaultValue="" />
+     <parameter   name="Images Input Directory"       type="Directory"    description="The path where the node is searching for a image sequence as an input value"   defaultValue="" />
+     <parameter   name="Flow Template File"           type="Filename"     description="The template for the flow workflow"  filter="Charon Workflows (*.wrp)" defaultValue="" />
+	   <parameter   name="Feature Template File"        type="Filename"     description="The template for the feature workflow"  filter="Charon Workflows (*.wrp)" defaultValue="" />
+     <parameter   name="Thread Number"                type="Int"          minValue="1" maxValue="16" defaultValue="8" />  
+    </parameters>
+  </parameters>
+</nodetype>
+

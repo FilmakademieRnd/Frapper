@@ -1,0 +1,118 @@
+compositor LNSCompositor
+{
+    technique
+    {
+  		// Temporary textures
+		texture rtScene target_width target_height PF_FLOAT32_RGBA
+  		texture rtETF target_width target_height PF_FLOAT32_RGBA
+		texture rtSmoothH target_width target_height PF_FLOAT32_RGBA
+		texture rtSmoothV target_width target_height PF_FLOAT32_RGBA
+		texture rtGradients target_width target_height PF_FLOAT32_RGBA
+		texture rtGradBlurX target_width target_height PF_FLOAT32_RGBA
+		texture rtGradBlurY target_width target_height PF_FLOAT32_RGBA
+		texture rtSeeding target_width target_height PF_FLOAT32_RGBA
+
+      target rtScene
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/Scene
+            }
+      }	
+		
+		
+      target rtETF
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/ETF
+				input 0 rtScene
+            }
+      }
+	  
+      target rtSmoothH
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/SmoothH
+				input 0 rtETF
+            }
+      }
+	  
+      target rtSmoothV
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/SmoothV
+				input 0 rtSmoothH
+            }
+      }
+	  
+	  target rtGradients
+	  {
+	  
+		  input none
+
+		  pass render_quad
+		  {
+			  material LNS/Gradients
+		  	  input 0 rtScene
+		  }
+	  }
+	  
+	  target rtGradBlurX
+	  {
+	  
+		  input none
+
+		  pass render_quad
+		  {
+			  material LNS/GradBlurX
+		  	  input 0 rtGradients
+		  }
+	  }
+	  
+	  target rtGradBlurY
+	  {
+	  
+		  input none
+
+		  pass render_quad
+		  {
+			  material LNS/GradBlurY
+		  	  input 0 rtGradBlurX
+		  }
+	  }
+
+      target rtSeeding
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/Seeding
+				input 0 rtGradBlurY
+            }
+      }
+	  
+      target_output
+      {
+            input none
+
+            pass render_quad
+            {
+                material LNS/Sketching
+				input 0 rtSmoothV
+				input 1 rtSeeding
+            }
+      }
+  }
+}

@@ -1,0 +1,40 @@
+// Expand a range-compressed vector
+float3 expand(float3 v) {	return (v - 0.5) * 2; }
+
+void ps_main(   //in 
+				float2 iTexCoord	: TEXCOORD0,				
+				float3 iNormal		: TEXCOORD1,
+				float3 iTangent		: TEXCOORD2,
+				float3 iBinormal	: TEXCOORD3,
+				float3 iView		: TEXCOORD4,				
+				//out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	eyeGlassSpecular,										
+				uniform float   eyesGlassBumpDepth,				
+				uniform float   xShift,
+				uniform float   yShift,
+				uniform float   xScale,
+				uniform float   yScale,
+				uniform sampler2D	bumpMapSampler		: register(s0),
+				uniform samplerCUBE HighLightEyeCube	: register(s1),
+				uniform samplerCUBE EyesVisibilityCube	: register(s2))
+{	
+	// normal
+	float3 bump = tex2D( bumpMapSampler, iTexCoord ).xyz;	
+	float3 NeutralNormal = { 0.5f, 0.5f, 1.0f };	
+	bump = lerp(NeutralNormal, bump, eyesGlassBumpDepth);
+	bump = expand( bump);   	
+	bump = normalize( iNormal + (iTangent * bump.x) + (iBinormal * bump.y));		
+		  
+	// Spec
+	float3 fvView = normalize( iView );
+	float3 Reflect =  reflect(fvView, bump) ;	 	
+	Reflect.x += xShift;
+	Reflect.y += yShift;
+	Reflect.x *= xScale;
+	Reflect.y *= yScale;
+	float3 SpecCubeValue = texCUBE(HighLightEyeCube, Reflect) * eyeGlassSpecular;		
+	result = float4(SpecCubeValue, 0.0);
+
+}

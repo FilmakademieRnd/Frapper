@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         hairsinglescatterrender.xml
+  Description:  Contains the XML description of SimpleRenderer nodes.
+  Author:       Simon Spielmann <sspielma@filmakademie.de>
+  Copyright:    (c) 2010 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="HairSingleScatterRender" category="Rendering" color="173, 255, 173" plugin="hairsinglescatterrender.dll">
+  <parameters>
+    <parameters name="Shader Parameters">
+      <parameter name="hairRootWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1" defaultValue="0.05" stepSize="0.01"/>
+      <parameter name="hairTipWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="0.1" defaultValue="0.003" stepSize="0.001"/>
+      <parameter name="rootColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.4, 0.33, 0.27"/>
+      <parameter name="tipColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.8, 0.67, 0.53"/>
+      <parameter name="diffuseColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.55, 0.4, 0.24"/>
+      <parameter name="diffuseStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="8.0" stepSize="0.01"/>
+      <parameter name="reflectColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.9, 0.9, 0.9"/>
+      <parameter name="reflectStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+      <parameter name="reflectWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="200" stepSize="1"/>
+      <parameter name="scatterColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.5, 0.2, 0.05"/>
+      <parameter name="scatterStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+      <parameter name="scatterWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="0" stepSize="1"/>
+      <parameter name="transmitColor" type="Color" inputMethod="SliderPlusSpinBox" minValue="0 0 0" maxValue="1 1 1" defaultValue="0.7, 0.4, 0.1"/>
+      <parameter name="transmitStrength" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="10" defaultValue="3.0" stepSize="0.01"/>
+      <parameter name="transmitWidth" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1000" defaultValue="25" stepSize="1"/>
+    </parameters>
+    <parameters name="Light Definition">
+      <parameter name="Light Description File" type="Filename" filter="Light Description Files (*.txt)"/>
+      <parameter name="Light Scale Pos" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="100" defaultValue="20" stepSize="0.1"/>
+      <parameter name="lightPower" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.01" maxValue="1" defaultValue="0.3" stepSize="0.01"/>
+      <parameter name="Number of Lights" type="Int" inputMethod="SliderPlusSpinBox" minValue="1" maxValue="16" defaultValue="3" stepSize="1"/>
+    </parameters>
+  </parameters>
+</nodetype>

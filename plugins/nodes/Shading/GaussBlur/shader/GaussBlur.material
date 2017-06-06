@@ -1,0 +1,137 @@
+vertex_program GaussBlur/QuadVP cg
+{
+	source GaussBlur.cg
+	profiles vs_1_1 arbvp1
+	entry_point quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program GaussBlur/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+
+fragment_program GaussBlur/BoxBlurFP cg
+{
+    source GaussBlur.cg
+    entry_point boxBlur_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program GaussBlur/BlurHFP cg
+{
+    source GaussBlur.cg
+    entry_point blurH_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program GaussBlur/BlurVFP cg
+{
+    source GaussBlur.cg
+    entry_point blurV_ps
+    profiles ps_3_0 gp4fp
+}
+
+
+// scene pass
+material GaussBlur/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref GaussBlur/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+//GaussBlur: Horizontal Gaussian pass
+material GaussBlur/BlurH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref GaussBlur/BlurHFP
+			{
+				param_named BlurWidth float 1.0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+//GaussBlur: Vertical Gaussian pass
+material GaussBlur/BlurV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref GaussBlur/BlurVFP
+			{
+				param_named BlurWidth float 1.0
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material GaussBlur/Out
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref GaussBlur/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+    }
+}

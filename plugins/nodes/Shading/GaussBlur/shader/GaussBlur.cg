@@ -1,0 +1,72 @@
+/**************************************************************************************
+**                                                                                   **
+**                                    VS     										 **
+**                                                                                   **
+***************************************************************************************/
+
+void quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+/**************************************************************************************
+**                                                                                   **
+**                                       FS                                          **
+**                                                                                   **
+***************************************************************************************/
+
+
+//////////////////////////////////////////////
+// Horizontal/Vertical Gaussian-Blur passes //
+//////////////////////////////////////////////
+
+
+//We use the Normal-gauss distribution formula
+//f(x) being the formula, we used f(0.5)-f(-0.5); f(1.5)-f(0.5)...
+static const float2 samples[11] =
+{//stddev=2.0
+	-0.05, 0.01222447, 
+	-0.04, 0.02783468,	
+	-0.03, 0.06559061,	
+	-0.02, 0.12097757,	
+	-0.01, 0.17466632,	
+	 0.00, 0.19741265,	
+	 0.01, 0.17466632,	
+	 0.02, 0.12097757,	
+	 0.03, 0.06559061,	
+	 0.04, 0.02783468,	
+	 0.05, 0.01222447
+};
+
+void blurV_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidth)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(0.0, samples[i].x*BlurWidth)) * samples[i].y;
+	oColor = result;
+}
+
+void blurH_ps(in  float2 texCoord	: TEXCOORD0,
+			  out float4 oColor		: COLOR0,
+			  uniform sampler2D Blur : TEXUNIT0,
+			  uniform float BlurWidth)
+{
+	float4 result = float4(0);
+	for (int i = 0; i < 11; i++)
+		result += tex2D(Blur, texCoord + float2(samples[i].x*BlurWidth, 0.0)) * samples[i].y;
+	oColor = result;
+}

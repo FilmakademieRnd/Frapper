@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LogPanel</class>
+ <widget class="QWidget" name="LogPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>416</width>
+    <height>203</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Log</string>
+  </property>
+  <layout class="QHBoxLayout" name="ui_horizontalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+   <item>
+    <widget class="QTableView" name="ui_tableView"/>
+   </item>
+  </layout>
+  <action name="ui_infoAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/infoIcon</normaloff>:/infoIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Info</string>
+   </property>
+  </action>
+  <action name="ui_warningAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/warningIcon</normaloff>:/warningIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Warning</string>
+   </property>
+   <property name="iconText">
+    <string>Warning</string>
+   </property>
+   <property name="toolTip">
+    <string>Warning</string>
+   </property>
+  </action>
+  <action name="ui_errorAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/errorIcon</normaloff>:/errorIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Error</string>
+   </property>
+   <property name="iconText">
+    <string>Error</string>
+   </property>
+   <property name="toolTip">
+    <string>Error</string>
+   </property>
+  </action>
+  <action name="ui_debugAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/debugIcon</normaloff>:/debugIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Debug</string>
+   </property>
+  </action>
+  <action name="ui_qtAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/qtIcon</normaloff>:/qtIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Qt</string>
+   </property>
+   <property name="iconText">
+    <string>Qt</string>
+   </property>
+   <property name="toolTip">
+    <string>Qt</string>
+   </property>
+  </action>
+  <action name="ui_ogreAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/ogreIcon</normaloff>:/ogreIcon</iconset>
+   </property>
+   <property name="text">
+    <string>OGRE</string>
+   </property>
+  </action>
+  <action name="ui_clearAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/clearLogIcon</normaloff>:/clearLogIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </action>
+  <action name="ui_filterAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/filterIcon</normaloff>:/filterIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Filter</string>
+   </property>
+  </action>
+  <action name="ui_resetFilterAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/resetFilterIcon</normaloff>:/resetFilterIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Reset Filter</string>
+   </property>
+  </action>
+  <action name="ui_copyAction">
+   <property name="icon">
+    <iconset resource="../resources/gui.qrc">
+     <normaloff>:/copyIcon</normaloff>:/copyIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="statusTip">
+    <string>Copies the selected log messages to the clipboard</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="ui_resetSearchAction">
+    <property name="enabled">
+      <bool>false</bool>
+    </property>
+    <property name="icon">
+      <iconset>
+        <normaloff>:/cancelIcon</normaloff>:/cancelIcon
+      </iconset>
+    </property>
+    <property name="text">
+      <string>Reset Log Search</string>
+    </property>
+    <property name="statusTip">
+      <string>Reset the search so that all log entries are displayed again</string>
+    </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

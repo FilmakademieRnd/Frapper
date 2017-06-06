@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         depthoffield.xml
+  Description:  Contains the XML description of Blur nodes.
+  Author:       Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="FastSobel" category="Compositing" color="185, 30, 75" plugin="compositortemplate.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="FastSobelCompositor"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="SobelShader"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+   
+    </parameters>
+  </parameters>
+</nodetype>
+
+

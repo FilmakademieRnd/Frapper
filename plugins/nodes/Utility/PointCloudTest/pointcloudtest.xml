@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         ar.xml
+  Description:  Contains the XML description of PointCloudTests.
+  Author:       Martin Schwarz <martin.schwarz@filmakademie.de>
+  Copyright:    (c) 2011 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="PointCloudTest" category="Utility" color="255, 192, 171" plugin="PointCloudTest.dll">
+  <parameters>
+    <parameter name="Animate" type="Float" minValue="0.0" maxValue="100.0" defaultValue="0.0" inputMethod="SliderPlusSpinBox" stepSize="1.0"/>
+    <parameter name="MaxNumberOfPoints" type="Int" minValue="0" maxValue="1000000" defaultValue="1000" inputMethod="SpinBox"/>
+    <parameter name="MinNumberOfPoints" type="Int" minValue="0" maxValue="1000000" defaultValue="500" inputMethod="SpinBox"/>
+    <parameter name="AllowShrinkAndGrow" type="Bool" defaultValue="false"/>
+  </parameters>
+</nodetype>

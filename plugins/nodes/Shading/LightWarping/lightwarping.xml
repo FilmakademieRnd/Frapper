@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+  Project:      Filmakademie Application Framework
+  File:         lightwarping.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="LightWarping" category="Shading" color="7, 45, 87" plugin="lightwarping.dll">
+  <parameters>
+    <parameter name="Resource Group Name" type="String" defaultValue="LightWarpingNode"/>
+    <parameter name="Reload" type="Command"/>
+    <parameter name="Light Description File" type="Filename" filter="Light Description Files (*.txt)"/>
+    <parameter name="Input Map Normal" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Input Map Hessian" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Input Map View" type="Image" pin="in" selfEvaluating="false"/>
+    <parameter name="Input Map Lights" type="Image" pin="in" visible="false"/>
+    <parameter name="Input Map Powers" type="Image" pin="in" visible="false"/>
+    <parameter name="Number Of Lights" type="Float" defaultValue="24.0"/>
+    <parameter name="cmax" type="Float" defaultValue="1.0" maxValue="40.0" stepSize="1.0"/>
+    <parameter name="exponent" type="Float" defaultValue="1.0" maxValue="500.0"/>
+    <parameter name="fresnel" type="Float" defaultValue="0.0"/>
+    <parameter name="diffuse" type="Float" size="3" defaultValue="0.5, 0.5, 0.5"/>
+    <parameter name="specular" type="Float" size="3" defaultValue="0.5, 0.5, 0.5"/>
+    <parameter name="contrast" type="Float" defaultValue="0.0"/>
+    <parameter name="enable" type="Bool" defaultValue="1"/>
+    <parameter name="aniso" type="Bool" defaultValue="1"/>
+    <parameter name="lightscale" type="Float" defaultValue="10.0" minValue="0.1"  maxValue="100.0"/>
+    <parameter name="envsize" type="Float" defaultValue="1000000.0" maxValue="10000000.0"/>
+  </parameters>
+</nodetype>
+
+

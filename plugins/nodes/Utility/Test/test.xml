@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="Test" category="Utility" color="40, 40, 40" plugin="testNode.dll">
+  <parameters>
+    <parameters name="Simple">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have no additional attributes, just a name and a type."/>
+      <parameter name="Bool" type="Bool"/>
+      <parameter name="Int" type="Int"/>
+      <parameter name="UnsignedInt" type="UnsignedInt"/>
+      <parameter name="Float" type="Float"/>
+      <parameter name="String" type="String"/>
+      <parameter name="Filename" type="Filename"/>
+      <parameter name="Color" type="Color"/>
+      <parameter name="Enumeration" type="Enumeration"/>
+      <parameter name="TextInfo" type="TextInfo"/>
+      <parameter name="Command" type="Command"/>
+      <parameter name="Geometry" type="Geometry"/>
+      <parameter name="Light" type="Light"/>
+      <parameter name="Camera" type="Camera"/>
+      <parameter name="Image" type="Image"/>
+    </parameters>
+    <parameters name="Size 3">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have a size attribute with value 3."/>
+      <parameter name="Bool3" type="Bool" size="3"/>
+      <parameter name="Int3" type="Int" size="3"/>
+      <parameter name="UnsignedInt3" type="UnsignedInt" size="3"/>
+      <parameter name="Float3" type="Float" size="3"/>
+      <parameter name="String3" type="String" size="3"/>
+      <parameter name="Filename3" type="Filename" size="3"/>
+      <parameter name="Color3" type="Color" size="3"/>
+      <parameter name="Enumeration3" type="Enumeration" size="3"/>
+      <parameter name="TextInfo3" type="TextInfo" size="3"/>
+      <parameter name="Command3" type="Command" size="3"/>
+      <parameter name="Geometry3" type="Geometry" size="3"/>
+      <parameter name="Light3" type="Light" size="3"/>
+      <parameter name="Camera3" type="Camera" size="3"/>
+      <parameter name="Image3" type="Image" size="3"/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Bool in" type="Bool" pin="in" visible="false"/>
+    <parameter name="Int in" type="Int" pin="in" visible="false"/>
+    <parameter name="UnsignedInt in" type="UnsignedInt" pin="in" visible="false"/>
+    <parameter name="Float in" type="Float" pin="in" visible="false"/>
+    <parameter name="String in" type="String" pin="in" visible="false"/>
+    <parameter name="Filename in" type="Filename" pin="in" visible="false"/>
+    <parameter name="Color in" type="Color" pin="in" visible="false"/>
+    <parameter name="Enumeration in" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="TextInfo in" type="TextInfo" pin="in" visible="false"/>
+    <parameter name="Command in" type="Command" pin="in" visible="false"/>
+    <parameter name="Geometry in" type="Geometry" pin="in" visible="false"/>
+    <parameter name="Light in" type="Light" pin="in" visible="false"/>
+    <parameter name="Camera in" type="Camera" pin="in" visible="false"/>
+    <parameter name="Image in" type="Image" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Bool out" type="Bool" pin="out" visible="false"/>
+    <parameter name="Int out" type="Int" pin="out" visible="false"/>
+    <parameter name="UnsignedInt out" type="UnsignedInt" pin="out" visible="false"/>
+    <parameter name="Float out" type="Float" pin="out" visible="false"/>
+    <parameter name="String out" type="String" pin="out" visible="false"/>
+    <parameter name="Filename out" type="Filename" pin="out" visible="false"/>
+    <parameter name="Color out" type="Color" pin="out" visible="false"/>
+    <parameter name="Enumeration out" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="TextInfo out" type="TextInfo" pin="out" visible="false"/>
+    <parameter name="Command out" type="Command" pin="out" visible="false"/>
+    <parameter name="Geometry out" type="Geometry" pin="out" visible="false"/>
+    <parameter name="Light out" type="Light" pin="out" visible="false"/>
+    <parameter name="Camera out" type="Camera" pin="out" visible="false"/>
+    <parameter name="Image out" type="Image" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

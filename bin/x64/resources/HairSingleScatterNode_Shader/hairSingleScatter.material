@@ -1,0 +1,121 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program hairSingleScatter/baseHair_vs cg
+{
+    source hairSingleScatter.cg
+    profiles vs_3_0 vp40
+    entry_point baseHair_vs
+	includes_skeletal_animation true
+}
+
+vertex_program hairSingleScatter/singleScatterHair_vs cg
+{
+    source hairSingleScatter.cg
+	profiles vs_3_0 vp40
+    entry_point singleScatterHair_vs
+	includes_skeletal_animation true	
+}
+
+fragment_program hairSingleScatter/baseHair_fs cg
+{
+    source hairSingleScatter.cg
+    profiles ps_3_0 fp40
+    entry_point baseHair_fs
+}
+
+fragment_program hairSingleScatter/singleScatterHair_fs cg
+{
+    source hairSingleScatter.cg
+    profiles ps_3_0 fp40
+    entry_point singleScatterHair_fs
+}
+
+material hairSingleScatter/singleScatterHair
+{
+	technique
+	{
+		//pass
+		//{
+		//	transparent_sorting off
+		//	//colour_write off
+		//	//depth_write off
+		//	//scene_blend alpha_blend
+
+		//	vertex_program_ref hairSingleScatter/baseHair_vs  
+		//	{
+		//		param_named hairRootWidth float 0.05
+		//		param_named hairTipWidth float 0.003
+		//		param_named viewDir	float3 0.0 0.0 1.0
+		//		param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+		//		param_named_auto vpMat viewproj_matrix
+		//	}
+		//	/*fragment_program_ref hairSingleScatter/baseHair_fs
+		//	{				
+		//	}*/
+		//}	
+
+	    pass
+	    {
+			//depth_write off
+			//depth_check off
+			//transparent_sorting off
+			//scene_blend alpha_blend
+			max_lights 8
+
+			vertex_program_ref hairSingleScatter/singleScatterHair_vs
+			{										
+				param_named hairRootWidth	float	0.05
+				param_named hairTipWidth	float	0.003
+				param_named viewDirView		float3	0.0 0.0 1.0
+				param_named_auto eyePosition camera_position				
+				param_named_auto worldMatrix3x4Array world_matrix_array_3x4
+				param_named_auto viewProjectionMatrix viewproj_matrix		
+			}
+
+
+	        fragment_program_ref hairSingleScatter/singleScatterHair_fs
+			{
+				param_named_auto light_colors light_diffuse_colour_array 8
+				param_named_auto light_positions light_position_array 8
+				param_named rootColor			float3	0.4 0.33 0.27
+				param_named tipColor			float3	0.8 0.67 0.53
+				param_named diffuseColor		float3  0.55 0.4 0.24
+				param_named diffuseStrength 	float	8.0
+				param_named reflectColor		float3	0.9 0.9 0.9
+				param_named reflectStrength 	float	3.0
+				param_named reflectWidth		float	200
+				param_named scatterColor		float3	0.5 0.2 0.05
+				param_named scatterStrength 	float	3.0
+				param_named scatterWidth		float	50
+				param_named transmitColor		float3	0.7 0.4 0.1
+			    param_named transmitStrength	float	3.0
+				param_named transmitWidth		float	25
+				param_named reflectShift		float	-5
+				param_named transmitShift		float	2.5	
+				param_named scatterShift		float	7.5
+				param_named lightPower			float	0.8
+			}	
+		}
+	}
+}

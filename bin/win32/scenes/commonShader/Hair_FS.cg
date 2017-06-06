@@ -1,0 +1,214 @@
+void fs_main(   //in 
+			    float3 iNormal		: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,
+				float3 iBinormal	: TEXCOORD2,
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				float3 iLightDir	: TEXCOORD5,			    
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float	exposure,
+				uniform float	fvSpecPower1,
+				uniform float	fvSpecPower2,
+				uniform float	fvTangBend1,
+				uniform float	fvTangBend2,
+				uniform float3	hairSpecColor1,
+				uniform float3	hairSpecColor2,				
+				uniform float4	baseColor,
+				uniform float4	tipColor,
+				uniform sampler2D	HairSpec		: register(s0),
+				uniform samplerCUBE DiffuseCube		: register(s1))
+{	
+	//lookup tangent noise
+    float2 tex = iTexCoord;
+    tex.y = 0.0;
+    float3 tempTangent = iTangent;
+   
+    //bend tangents 
+    float3 BentTangent1 = normalize(tempTangent + (fvTangBend1 * iNormal));
+    float3 BentTangent2 = normalize(tempTangent + (fvTangBend2 * iNormal));
+
+    //compute diffuse color
+    float3 Normal = normalize(iNormal);
+    Normal.z *= -1;    
+    float3 HairColor = lerp(baseColor, tipColor, iTexCoord.x);
+    tex.y = 1.0;
+    float3 fvLightDirection = normalize( iViewDir );
+    float4 DiffCubeValue = texCUBE(DiffuseCube, Normal) * exposure;
+    float3 DiffColor = HairColor * tex2D(HairSpec, tex) * DiffCubeValue;
+   
+    //compute half vector
+    float3 H = normalize(iLightDir + iViewDir);
+   
+    //compute specular color1
+    float dotTH = dot(BentTangent1, H);
+    float sinTH = sqrt(1.0 - dotTH * dotTH);   
+    float3 SpecColor1 = pow(sinTH, fvSpecPower1) * hairSpecColor1 * tex2D(HairSpec, -iTexCoord);  
+
+    //compute specular color2
+    dotTH = dot(BentTangent2, H);
+    sinTH = sqrt(1.0 - dotTH*dotTH);   
+    float3 SpecColor2 = pow(sinTH, fvSpecPower2) * hairSpecColor2 * tex2D(HairSpec, iTexCoord);
+   
+    // final color
+    float4 color;
+    color.rgb = DiffColor + SpecColor1 + SpecColor2;		
+    color.a = 1;
+    result = color;
+	//result = float4(1.0, 0, 0, 0);
+}
+
+void fs_main_brdf(   //in 
+			    float3 iNormal		: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,
+				float3 iBinormal	: TEXCOORD2,
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				float3 iLightDir	: TEXCOORD5,			    
+				//out
+				out float4 result	: COLOR,
+				//parameter
+				uniform float	exposure,
+				uniform float	fvSpecPower1,
+				uniform float	fvSpecPower2,
+				uniform float	fvTangBend1,
+				uniform float	fvTangBend2,
+				uniform float3	hairSpecColor1,
+				uniform float3	hairSpecColor2,				
+				uniform float3	baseColor,
+				uniform float3	tipColor,
+				uniform float		brdf_nbLights,      
+				uniform float		brdf_exponent,  
+				uniform float		brdf_fresnel,   
+				uniform float3		brdf_diffuse,   
+				uniform float3		brdf_specular,    
+				uniform float		brdf_lightscale,   
+				uniform float		brdf_envsize,  
+				uniform float4 		fvAmbient,
+				uniform float		specPowerHair,
+				uniform float		diffPowerHair,				
+				uniform float		desaturate,	
+				uniform sampler2D	HairSpec		: register(s0),
+				uniform samplerCUBE DiffuseCube		: register(s1),
+				uniform sampler1D lightDirs		: TEXUNIT2, // array of light directions in camera space (lx,ly,lz)
+				uniform sampler1D lightPows		: TEXUNIT3) //array of light colors - rgb intensities (r,g,b)
+{	 
+    //bend tangents 
+    float3 BentTangent1 = normalize(iTangent + (fvTangBend1 * iNormal));
+    float3 BentTangent2 = normalize(iTangent + (fvTangBend2 * iNormal));
+
+    float3 HairColor = lerp(baseColor, tipColor, iTexCoord.x);
+	
+	// desaturate hair color
+	const float3 coef = (0.3, 0.59, 0.11);
+	HairColor  = lerp(HairColor , dot(coef.rgb, HairColor), desaturate);
+	
+	float3 l,p,H,SpecColor1,SpecColor2, simpleDiff;
+	const float s   = 1.0/brdf_nbLights;	
+
+	for(float i=0.0; i<1.0; i+=s) {
+		l = tex1D(lightDirs, i).xyz / brdf_lightscale;
+		p = tex1D(lightPows, i).xyz;		
+		
+		// simple diffuse		
+		//		saturate(dot(bumpVec, lightVec)))
+		// simpleDiff += max(dot(iNormal, l), 0.0) *p; 
+		simpleDiff += saturate(dot(iNormal, l)) *p; 
+					
+		// spec		
+		H = normalize(l + iViewDir);
+		float dotTH = dot(BentTangent1, H);
+		float sinTH = sqrt(1.0 - dotTH * dotTH);   
+		SpecColor1 += ( pow(sinTH, fvSpecPower1) * hairSpecColor1 * tex2D(HairSpec, -iTexCoord) ) * p;  	
+		dotTH = dot(BentTangent2, H);
+		sinTH = sqrt(1.0 - dotTH*dotTH);   
+		SpecColor2 += ( pow(sinTH, fvSpecPower2) * hairSpecColor2 * tex2D(HairSpec, iTexCoord) ) * p;
+   
+   	}
+	// combine
+	simpleDiff = simpleDiff/(brdf_envsize) * HairColor * diffPowerHair;
+	SpecColor1 = SpecColor1/brdf_envsize * specPowerHair;
+	SpecColor2 = SpecColor2/brdf_envsize * specPowerHair;
+	//result = float4( simpleDiff + SpecColor1 + SpecColor2, 0.0);	
+	// result = float4( simpleDiff , 0.0);	
+	
+}
+
+
+void fs_main_advanced(   //in
+
+				uniform float3 reflectColor,
+			    uniform float3 transmitColor,
+				uniform float3 scatterColor,
+				uniform float3 diffuseColor,
+				uniform float3 ambientColor,
+				uniform float reflectStrength,
+			    uniform float transmitStrength,
+				uniform float scatterStrength,
+				uniform float diffuseStrength,
+				uniform float reflectWidth,
+			    uniform float transmitWidth,
+				uniform float scatterWidth,
+				uniform float reflectShift,
+				uniform float transmitShift,
+				uniform float scatterShift,
+				uniform float gamma,
+			    float3 iNormal		: TEXCOORD0,
+				float3 iTangent		: TEXCOORD1,
+				float3 iBinormal	: TEXCOORD2,
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iViewDir		: TEXCOORD4,
+				float3 iLightDir	: TEXCOORD5,			    
+				//out
+				out float4 result	: COLOR)
+{	
+
+
+	// colors of the specular lobes (R,TT,TRT)
+	float3 _AM_c_R = 0.25f * reflectColor * reflectStrength;
+	float3 _AM_c_TT = 0.25f * transmitColor * transmitStrength;
+	float3 _AM_c_TRT = 0.25f * scatterColor * scatterStrength;
+	// diffuse color
+	float3 _AM_d = 0.08f * diffuseColor * diffuseStrength;
+	//float3 _AM_d = float3 (1.0f,0.0f,0.0f);
+	// widths (phong exponents) of the specular lobes (R,TT,TRT)
+	float _AM_w_R = reflectWidth;
+	float _AM_w_TT = transmitWidth;
+	float _AM_w_TRT = scatterWidth;
+	// anguar shifts of the specular lobes (R,TT,TRT)
+	float PI = 3.141593f;
+	float _AM_s_R = (reflectShift/180.f* PI);
+	float _AM_s_TT = (transmitShift/180.f* PI);
+	float _AM_s_TRT = (scatterShift/180.f* PI);
+
+	float lightVec = dot(iLightDir, iTangent);
+	float viewDepSpec = dot(iViewDir, iTangent);
+	float theta_h = asin(lightVec) + asin(viewDepSpec);
+	
+	// R (reflection) component 
+	float3 reflectionColor = _AM_c_R * pow( abs(cos(theta_h -_AM_s_R)) , _AM_w_R ); //abs eingefuegt; warum??
+	// TRT component
+	float3 transRefTransColor = _AM_c_TRT * pow( abs(cos(theta_h -_AM_s_TRT)) , _AM_w_TRT ); //abs eingefuegt; warum??
+
+	float3 alpha_i = normalize(iLightDir - lightVec*iTangent);
+	float3 alpha_o = normalize(iViewDir - viewDepSpec*iTangent);	
+
+	float cosPhi_i = dot(alpha_i, alpha_o);
+	
+	// TT component
+	float3 transTransColor = _AM_c_TT * max(0.0f, -cosPhi_i) * pow( abs(cos(theta_h -_AM_s_TT)) , _AM_w_TT );
+
+	// diffuse component
+	float3 diffColor = _AM_d * sqrt(1.0f- min(1.0f, lightVec*lightVec))+ ambientColor;
+	
+	float _1_div_gamma = 1.f / gamma;
+	float3 tmp = diffColor + abs(reflectionColor) + transTransColor + transRefTransColor;
+	result = float4(tmp,1.0f);
+	//result = float4(pow(tmp.x,_1_div_gamma),pow(tmp.y,_1_div_gamma),pow(tmp.z,_1_div_gamma), 1);
+	//result = float4(diffColor, 1);
+	//result = float4 (0.0, 1.0, 0.0, 0.0);
+	
+
+}
+

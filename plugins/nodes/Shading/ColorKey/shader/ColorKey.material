@@ -1,0 +1,63 @@
+fragment_program ColorKey/SceneFP cg
+{
+    source ../ShadingTemplate_Shader/ShadingTemplate.cg
+    entry_point scene_ps
+    profiles ps_3_0 fp40
+}
+
+fragment_program ColorKey/KeyFP cg
+{
+    source ColorKey.cg
+    entry_point key_fp
+    profiles ps_3_0 fp40
+}
+
+// scene pass
+material ColorKey/ScenePass
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref ColorKey/SceneFP
+			{
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
+
+//First pass
+material ColorKey/KeyPass
+{
+    technique
+    {
+        pass
+        {
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref ColorKey/KeyFP
+			{
+				param_named key float3 0.0 0.0 1.0
+				param_named epsilon float 0.01
+			}
+			texture_unit
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+  				filtering none
+			}
+        }
+    }
+}

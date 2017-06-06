@@ -1,0 +1,187 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+fragment_program UnsharpMask/DownscaleFragmentProgram glsl
+{
+	source downscale.frag
+	
+	default_params
+	{
+		param_named inputMap int 0
+	}
+}
+
+fragment_program UnsharpMask/SmoothHorizontalFragmentProgram glsl
+{
+	source smoothHorizontal.frag
+	
+	default_params
+	{
+		param_named inputMap int 0
+		param_named pixelSize float4 1.0 1.0 0.0 0.0
+		param_named domainRadius float 4.0
+	}
+}
+
+fragment_program UnsharpMask/SmoothVerticalFragmentProgram glsl	
+{
+	source smoothVertical.frag
+	
+	default_params
+	{
+		param_named inputMap int 0
+		param_named pixelSize float4 1.0 1.0 0.0 0.0
+		param_named domainRadius float 4.0
+	}
+}
+
+fragment_program UnsharpMask/UnsharpMaskFragmentProgram glsl
+{
+	source unsharpmask.frag
+	
+	default_params
+	{
+		param_named inputMap int 0
+		param_named indicationMap int 1
+		param_named pixelSize float4 1.0 1.0 0.0 0.0
+	}
+}
+
+vertex_program UnsharpMask/QuadVertexProgram glsl
+{
+	source quad.vert
+}
+
+
+
+material UnsharpMask/DownScale
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref UnsharpMask/DownscaleFragmentProgram
+			{
+			}
+
+			vertex_program_ref UnsharpMask/QuadVertexProgram
+			{
+			}
+		
+			texture_unit	//(inputMap)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+		}
+	}
+}
+
+
+material UnsharpMask/SmoothHorizontal
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref UnsharpMask/SmoothHorizontalFragmentProgram
+			{
+			}
+			
+			vertex_program_ref UnsharpMask/QuadVertexProgram
+			{
+			}
+	
+			texture_unit	//(downScaleMap)
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+		}
+	}
+}
+
+material UnsharpMask/SmoothVertical
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref UnsharpMask/SmoothVerticalFragmentProgram
+			{
+			}
+			
+			vertex_program_ref UnsharpMask/QuadVertexProgram
+			{
+			}
+
+			texture_unit	//(smoothMap0)
+			{
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+		}
+	}
+}
+
+material UnsharpMask/UnsharpMaskMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref UnsharpMask/UnsharpMaskFragmentProgram
+			{
+			}
+			
+			vertex_program_ref UnsharpMask/QuadVertexProgram
+			{
+			}	
+			
+			texture_unit	//(inputMap)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+			
+			texture_unit	//(smoothMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+		}
+	}
+}

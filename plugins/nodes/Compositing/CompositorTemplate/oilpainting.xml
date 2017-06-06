@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         oilpainting.xml
+  Description:  Implementation of the oilpainting algorithm: "Image stylization by interactive oil paint filtering" - Semmo et al. 2015
+  Author:       Marc Spicker <marc.spicker@uni-konstanz.de>
+  Copyright:    (c) 2014 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="OilPainting" category="Compositing" color="185, 30, 75" plugin="compositortemplate.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="OilPaintingCompositor"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="OilPaintingShader"/>
+    
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="false"/>
+	  <parameter name="Input Map Colors" type="Image" pin="in" selfEvaluating="false"/>
+    </parameters>	
+	  <parameters name="Shader Parameters Pass 0">
+		  <parameter name="sigma" type="Float" inputMethod="SliderPlusSpinBox" minValue="1.0" maxValue="20.0" defaultValue="2.0" stepSize="0.1" description="Sigma of Gaussian Blur for the Structure Tensors"/>
+		  <parameter name="sigmaT" type="Float" inputMethod="SliderPlusSpinBox" minValue="1.0" maxValue="20.0" defaultValue="3.0" stepSize="0.1" description="Sigma of Line Convolution"/>
+		  <parameter name="lightSourceAngle" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="360.0" defaultValue="0.0" stepSize="1.0" description="Angle of directional light source"/>
+		  <parameter name="kSpecular" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="20.0" defaultValue="2.0" stepSize="0.1" description="Specularity for varnish"/>
+		  <parameter name="kShininess" type="Float" inputMethod="SliderPlusSpinBox" minValue="1.0" maxValue="5.0" defaultValue="1.0" stepSize="0.1" description="Shininess for varnish"/>
+    </parameters>
+    <parameters name="Predefined Values">
+      <parameter name="Preset" type="Enumeration" defaultValue="No Preset"  description="values are 'radius x q'">
+        <literal name="No Preset" />
+      </parameter>
+      <parameter name="Preset Index" type="Float" defaultValue="0.0" pin="in" selfEvaluating="true" />
+    </parameters>
+  </parameters>
+</nodetype>

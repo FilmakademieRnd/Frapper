@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         razerhydra.xml
+  Description:  Contains the XML description of RazerHydra nodes.
+  Author:       Michael Bußler <michael.bussler@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2013 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "../../../nodetype.dtd">
+<nodetype name="RazerHydra" category="Input" color="250,100,50" plugin="razerhydra.dll">
+  <parameters>
+    <parameter name="Run" type="Bool" defaultValue="true"/>
+    <parameter name="Timer Interval (ms)" type="Int" minValue="0" defaultValue="33"/>
+    <parameter name="Trigger Dirty" type="Bool" defaultValue="true"/>
+    <parameter name="Enable Filtering" type="Bool" defaultValue="true"/>
+	<parameter name="Value Scale" type="Float" minValue="0.0" defaultValue="100"/>
+	<parameter name="Bone Position" type="Bool" defaultValue="false"/>
+    <parameter name="Position Scale" type="Float" minValue="0.0" defaultValue="0.1" />
+    <parameter name="Set Initial Orientation" type="Bool" pin="in" selfEvaluating="true" defaultValue="false"/>
+    <parameter name="Joystick Deadzone" type="Float" minValue="0.0" maxValue="1.0" defaultValue="0.1" />
+    <parameter name="Hydra Base Color" type="Color"/>
+    
+    <parameters name="Left Controller">
+      <!--Buttons-->
+      <parameter name="Left Button 1"        type="Bool" pin="out"/>
+      <parameter name="Left Button 2"        type="Bool" pin="out"/>
+      <parameter name="Left Button 3"        type="Bool" pin="out"/>
+      <parameter name="Left Button 4"        type="Bool" pin="out"/>
+      <parameter name="Left Button Start"    type="Bool" pin="out"/>
+      <parameter name="Left Button Joystick" type="Bool" pin="out"/>
+      <parameter name="Left Button Bumper"   type="Bool" pin="out"/>
+
+      <!--Joystick Digital-->
+      <parameter name="Left Joystick Up"     type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Down"   type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Left"   type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Right"  type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+
+      <!--Joystick Analog Position-->
+      <parameter name="Left Joystick Up Position"     type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Down Position"   type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Left Position"   type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Left Joystick Right Position"  type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+
+      <!--Trigger Position-->
+      <parameter name="Left Trigger"         type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      
+      <!--Controller Orientation and Position-->
+      <parameter name="Left Hand Bone"       type="Float" size="6" pin="out"/>
+      <parameter name="Left Hand Bone Quat"  type="Float" size="7" pin="out"/>
+    </parameters>
+	
+    <parameters name="Right Controller">
+      <!--Buttons-->
+      <parameter name="Right Button 1"        type="Bool" pin="out"/>
+      <parameter name="Right Button 2"        type="Bool" pin="out"/>
+      <parameter name="Right Button 3"        type="Bool" pin="out"/>
+      <parameter name="Right Button 4"        type="Bool" pin="out"/>
+      <parameter name="Right Button Start"    type="Bool" pin="out"/>
+      <parameter name="Right Button Joystick" type="Bool" pin="out"/>
+      <parameter name="Right Button Bumper"   type="Bool" pin="out"/>
+
+
+      <!--Joystick Digital-->
+      <parameter name="Right Joystick Up"     type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Down"   type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Left"   type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Right"  type="Bool" minValue="0.0" maxValue="100.0" pin="out"/>
+
+      <!--Joystick Analog Position-->
+      <parameter name="Right Joystick Up Position"     type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Down Position"   type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Left Position"   type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      <parameter name="Right Joystick Right Position"  type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+      
+	  <!--Trigger Position-->
+      <parameter name="Right Trigger"         type="Float" minValue="0.0" maxValue="100.0" pin="out"/>
+
+      <!--Controller Orientation and Position-->
+      <parameter name="Right Hand Bone"      type="Float" size="6" pin="out"/>
+      <parameter name="Right Hand Bone Quat" type="Float" size="7" pin="out"/>
+    </parameters>
+
+    <parameters name="Filtering">
+      <parameter name="Near Value" type="Float" minValue="0.0" maxValue="1.0" defaultValue="0.85" 
+                 description="The minimum filtering value.\nThis value is used for when the controller is between 0 and Near Range millimeters from the Base Unit." />
+      <parameter name="Far Value"  type="Float" minValue="0.0" maxValue="1.0" defaultValue="0.95"
+                 description="The maximum filtering value.\nThis value is used for when the controller is between Far Range and infinity millimeters from the Base Unit.."/>
+      <parameter name="Near Range" type="Float" minValue="0.0" maxValue="1500.0" defaultValue="500.0"
+                 description="The range from the Base Unit in millimeters at which to start increasing the filtering level from Near Value to Far Value.\nBetween Near Range and Far Range, the Near- and Far Values are linearly interpolated"/>
+      <parameter name="Far Range"  type="Float" minValue="500.0" maxValue="10000.0" defaultValue="1600.0"
+                 description="The range from the Base Unit in millimeters after which to stop interpolating the filter value from the Near Value, and after which to simply use Far Value."/>
+    </parameters>
+
+    <!--<parameters name="Axis Mapping">
+      
+      <parameter name="Axis Mapping Left" type="Enumeration" defaultValue="0">
+        <literal name="X Y Z" />
+        <literal name="X Z Y" />
+        <literal name="Y X Z" />
+        <literal name="Y Z X" />
+        <literal name="Z Y X" />
+        <literal name="Z X Y" />
+      </parameter>
+
+      <parameter name="Left Flip X" type="Bool" defaultValue="false" />
+      <parameter name="Left Flip Y" type="Bool" defaultValue="false" />
+      <parameter name="Left Flip Z" type="Bool" defaultValue="false" />
+
+      <parameter name="Axis Mapping Right" type="Enumeration" defaultValue="0">
+        <literal name="X Y Z" />
+        <literal name="X Z Y" />
+        <literal name="Y X Z" />
+        <literal name="Y Z X" />
+        <literal name="Z Y X" />
+        <literal name="Z X Y" />
+      </parameter>
+
+      <parameter name="Right Flip X" type="Bool" defaultValue="false" />
+      <parameter name="Right Flip Y" type="Bool" defaultValue="false" />
+      <parameter name="Right Flip Z" type="Bool" defaultValue="false" />
+    
+    </parameters>-->
+
+	<parameters name="Rotation Mapping Left">
+      <parameter name="Yaw Left" type="Enumeration" defaultValue="4">
+        <literal name="Yaw Left=> X Axis"/>
+        <literal name="Yaw Left=> Y Axis"/>
+        <literal name="Yaw Left=> Z Axis"/>
+        <literal name="Yaw Left=> -X Axis"/>
+        <literal name="Yaw Left=> -Y Axis"/>
+        <literal name="Yaw Left=> -Z Axis"/>
+      </parameter>
+      <parameter name="Pitch Left" type="Enumeration" defaultValue="5">
+        <literal name="Pitch Left => X Axis"/>
+        <literal name="Pitch Left => Y Axis"/>
+        <literal name="Pitch Left => Z Axis"/>
+        <literal name="Pitch Left => -X Axis"/>
+        <literal name="Pitch Left => -Y Axis"/>
+        <literal name="Pitch Left => -Z Axis"/>
+      </parameter>
+      <parameter name="Roll Left" type="Enumeration" defaultValue="3">
+        <literal name="Roll Left => X Axis"/>
+        <literal name="Roll Left => Y Axis"/>
+        <literal name="Roll Left => Z Axis"/>
+        <literal name="Roll Left => -X Axis"/>
+        <literal name="Roll Left => -Y Axis"/>
+        <literal name="Roll Left => -Z Axis"/>
+      </parameter>
+    </parameters>
+    <parameters name="Rotation Mapping Right">
+      <parameter name="Yaw Right" type="Enumeration" defaultValue="4">
+        <literal name="Yaw Right => X Axis"/>
+        <literal name="Yaw Right => Y Axis"/>
+        <literal name="Yaw Right => Z Axis"/>
+        <literal name="Yaw Right => -X Axis"/>
+        <literal name="Yaw Right => -Y Axis"/>
+        <literal name="Yaw Right => -Z Axis"/>
+      </parameter>
+      <parameter name="Pitch Right" type="Enumeration" defaultValue="5">
+        <literal name="Pitch Right => X Axis"/>
+        <literal name="Pitch Right => Y Axis"/>
+        <literal name="Pitch Right => Z Axis"/>
+        <literal name="Pitch Right => -X Axis"/>
+        <literal name="Pitch Right => -Y Axis"/>
+        <literal name="Pitch Right => -Z Axis"/>
+      </parameter>
+      <parameter name="Roll Right" type="Enumeration" defaultValue="3">
+        <literal name="Roll Right => X Axis"/>
+        <literal name="Roll Right => Y Axis"/>
+        <literal name="Roll Right => Z Axis"/>
+        <literal name="Roll Right => -X Axis"/>
+        <literal name="Roll Right => -Y Axis"/>
+        <literal name="Roll Right => -Z Axis"/>
+      </parameter>
+    </parameters>
+
+  </parameters>
+</nodetype>

@@ -1,0 +1,652 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of FRAPPER
+research.animationsinstitut.de
+sourceforge.net/projects/frapper
+
+Copyright (c) 2008-2014 Filmakademie Baden-Wuerttemberg, Institute of Animation 
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free Software
+Foundation; version 2.1 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+-----------------------------------------------------------------------------
+*/
+
+vertex_program ShadowMapHairRender/hairShadow_vs glsl
+{
+	source ../HairGuides_Shader/Hair_GuidesVp.glsl
+}
+
+geometry_program ShadowMapHairRender/baseHair_gs glsl
+{
+	source baseHair_gs.glsl
+	
+	default_params
+	{
+		param_named_auto g_mInverseWorldMatrix inverse_world_matrix
+		param_named_auto g_mWorldViewProjection worldviewproj_matrix
+		param_named_auto g_CameraPosition camera_position
+	}
+}
+
+fragment_program ShadowMapHairRender/baseHair_fs glsl
+{
+	source baseHair_fs.glsl
+}
+
+tessellation_hull_program ShadowMapHairRender/hairLightZ_tcs glsl
+{
+	source ../HairGuides_Shader/Hair_GuidesThMultiStrand.glsl
+	
+	default_params
+	{
+		param_named_auto g_mViewProjection viewproj_matrix
+		param_named_auto g_viewDirection view_direction
+		param_named_auto g_screenResolutionX viewport_width
+		param_named_auto g_screenResolutionY viewport_height
+		param_named g_tessellationFactor float 64.0
+		param_named g_detailFactor float 2.0
+		param_named g_textureSize float 16.0f
+		param_named g_textureSizeIndices float 16.0f
+		param_named g_maxDistance float 50.0f
+		param_named g_maxAngle float 360.0f
+		param_named g_coordinateFramesTextureSize float 16.0f
+		param_named g_maxDistanceAngleTextureSize float 16.0f
+		param_named g_scalpNormalsTextureSize float 16.0f
+		param_named g_backFaceCullingScale float 0.3f
+		param_named g_screenSpaceTessellationScale float 0.25f
+		param_named g_screenSpaceAdpativeTessellation float 0.0f
+		param_named Tex0 int 0
+		param_named TexTangents int 1
+		param_named TexCoordinateFrames int 6
+		param_named TexIndices int 7
+		param_named TexIndicesEnd int 8
+		param_named TexMaxDistanceAngle int 10
+		param_named TexSculpNormalIndices int 11
+		param_named TexSculpNormals int 12
+		param_named TexStrandBend int 13
+	}
+}
+
+tessellation_domain_program ShadowMapHairRender/hairLightZ_tes glsl
+{
+	source ../HairGuides_Shader/Hair_GuidesTdMultiStrand.glsl
+	
+	default_params
+	{
+		param_named g_rootRadius float 0.5f
+		param_named g_tipRadius float 0.48f
+		param_named g_clumpWidth float 3.0f
+		param_named g_strandWidth float 0.01f
+		param_named g_strandTaperingStart float 2.0f
+		param_named g_totalStrandVertices float 10.0f
+		param_named g_curlTextureSize float 16.0f
+		param_named g_curlyHairScale float 0.0f
+		param_named g_deviationsTextureSize float 16.0f
+		param_named g_deviationHairScale float 0.0f
+		param_named g_numStrandVariables int 1024
+		param_named g_thinning float 0.5f
+		param_named g_clumpTransitionLength float 1.0f
+		param_named g_strandWidthLOD float 1.0f
+		param_named TexCurlDeviations int 2
+		param_named TexDeviations int 3
+		param_named TexStrandLength int 4
+		param_named TexRandomCircularCoordinates int 5
+		param_named TexStrandCoordinates int 9
+	}
+}
+
+geometry_program ShadowMapHairRender/hairLightZ_gs glsl
+{
+	source shadowHair_lightZ_gs.glsl
+	
+	default_params
+	{
+		param_named_auto g_mInverseWorldMatrix inverse_world_matrix
+		param_named_auto g_mWorldViewProjection worldviewproj_matrix
+		param_named_auto g_CameraPosition camera_position
+		param_named_auto depthRange scene_depth_range
+	}
+}
+
+fragment_program ShadowMapHairRender/hairLightZ_fs glsl
+{
+	source shadowHair_lightZ_fs.glsl
+}
+
+tessellation_hull_program ShadowMapHairRender/shadowHair_tcs glsl
+{
+	source ../HairGuides_Shader/Hair_GuidesThMultiStrand.glsl
+	
+	default_params
+	{
+		param_named_auto g_mViewProjection viewproj_matrix
+		param_named_auto g_viewDirection view_direction
+		param_named_auto g_screenResolutionX viewport_width
+		param_named_auto g_screenResolutionY viewport_height
+		param_named g_tessellationFactor float 64.0
+		param_named g_detailFactor float 2.0
+		param_named g_textureSize float 16.0f
+		param_named g_textureSizeIndices float 16.0f
+		param_named g_maxDistance float 50.0f
+		param_named g_maxAngle float 360.0f
+		param_named g_coordinateFramesTextureSize float 16.0f
+		param_named g_maxDistanceAngleTextureSize float 16.0f
+		param_named g_scalpNormalsTextureSize float 16.0f
+		param_named g_backFaceCullingScale float 0.3f
+		param_named g_screenSpaceTessellationScale float 0.25f
+		param_named g_screenSpaceAdpativeTessellation float 0.0f
+		param_named Tex0 int 1
+		param_named TexTangents int 2
+		param_named TexCoordinateFrames int 7
+		param_named TexIndices int 8
+		param_named TexIndicesEnd int 9
+		param_named TexMaxDistanceAngle int 11
+		param_named TexSculpNormalIndices int 12
+		param_named TexSculpNormals int 13
+		param_named TexStrandBend int 14
+	}
+}
+
+tessellation_domain_program ShadowMapHairRender/shadowHair_tes glsl
+{
+	source ../HairGuides_Shader/Hair_GuidesTdMultiStrand.glsl
+	
+	default_params
+	{
+		param_named g_rootRadius float 0.5f
+		param_named g_tipRadius float 0.48f
+		param_named g_clumpWidth float 3.0f
+		param_named g_strandWidth float 0.01f
+		param_named g_strandTaperingStart float 2.0f
+		param_named g_totalStrandVertices float 10.0f
+		param_named g_curlTextureSize float 16.0f
+		param_named g_curlyHairScale float 0.0f
+		param_named g_deviationsTextureSize float 16.0f
+		param_named g_deviationHairScale float 0.0f
+		param_named g_numStrandVariables int 1024
+		param_named g_thinning float 0.5f
+		param_named g_clumpTransitionLength float 1.0f
+		param_named g_strandWidthLOD float 1.0f
+		param_named TexCurlDeviations int 3
+		param_named TexDeviations int 4
+		param_named TexStrandLength int 5
+		param_named TexRandomCircularCoordinates int 6
+		param_named TexStrandCoordinates int 10
+	}
+}
+
+geometry_program ShadowMapHairRender/shadowHair_gs glsl
+{
+	source shadowHair_gs.glsl
+	
+	default_params
+	{
+		param_named_auto g_mInverseWorldMatrix inverse_world_matrix
+		param_named_auto g_mWorldViewProjection worldviewproj_matrix
+		param_named_auto g_CameraPosition camera_position
+		param_named_auto wMat world_matrix
+		param_named_auto tvpMat texture_viewproj_matrix 0
+		param_named_auto spotDir light_direction_object_space 0
+		param_named_auto depthRange shadow_scene_depth_range 0
+	}
+}
+
+fragment_program ShadowMapHairRender/shadowHair_fs glsl
+{
+	source shadowHair_fs.glsl
+}
+
+
+material ShadowMapHairRender/HairBase
+{
+	technique
+	{
+	    pass
+	    {
+	        vertex_program_ref ShadowMapHairRender/base_vs
+	        {
+				param_named_auto wvpMat worldviewproj_matrix
+	        }
+	    }
+	}
+}
+
+// this is the technique for the scheme "LightZ"
+material ShadowMapHairRender/HairLightZ
+{
+	technique
+	{
+		pass
+		{
+			transparent_sorting off
+			vertex_program_ref ShadowMapHairRender/hairShadow_vs  
+			{
+
+			}
+			
+			tessellation_hull_program_ref ShadowMapHairRender/hairLightZ_tcs
+			{
+				
+			}
+			
+			tessellation_domain_program_ref ShadowMapHairRender/hairLightZ_tes
+			{
+			
+			}
+			
+			geometry_program_ref ShadowMapHairRender/hairLightZ_gs
+			{
+			
+			}
+
+			fragment_program_ref ShadowMapHairRender/hairLightZ_fs
+			{
+			}
+			
+			// sampler s0
+			texture_unit Tex0
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexTangents
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCurlDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandLength
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexRandomCircularCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCoordinateFrames
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndicesEnd
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexMaxDistanceAngle
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormalIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormals
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandBend
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+		}
+	}
+}
+
+// this is the technique for the scheme "Shadow" 
+material ShadowMapHairRender/HairShadow
+{
+	//scheme Shadow
+	technique
+	{
+		pass
+		{
+			transparent_sorting off
+			vertex_program_ref ShadowMapHairRender/hairShadow_vs  
+			{
+
+			}
+			
+			tessellation_hull_program_ref ShadowMapHairRender/shadowHair_tcs
+			{
+			
+			}
+			
+			tessellation_domain_program_ref ShadowMapHairRender/shadowHair_tes
+			{
+			
+			}
+			
+			geometry_program_ref ShadowMapHairRender/baseHair_gs
+			{
+			
+			}
+			
+			fragment_program_ref ShadowMapHairRender/baseHair_fs
+			{
+			}
+			
+			texture_unit ShadowMap
+			{
+				content_type shadow
+				filtering anisotropic
+				max_anisotropy 8
+				tex_address_mode border
+				tex_border_colour 1 1 1
+			}
+			
+			// sampler s0
+			texture_unit Tex0
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexTangents
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCurlDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandLength
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexRandomCircularCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCoordinateFrames
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndicesEnd
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexMaxDistanceAngle
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormalIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormals
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandBend
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+		}
+
+		pass
+		{
+			transparent_sorting off
+			max_lights 16
+			scene_blend add
+			iteration once_per_light
+
+			vertex_program_ref ShadowMapHairRender/hairShadow_vs
+			{
+			
+			}
+			
+			tessellation_hull_program_ref ShadowMapHairRender/shadowHair_tcs
+			{
+			
+			}
+			
+			tessellation_domain_program_ref ShadowMapHairRender/shadowHair_tes
+			{
+			
+			}
+			
+			geometry_program_ref ShadowMapHairRender/shadowHair_gs
+			{
+			
+			}
+
+			fragment_program_ref ShadowMapHairRender/shadowHair_fs
+			{
+				param_named_auto lightDif0 light_diffuse_colour 0
+				param_named_auto lightPos0 light_position 0
+				param_named_auto lightAtt0 light_attenuation 0
+				param_named_auto invSMSize inverse_texture_size 0
+				param_named_auto spotlightParams spotlight_params 0
+				param_named vsmEpsilon float 0.0001
+				param_named sampleRadius float 2
+				param_named blurSize float 1
+				param_named lightPower float 1
+			}
+
+			texture_unit ShadowMap
+			{
+				content_type shadow
+				filtering anisotropic
+				max_anisotropy 8
+				tex_address_mode border
+				tex_border_colour 1 1 1
+			}
+			
+			// sampler s0
+			texture_unit Tex0
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexTangents
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCurlDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexDeviations
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandLength
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexRandomCircularCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexCoordinateFrames
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexIndicesEnd
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandCoordinates
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexMaxDistanceAngle
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormalIndices
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexSculpNormals
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+			texture_unit TexStrandBend
+			{
+				//texture UV.jpg
+				filtering none
+				tex_address_mode border
+				tex_coord_set 1
+			}
+		}
+	}
+}
