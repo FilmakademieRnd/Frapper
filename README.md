@@ -15,4 +15,4 @@ Frapper features a node-based scene model with plugins for node types, a model-v
 * Alembic and OpenEXR Import/Export (planned)
 * Variety of exisiting plugins for Geometry, Animations, Composeting and Rendering
 
-[Frapper Web Site!] (https://animationsinstitut.de/de/forschung-rd/tools/frapper/info/)
+[Frapper Web Site](https://animationsinstitut.de/de/forschung-rd/tools/frapper/info/)
